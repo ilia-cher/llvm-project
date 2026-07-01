@@ -80,29 +80,6 @@ public:
   void schedule() override {}
 };
 
-/// Map an InstructionFlavor to its CoExecMask bit for the roofline analysis.
-/// Returns 0 for flavors that cannot fill co-exec slots.
-CoExecMaskT flavorToCoExecMask(InstructionFlavor F) {
-  switch (F) {
-  case InstructionFlavor::SingleCycleVALU:
-  case InstructionFlavor::MultiCycleVALU:
-    return CoExecMask::VALU;
-  case InstructionFlavor::TRANS:
-    return CoExecMask::TRANS;
-  case InstructionFlavor::SALU:
-    return CoExecMask::SALU;
-  case InstructionFlavor::DS:
-  case InstructionFlavor::DMA:
-    return CoExecMask::DS;
-  case InstructionFlavor::VMEM:
-    return CoExecMask::VMEM;
-  case InstructionFlavor::WMMA:
-    return CoExecMask::WMMA;
-  default:
-    return 0;
-  }
-}
-
 /// Get the bit index (0-7) for a single CoExecMask bit.
 unsigned coexecBitIndex(CoExecMaskT Bit) {
   assert(Bit && (Bit & (Bit - 1)) == 0 && "Must be a single bit");

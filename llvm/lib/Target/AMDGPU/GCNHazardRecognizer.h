@@ -307,10 +307,6 @@ public:
     return ActiveCoExecInfo;
   }
 
-  /// Get the CoExecMask for a given instruction.
-  AMDGPU::CoExecMaskT getCoExecMaskForMI(const MachineInstr &MI,
-                                         const SIInstrInfo &TII) const;
-
   // We can only issue one instruction per cycle.
   bool atIssueLimit() const override { return true; }
   void EmitInstruction(SUnit *SU) override;

@@ -299,33 +299,6 @@ void GCNHazardRecognizer::updateMultiCycleVALUState(const MachineInstr &MI) {
   }
 }
 
-AMDGPU::CoExecMaskT
-GCNHazardRecognizer::getCoExecMaskForMI(const MachineInstr &MI,
-                                        const SIInstrInfo &TII) const {
-  using namespace AMDGPU::CoExecMask;
-
-  if (SIInstrInfo::isWMMA(MI) || SIInstrInfo::isSWMMAC(MI))
-    return WMMA;
-  if (SIInstrInfo::isTRANS(MI))
-    return TRANS;
-  if (SIInstrInfo::isVALU(MI))
-    return VALU;
-  if (SIInstrInfo::isDS(MI) || SIInstrInfo::isLDSDMA(MI))
-    return DS;
-  if (SIInstrInfo::isVMEM(MI) || SIInstrInfo::isFLAT(MI))
-    return VMEM;
-  if (SIInstrInfo::isSMRD(MI))
-    return SMEM;
-  if (SIInstrInfo::isSALU(MI))
-    return SALU;
-
-  if (MI.isCopy()) {
-    return AMDGPU::getCoExecMaskForCopy(MI, MF.getRegInfo(), TRI);
-  }
-  // Control instructions (s_delay_alu, s_waitcnt, etc.) - always allowed.
-  return CTRL;
-}
-
 unsigned GCNHazardRecognizer::checkTRANSHazard(const MachineInstr &MI) const {
   if (!CyclesUntilTRANS)
     return 0;
@@ -364,7 +337,7 @@ GCNHazardRecognizer::checkWMMACoexecSlot(const MachineInstr &MI) const {
   }
 
   unsigned Stage = *CurrentCoExecStage;
-  AMDGPU::CoExecMaskT InstMask = getCoExecMaskForMI(MI, TII);
+  AMDGPU::CoExecMaskT InstMask = AMDGPU::getCoExecMaskForMI(MI, TII);
   // Check if the instruction can co-execute at the current stage.
   if (ActiveCoExecInfo.canCoExec(InstMask, Stage))
     return 0;
@@ -416,7 +389,7 @@ GCNHazardRecognizer::checkMultiShadowHazard(const MachineInstr &MI) const {
   // We need to wait for at least one to clear.
 
   unsigned LookAheadStage = *CurrentCoExecStage + CyclesUntilTRANS;
-  AMDGPU::CoExecMaskT InstMask = getCoExecMaskForMI(MI, TII);
+  AMDGPU::CoExecMaskT InstMask = AMDGPU::getCoExecMaskForMI(MI, TII);
   // Check if the instruction can co-execute at the current stage.
   if (ActiveCoExecInfo.canCoExec(InstMask, LookAheadStage))
     return CyclesUntilTRANS;
@@ -496,11 +469,13 @@ void GCNHazardRecognizer::preRAEmitInstruction(MachineInstr *MI) {
         dbgs() << "  Stage " << Stage << "("
                << AMDGPU::getStageTypeName(ActiveCoExecInfo.getType(Stage))
                << ") PreRA Emit ["
-               << AMDGPU::getCoExecMaskName(getCoExecMaskForMI(*MI, TII))
+               << AMDGPU::getCoExecMaskName(
+                      AMDGPU::getCoExecMaskForMI(*MI, TII))
                << "]: " << *MI;
       } else {
         dbgs() << "  PreRA Emit ["
-               << AMDGPU::getCoExecMaskName(getCoExecMaskForMI(*MI, TII))
+               << AMDGPU::getCoExecMaskName(
+                      AMDGPU::getCoExecMaskForMI(*MI, TII))
                << "]: " << *MI;
       }
     }
@@ -510,7 +485,7 @@ void GCNHazardRecognizer::preRAEmitInstruction(MachineInstr *MI) {
                           CyclesUntilTRANS > 0 || CyclesUntilVALU > 0;
     if (!HasActiveState)
       dbgs() << "  PreRA Emit ["
-             << AMDGPU::getCoExecMaskName(getCoExecMaskForMI(*MI, TII))
+             << AMDGPU::getCoExecMaskName(AMDGPU::getCoExecMaskForMI(*MI, TII))
              << "]: " << *MI;
   });
   updateWMMAWindowState(*MI);

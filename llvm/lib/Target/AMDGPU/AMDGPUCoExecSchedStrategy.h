@@ -32,9 +32,6 @@ constexpr unsigned DS = 16;
 
 enum class CarriedLatency : uint8_t { Off, Fence, All };
 
-
-InstructionFlavor classifyFlavor(const MachineInstr &MI,
-                                 const SIInstrInfo &SII);
 } // namespace AMDGPU
 
 namespace AMDGPU {

@@ -352,26 +352,6 @@ bool GCNPreRAOptimizationsImpl::run(MachineFunction &MF) {
       AMDGPU::CoExecMaskT ConsumerMask;
     };
 
-    auto getCoexecMaskForMI = [](const MachineInstr &MI) {
-      if (SIInstrInfo::isWMMA(MI) || SIInstrInfo::isSWMMAC(MI))
-        return AMDGPU::CoExecMask::WMMA;
-      if (SIInstrInfo::isTRANS(MI))
-        return AMDGPU::CoExecMask::TRANS;
-      if (SIInstrInfo::isVALU(MI) && !SIInstrInfo::isLDSDMA(MI))
-        return AMDGPU::CoExecMask::VALU;
-      if (SIInstrInfo::isDS(MI) || SIInstrInfo::isLDSDMA(MI))
-        return AMDGPU::CoExecMask::DS;
-      if (SIInstrInfo::isVMEM(MI) || SIInstrInfo::isFLAT(MI))
-        return AMDGPU::CoExecMask::VMEM;
-      if (SIInstrInfo::isSMRD(MI))
-        return AMDGPU::CoExecMask::SMEM;
-      if (SIInstrInfo::isSALU(MI))
-        return AMDGPU::CoExecMask::SALU;
-
-      // Control instructions (s_delay_alu, s_waitcnt, etc.) - always allowed.
-      return AMDGPU::CoExecMask::CTRL;
-    };
-
     auto collectNamedOperand = [&](AMDGPU::OpName OpName, const char *OpNameStr,
                                    const MachineInstr &MI,
                                    SmallVectorImpl<Register> &Regs) {
@@ -501,7 +481,7 @@ bool GCNPreRAOptimizationsImpl::run(MachineFunction &MF) {
           }
         }
 
-        AMDGPU::CoExecMaskT MIMask = getCoexecMaskForMI(MI);
+        AMDGPU::CoExecMaskT MIMask = AMDGPU::getCoExecMaskForMI(MI, *TII);
 
         updateHintSource(LastMFMAOrWMMA, MIMask, MI);
         updateHintSource(LastTRANS, MIMask, MI);

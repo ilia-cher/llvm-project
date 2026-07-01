@@ -45,6 +45,9 @@ using CoExecMaskT = uint16_t;
 /// Bitmask for instruction types allowed to co-execute at a stage.
 namespace CoExecMask {
 constexpr CoExecMaskT None = 0;
+/// RooflineResult relies on the first 8 masks having only one of the rightmost
+/// 8 bits being set: as such do not change values of existing masks without
+/// adjusting RooflineResult accordingly.
 constexpr CoExecMaskT CTRL = 1 << 0;  // Control: s_delay_alu, s_set_vgpr_msb
 constexpr CoExecMaskT VALU = 1 << 1;  // Vector ALU
 constexpr CoExecMaskT TRANS = 1 << 2; // Transcendentals (V_EXP etc)
@@ -100,6 +103,59 @@ enum class InstructionFlavor : uint8_t {
   Other,           // Everything else
   NUM_FLAVORS
 };
+
+InstructionFlavor classifyFlavor(const MachineInstr &MI,
+                                 const SIInstrInfo &SII);
+
+// This function is used by RooflineResult which supports limited number of
+// CoExecMask's. It will handle zero-ed (i.e. None) mask just fine, but adding
+// a new return here without updating RooflineResult would lead to assertions
+// and out-of-bounds access.
+inline CoExecMaskT flavorToCoExecMask(InstructionFlavor F) {
+  switch (F) {
+  case InstructionFlavor::SingleCycleVALU:
+  case InstructionFlavor::MultiCycleVALU:
+    return CoExecMask::VALU;
+  case InstructionFlavor::TRANS:
+    return CoExecMask::TRANS;
+  case InstructionFlavor::SALU:
+    return CoExecMask::SALU;
+  case InstructionFlavor::DS:
+  case InstructionFlavor::DMA:
+    return CoExecMask::DS;
+  case InstructionFlavor::VMEM:
+    return CoExecMask::VMEM;
+  case InstructionFlavor::WMMA:
+    return CoExecMask::WMMA;
+  case InstructionFlavor::Fence:
+  case InstructionFlavor::Other:
+  case InstructionFlavor::NUM_FLAVORS:
+    return CoExecMask::None;
+  }
+
+  return CoExecMask::None;
+}
+
+inline CoExecMaskT
+getCoExecMaskForMI(const MachineInstr &MI, const SIInstrInfo &TII) {
+  // There is no SMEM InstructionFlavor
+  if (TII.isSMRD(MI))
+    return CoExecMask::SMEM;
+  // classifyFlavor treats LDSDMA as DS, whilst the original HazardRecognizer
+  // behavior expected them to be treated as VALU.
+  if (TII.isLDSDMA(MI))
+    return CoExecMask::VALU;
+
+  InstructionFlavor Flavor = classifyFlavor(MI, TII);
+  // There is no Control InstructionFlavor
+  if (Flavor == InstructionFlavor::Other ||
+      Flavor == InstructionFlavor::Fence) {
+    // Control instructions (s_delay_alu, s_waitcnt, etc.) - always allowed.
+    return CoExecMask::CTRL;
+  }
+
+  return flavorToCoExecMask(Flavor);
+}
 
 inline StringRef getFlavorName(InstructionFlavor F) {
   switch (F) {
