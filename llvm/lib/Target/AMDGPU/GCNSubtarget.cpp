@@ -801,11 +801,12 @@ void GCNSubtarget::adjustSchedDependency(
   }
 
   // DS load/store latency is variable depending on LDS contention.
-  if (hasGFX1250Insts() && InstrInfo.isDS(*DefI)) {
-    if (auto Latency = SIInstrInfo::getDSLatencyMode()) {
-      Dep.setLatency(*Latency);
-      return;
-    }
+  if (InstrInfo.isDS(*DefI) &&
+      InstrInfo.getDSLatencyMultiplier(*DefI->getMF()) != 1) {
+    // For LDS instructions, we have overrides to change default latencies.
+    unsigned Latency = InstrInfo.getInstrLatency(*DefI);
+    Dep.setLatency(Latency);
+    return;
   }
 
   // For GFX1250: VALU/WMMA writes VGPR that VMEM/DS reads has specific latency.

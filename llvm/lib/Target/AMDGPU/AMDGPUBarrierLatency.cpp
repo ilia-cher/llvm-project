@@ -96,7 +96,6 @@ void BarrierLatency::apply(ScheduleDAGInstrs *DAG) {
   const unsigned BarrierSignalWaitLatency = BarrierSignalWaitLatencyOpt;
   OutstandingTDM.clear();
   OutstandingAsync.clear();
-  const TargetSchedModel *SchedModel = DAG->getSchedModel();
 
   for (SUnit &SU : DAG->SUnits) {
     const MachineInstr *MI = SU.getInstr();
@@ -119,13 +118,9 @@ void BarrierLatency::apply(ScheduleDAGInstrs *DAG) {
         if (!MI->mayLoad() || MI->mayStore())
           continue;
 
-        unsigned Latency = SchedModel ? SchedModel->computeInstrLatency(MI, false) : FenceLatency;
-        // DS load/store latency is variable depending on LDS contention.
-        if (TII->getSubtarget().hasGFX1250Insts() && TII->isDS(*MI)) {
-          if (auto LatencyMode = SIInstrInfo::getDSLatencyMode())
-            Latency = *LatencyMode;
-        }
-        setLatencyForEdge(PredDep, SU, Latency);
+        unsigned InstrLatency = TII->getInstrLatency(*MI);
+        setLatencyForEdge(PredDep, SU,
+                          InstrLatency ? InstrLatency : FenceLatency);
       }
     } else if (Op == AMDGPU::S_BARRIER_WAIT) {
       for (SDep &PredDep : SU.Preds) {

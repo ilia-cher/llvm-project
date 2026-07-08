@@ -89,15 +89,14 @@ static cl::opt<bool> Fix16BitCopies(
   cl::ReallyHidden);
 
 static cl::opt<SIInstrInfo::DSLatencyMode> DSLatency(
-    "amdgpu-ds-latency-mode",
-    cl::desc("DS load/store latency mode for gfx1250 (models LDS contention)"),
+    "amdgpu-ds-latency-mode", cl::desc("LDS latency mode (LDS contention)"),
     cl::values(
         clEnumValN(SIInstrInfo::DSLatencyMode::Fast, "fast",
-                   "Use default/fast latency (no contention)"),
+                   "Use default/pinged latency (no contention)"),
         clEnumValN(SIInstrInfo::DSLatencyMode::Loaded, "loaded",
-                   "Use loaded latency (moderate contention, 60 cycles)"),
+                   "Use loaded latency (moderate contention, 3x latency)"),
         clEnumValN(SIInstrInfo::DSLatencyMode::Overloaded, "overloaded",
-                   "Use overloaded latency (high contention, 100 cycles)")),
+                   "Use overloaded latency (high contention, 5x latency)")),
     cl::init(SIInstrInfo::DSLatencyMode::Fast), cl::Hidden);
 
 SIInstrInfo::SIInstrInfo(const GCNSubtarget &ST)
@@ -10882,18 +10881,24 @@ unsigned SIInstrInfo::getInstrLatency(const InstrItineraryData *ItinData,
     unsigned Lat = 0, Count = 0;
     for (++I; I != E && I->isBundledWithPred(); ++I) {
       ++Count;
-      Lat = std::max(Lat, SchedModel.computeInstrLatency(&*I));
+      Lat = std::max(Lat, getInstrLatency(*I));
     }
     return Lat + Count - 1;
   }
 
-  // DS load/store latency is variable depending on LDS contention.
-  if (ST.hasGFX1250Insts() && isDS(MI)) {
-    if (auto Latency = getDSLatencyMode())
-      return *Latency;
+  return getInstrLatency(MI);
+}
+
+unsigned SIInstrInfo::getInstrLatency(const MachineInstr &MI) const {
+  if (SchedModel.hasInstrSchedModel()) {
+    unsigned Latency = SchedModel.computeInstrLatency(&MI);
+    if (isDS(MI)) {
+      Latency *= getDSLatencyMultiplier(*MI.getMF());
+    }
+    return Latency;
   }
 
-  return SchedModel.computeInstrLatency(&MI);
+  return 0;
 }
 
 unsigned SIInstrInfo::getSchedCyclesForCopy(const MachineInstr &MI) const {
@@ -11628,23 +11633,6 @@ MachineInstr *SIInstrInfo::getNextRealInstr(MachineInstr *MI) {
   return nullptr;
 }
 
-void SIInstrInfo::setDSLatencyMode(DSLatencyMode Mode) {
-  if (DSLatency.getNumOccurrences() == 0)
-    DSLatency = Mode;
-}
-
-std::optional<unsigned> SIInstrInfo::getDSLatencyMode() {
-  switch (DSLatency) {
-  case DSLatencyMode::Fast:
-    return std::nullopt; // Use default scheduling model latency
-  case DSLatencyMode::Loaded:
-    return 60;
-  case DSLatencyMode::Overloaded:
-    return 100;
-  }
-  llvm_unreachable("Unknown DS latency mode");
-}
-
 namespace llvm::AMDGPU {
 
 struct AMDGPURepeatRateInfo {
@@ -11668,4 +11656,37 @@ unsigned SIInstrInfo::getRepeatRate(const MachineInstr &MI) const {
     return Entry->RepeatRate;
 
   return 0;
+}
+
+unsigned SIInstrInfo::getDSLatencyMultiplier(const MachineFunction &MF) {
+  const Function &F = MF.getFunction();
+
+  // Priority selection goes to the attribute
+  Attribute A = F.getFnAttribute("amdgpu-ds-latency-mode");
+  if (A.isValid()) {
+    StringRef Val = A.getValueAsString();
+    if (Val == "fast")
+      return 1;
+    if (Val == "loaded")
+      return 3;
+    if (Val == "overloaded")
+      return 5;
+  }
+
+  // If using coexec scheduler, default to "loaded" mode unless overridden
+  // by the command line option.
+  if (DSLatency.getNumOccurrences() == 0 &&
+      AMDGPU::getSchedStrategy(F) == "coexec")
+    return 3;
+
+  switch (DSLatency) {
+  case DSLatencyMode::Fast:
+    return 1; // Use default scheduling model latency
+  case DSLatencyMode::Loaded:
+    return 3;
+  case DSLatencyMode::Overloaded:
+    return 5;
+  }
+
+  return 1;
 }
