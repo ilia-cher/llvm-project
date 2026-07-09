@@ -2754,7 +2754,7 @@ static unsigned getWMMAHazardInstInCategory(const MachineInstr &MI,
   bool IsLowestRateWMMA = ST.hasGFX125xLowestRateWMMA();
   unsigned Category = 0;
 
-  unsigned Latency = SchedModel.computeInstrLatency(&MI);
+  unsigned Latency = TII->getInstrLatency(MI);
   switch (Latency) {
   case 4:
   case 8:
@@ -3232,8 +3232,7 @@ int GCNHazardRecognizer::checkMAIHazards908(MachineInstr *MI) const {
       Register DstReg = MI.getOperand(0).getReg();
       if (DstReg == Reg)
         return false;
-      HazardDefLatency =
-          std::max(HazardDefLatency, TSchedModel.computeInstrLatency(&MI));
+      HazardDefLatency = std::max(HazardDefLatency, TII.getInstrLatency(MI));
       return TRI.regsOverlap(DstReg, Reg);
     };
 
@@ -3309,8 +3308,7 @@ int GCNHazardRecognizer::checkMAIHazards908(MachineInstr *MI) const {
       if (!SIInstrInfo::isMFMA(MI))
         return false;
       Register Reg = TII.getNamedOperand(MI, AMDGPU::OpName::src2)->getReg();
-      HazardDefLatency =
-          std::max(HazardDefLatency, TSchedModel.computeInstrLatency(&MI));
+      HazardDefLatency = std::max(HazardDefLatency, TII.getInstrLatency(MI));
       return TRI.regsOverlap(Reg, DstReg);
     };
 
@@ -3471,8 +3469,7 @@ int GCNHazardRecognizer::checkMAIHazards90A(MachineInstr *MI) const {
             (Opc1 == AMDGPU::V_MFMA_F64_4X4X4F64_e64 ||
              Opc1 == AMDGPU::V_MFMA_F64_4X4X4F64_vgprcd_e64))
           NeedWaitStates = DMFMA4x4WritesVGPRFullSrcCWaitStates;
-        else if (ST.hasGFX940Insts() &&
-                 TSchedModel.computeInstrLatency(MI1) == 2)
+        else if (ST.hasGFX940Insts() && TII.getInstrLatency(*MI1) == 2)
           NeedWaitStates = GFX940_SMFMA4x4WritesVGPRFullSrcCWaitStates;
       } else {
         switch (Opc1) {
@@ -3492,7 +3489,7 @@ int GCNHazardRecognizer::checkMAIHazards90A(MachineInstr *MI) const {
             NeedWaitStates = DMFMA4x4WritesVGPROverlappedSrcCWaitStates;
           break;
         default:
-          int NumPasses = TSchedModel.computeInstrLatency(MI1);
+          int NumPasses = TII.getInstrLatency(*MI1);
           if (ST.hasGFX940Insts()) {
             if (TII.isXDL(*MI) && !TII.isXDL(*MI1))
               break;
@@ -3549,7 +3546,7 @@ int GCNHazardRecognizer::checkMAIHazards90A(MachineInstr *MI) const {
         NeedWaitStates = DMFMA4x4WritesVGPROverlappedMFMASrcABWaitStates;
         break;
       default:
-        int NumPasses = TSchedModel.computeInstrLatency(MI1);
+        int NumPasses = TII.getInstrLatency(*MI1);
 
         if (ST.hasGFX940Insts()) {
           NeedWaitStates =
@@ -3829,7 +3826,7 @@ int GCNHazardRecognizer::checkMAIVALUHazards(MachineInstr *MI) const {
       if (!MFMA)
         continue;
 
-      unsigned HazardDefLatency = TSchedModel.computeInstrLatency(MFMA);
+      unsigned HazardDefLatency = TII.getInstrLatency(*MFMA);
       int NumPasses = HazardDefLatency;
       int NeedWaitStates = MaxWaitStates;
 
@@ -3924,7 +3921,7 @@ int GCNHazardRecognizer::checkMAIVALUHazards(MachineInstr *MI) const {
         getWaitStatesSinceDef(Reg, IsMFMAWriteFn, MaxWaitStates);
     if (MFMA) {
       int NeedWaitStates = MaxWaitStates;
-      int NumPasses = TSchedModel.computeInstrLatency(MFMA);
+      int NumPasses = TII.getInstrLatency(*MFMA);
 
       if (SIInstrInfo::isDGEMM(MFMA->getOpcode())) {
         switch (NumPasses) {
@@ -3991,7 +3988,7 @@ int GCNHazardRecognizer::checkMAIVALUHazards(MachineInstr *MI) const {
     if (!MFMA)
       continue;
 
-    unsigned HazardDefLatency = TSchedModel.computeInstrLatency(MFMA);
+    unsigned HazardDefLatency = TII.getInstrLatency(*MFMA);
     int NeedWaitStates = MaxWaitStates;
     switch (HazardDefLatency) {
     case 2:  NeedWaitStates = SMFMA4x4ReadVgprVALUWarWaitStates;
@@ -4030,7 +4027,7 @@ bool GCNHazardRecognizer::ShouldPreferAnother(SUnit *SU) const {
   if (IsMFMAFn(*MI)) {
     int W = getWaitStatesSince(IsMFMAFn, 16);
     if (MAI)
-      return W < (int)TSchedModel.computeInstrLatency(MAI);
+      return W < (int)TII.getInstrLatency(*MAI);
   }
 
   return false;

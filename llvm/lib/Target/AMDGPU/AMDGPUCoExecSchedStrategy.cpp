@@ -781,8 +781,7 @@ unsigned CandidateHeuristics::getHWUICyclesForSU(SUnit *SU) {
 
   // DS load/store latency is variable depending on LDS contention.
   if (SII->getSubtarget().hasGFX1250Insts() && SII->isDS(*SU->getInstr())) {
-    if (auto Latency = SIInstrInfo::getDSLatencyMode())
-      return *Latency;
+    return SII->getInstrLatency(*SU->getInstr());
   }
 
   return getMaxBlockingCycles(DAG->getSchedClass(SU), SU->getInstr());
@@ -793,8 +792,7 @@ unsigned CandidateHeuristics::getHWUICyclesForMI(MachineInstr *MI) {
 
   // DS load/store latency is variable depending on LDS contention.
   if (SII->getSubtarget().hasGFX1250Insts() && SII->isDS(*MI)) {
-    if (auto Latency = SIInstrInfo::getDSLatencyMode())
-      return *Latency;
+    return SII->getInstrLatency(*MI);
   }
 
   return getMaxBlockingCycles(SchedModel->resolveSchedClass(MI), MI);
@@ -2800,9 +2798,6 @@ ScheduleDAGInstrs *
 llvm::createGCNCoExecMachineScheduler(MachineSchedContext *C) {
   LLVM_DEBUG(dbgs() << "AMDGPU coexec preRA scheduler selected for "
                     << C->MF->getName() << '\n');
-
-  // CoExecScheduler defaults to Loaded DS latency mode.
-  SIInstrInfo::setDSLatencyMode(SIInstrInfo::DSLatencyMode::Loaded);
 
   ScheduleDAGMILive *DAG = new GCNScheduleDAGMILive(
       C, std::make_unique<AMDGPUCoExecSchedStrategy>(C));
