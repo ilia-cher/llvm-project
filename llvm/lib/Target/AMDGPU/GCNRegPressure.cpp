@@ -767,8 +767,11 @@ bool GCNDownwardRPTracker::advance(MachineInstr *MI, bool UseInternalIterator) {
   advanceBeforeNext(MI, UseInternalIterator);
   advanceToNext(MI, UseInternalIterator);
   if (!UseInternalIterator) {
+    auto *SavedLastTrackedMI = LastTrackedMI;
     // We must remove any dead def lanes from the current RP
     advanceBeforeNext(MI, true);
+    // Restore LastTrackedMI set by advanceToNext
+    LastTrackedMI = SavedLastTrackedMI;
   }
   return true;
 }
@@ -841,8 +844,11 @@ GCNDownwardRPTracker::bumpDownwardPressure(const MachineInstr *MI,
     // to be bottom-scheduled to avoid searching uses at each query.
     SlotIndex CurrIdx;
     const MachineBasicBlock *MBB = MI->getParent();
-    MachineBasicBlock::const_iterator IdxPos = skipDebugInstructionsForward(
-        LastTrackedMI ? LastTrackedMI : MBB->begin(), MBB->end());
+    MachineBasicBlock::const_iterator StartPos =
+        LastTrackedMI ? std::next(MachineBasicBlock::const_iterator(LastTrackedMI))
+                      : MBB->begin();
+    MachineBasicBlock::const_iterator IdxPos =
+        skipDebugInstructionsForward(StartPos, MBB->end());
     if (IdxPos == MBB->end()) {
       CurrIdx = LIS.getMBBEndIdx(MBB);
     } else {
