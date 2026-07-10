@@ -767,10 +767,13 @@ bool GCNDownwardRPTracker::advance(MachineInstr *MI, bool UseInternalIterator) {
   advanceBeforeNext(MI, UseInternalIterator);
   advanceToNext(MI, UseInternalIterator);
   if (!UseInternalIterator) {
-    auto *SavedLastTrackedMI = LastTrackedMI;
+    const MachineInstr *SavedLastTrackedMI = LastTrackedMI;
     // We must remove any dead def lanes from the current RP
     advanceBeforeNext(MI, true);
-    // Restore LastTrackedMI set by advanceToNext
+    // Restore LastTrackedMI set by advanceToNext, otherwise
+    // speculative queries (bumpDownwardPressure) don't
+    // know the last scheduled instruction and fail to
+    // correctly estimate pressure change.
     LastTrackedMI = SavedLastTrackedMI;
   }
   return true;
