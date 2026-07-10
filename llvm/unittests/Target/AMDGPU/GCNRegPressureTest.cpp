@@ -154,8 +154,6 @@ TEST_F(GCNRegPressureTest, BumpDownwardPressureLastUseAfterCommit) {
   StringRef MIR = R"(
 name:            BumpDownwardPressureLastUseAfterCommit
 tracksRegLiveness: true
-machineFunctionInfo:
-  isEntryFunction: true
 body:             |
   bb.0:
     %0:vgpr_32 = IMPLICIT_DEF
@@ -166,7 +164,7 @@ body:             |
     S_ENDPGM 0
 ...
 )";
-  EXPECT_TRUE(parseMIR(MIR));
+  ASSERT_TRUE(parseMIR(MIR));
   MachineFunction &MF = getMF("BumpDownwardPressureLastUseAfterCommit");
   const LiveIntervals &LIS = MFAM.getResult<LiveIntervalsAnalysis>(MF);
   const MachineRegisterInfo &MRI = MF.getRegInfo();
