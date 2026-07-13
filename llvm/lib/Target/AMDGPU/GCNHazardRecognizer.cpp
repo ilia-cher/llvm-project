@@ -2762,8 +2762,8 @@ int GCNHazardRecognizer::checkWMMACoexecutionHazards(MachineInstr *MI) const {
   // (WMMAWaitStates if the second is also a WMMA, VALUWaitStates if the second
   // is a VALU). Refer to SPG 4.6.12.1. "Requirements for WMMA data hazards" for
   // numbers, which depends on the category of the first WMMA.
-  const int WMMAWaitStates[] = {5, 9, 3, 5, 9, 17};
-  const int VALUWaitStates[] = {4, 8, 2, 4, 8, 16};
+  const int WMMAWaitStates[] = {9, 9, 3, 5, 9, 17};
+  const int VALUWaitStates[] = {8, 8, 2, 4, 8, 16};
   unsigned Category = 0;
 
   auto IsWMMAHazardFn = [MI, TII, &Category, this](const MachineInstr &I) {
