@@ -849,7 +849,7 @@ GCNDownwardRPTracker::bumpDownwardPressure(const MachineInstr *MI,
     const MachineBasicBlock *MBB = MI->getParent();
     MachineBasicBlock::const_iterator StartPos =
         LastTrackedMI
-            ? std::next(MachineBasicBlock::const_iterator(LastTrackedMI))
+            ? std::next(LastTrackedMI->getIterator())
             : MBB->begin();
     MachineBasicBlock::const_iterator IdxPos =
         skipDebugInstructionsForward(StartPos, MBB->end());
