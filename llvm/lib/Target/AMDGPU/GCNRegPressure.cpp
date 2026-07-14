@@ -827,6 +827,18 @@ GCNDownwardRPTracker::bumpDownwardPressure(const MachineInstr *MI,
   SlotIndex SlotIdx;
   SlotIdx = LIS.getInstructionIndex(*MI).getRegSlot();
 
+  SlotIndex CurrIdx;
+  const MachineBasicBlock *MBB = MI->getParent();
+  MachineBasicBlock::const_iterator StartPos =
+      LastTrackedMI ? std::next(LastTrackedMI->getIterator()) : MBB->begin();
+  MachineBasicBlock::const_iterator IdxPos =
+      skipDebugInstructionsForward(StartPos, MBB->end());
+  if (IdxPos == MBB->end()) {
+    CurrIdx = LIS.getMBBEndIdx(MBB);
+  } else {
+    CurrIdx = LIS.getInstructionIndex(*IdxPos).getRegSlot();
+  }
+
   // Account for register pressure similar to RegPressureTracker::recede().
   RegisterOperands RegOpers;
   RegOpers.collect(*MI, *TRI, *MRI, true, /*IgnoreDead=*/false);
@@ -845,18 +857,6 @@ GCNDownwardRPTracker::bumpDownwardPressure(const MachineInstr *MI,
     // last uses for the current position.
     // FIXME: allow the caller to pass in the list of vreg uses that remain
     // to be bottom-scheduled to avoid searching uses at each query.
-    SlotIndex CurrIdx;
-    const MachineBasicBlock *MBB = MI->getParent();
-    MachineBasicBlock::const_iterator StartPos =
-        LastTrackedMI ? std::next(LastTrackedMI->getIterator()) : MBB->begin();
-    MachineBasicBlock::const_iterator IdxPos =
-        skipDebugInstructionsForward(StartPos, MBB->end());
-    if (IdxPos == MBB->end()) {
-      CurrIdx = LIS.getMBBEndIdx(MBB);
-    } else {
-      CurrIdx = LIS.getInstructionIndex(*IdxPos).getRegSlot();
-    }
-
     LastUseMask =
         findUseBetween(Reg, LastUseMask, CurrIdx, SlotIdx, *MRI, TRI, &LIS);
     if (LastUseMask.none())
