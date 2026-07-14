@@ -84,6 +84,12 @@ constexpr unsigned VALU = 16; // Non-WMMA VALU -> VMEM/DS
 constexpr unsigned WMMA = 24; // WMMA -> VMEM/DS
 } // namespace VALUToMemLatency
 
+/// Additional cycles beyond instruction latency for WAR hazard between
+/// VALU/WMMA reads and subsequent DS/VMEM writes to the same VGPR.
+namespace WARVdstLatency {
+constexpr unsigned AdditionalCycles = 16;
+} // namespace WARVdstLatency
+
 //===----------------------------------------------------------------------===//
 // Instruction Flavor Classification
 //===----------------------------------------------------------------------===//

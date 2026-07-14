@@ -1844,7 +1844,93 @@ unsigned CandidateHeuristics::getStallCosts(SUnit *SU, SchedBoundary &Zone,
     return MaxStall;
   };
 
+  // For WAR dependencies between VALU/WMMA reads and DS_LOAD writes to the
+  // same VGPR, ensure sufficient cycles between the last VALU/WMMA that read
+  // the register and the DS_LOAD that will write to it.
+  // The required delay is: instruction latency + WARVdstLatency::AdditionalCycles
+  auto getVALUToMemWARStalls = [this, &CurrCycle](SUnit *SU) -> unsigned {
+    if (!SII->getSubtarget().hasGFX1250Insts())
+      return 0;
 
+    MachineInstr *MI = SU->getInstr();
+    InstructionFlavor Flavor = classifyFlavor(*MI, *SII);
+    // Only applies to DS loads (writes to VGPRs)
+    if (Flavor != InstructionFlavor::DS || !MI->mayLoad())
+      return 0;
+
+    // Collect scheduled SUs from WMMA, SingleCycleVALU, and MultiCycleVALU
+    HardwareUnitInfo *WMMAHWUI =
+        const_cast<CandidateHeuristics *>(this)->getHWUIFromFlavor(
+            InstructionFlavor::WMMA);
+    HardwareUnitInfo *SingleVALUHWUI =
+        const_cast<CandidateHeuristics *>(this)->getHWUIFromFlavor(
+            InstructionFlavor::SingleCycleVALU);
+    HardwareUnitInfo *MultiVALUHWUI =
+        const_cast<CandidateHeuristics *>(this)->getHWUIFromFlavor(
+            InstructionFlavor::MultiCycleVALU);
+
+    unsigned MaxStall = 0;
+
+    // Helper to check a list of scheduled SUs for WAR hazard
+    auto CheckScheduledSUs = [&](ArrayRef<SUnit *> ScheduledSUs) {
+      if (ScheduledSUs.empty())
+        return;
+
+      // Collect the registers that this DS_LOAD will define
+      for (const MachineOperand &DefMO : MI->defs()) {
+        if (!DefMO.isReg() || !DefMO.getReg().isVirtual())
+          continue;
+
+        Register DefReg = DefMO.getReg();
+
+        // Check all scheduled SUs in reverse order (most recent first)
+        // to find the last one that read this register
+        for (auto It = ScheduledSUs.rbegin(); It != ScheduledSUs.rend(); ++It) {
+          SUnit *PredSU = *It;
+          MachineInstr *PredMI = PredSU->getInstr();
+          if (!PredMI)
+            continue;
+
+          // Check if this instruction reads the same register that DS_LOAD
+          // will define
+          bool ReadsDefReg = false;
+          for (const MachineOperand &UseMO : PredMI->uses()) {
+            if (!UseMO.isReg() || !UseMO.getReg().isVirtual())
+              continue;
+
+            if (UseMO.getReg() == DefReg) {
+              ReadsDefReg = true;
+              break;
+            }
+          }
+
+          if (ReadsDefReg) {
+            // WAR latency = instruction latency + additional cycles
+            unsigned InstrLatency =
+                const_cast<CandidateHeuristics *>(this)->getHWUICyclesForSU(
+                    PredSU);
+            unsigned TargetCycle =
+                PredSU->TopReadyCycle + (InstrLatency * 4);
+            if (TargetCycle > CurrCycle)
+              MaxStall = std::max(MaxStall, TargetCycle - CurrCycle);
+            // Found the most recent instruction of this flavor that reads
+            // this reg, no need to check earlier ones for this DefReg
+            break;
+          }
+        }
+      }
+    };
+
+    // Check all three instruction flavors
+    if (WMMAHWUI)
+      CheckScheduledSUs(WMMAHWUI->getScheduledSUs());
+    if (SingleVALUHWUI)
+      CheckScheduledSUs(SingleVALUHWUI->getScheduledSUs());
+    if (MultiVALUHWUI)
+      CheckScheduledSUs(MultiVALUHWUI->getScheduledSUs());
+
+    return MaxStall;
+  };
 
   unsigned ReadyCycle = Zone.isTop() ? SU->TopReadyCycle : SU->BotReadyCycle;
   Costs.Ready = ReadyCycle > CurrCycle ? ReadyCycle - CurrCycle : 0;
@@ -1856,8 +1942,10 @@ unsigned CandidateHeuristics::getStallCosts(SUnit *SU, SchedBoundary &Zone,
   Costs.Buffer = getBufferFullStalls(SU);
   Costs.Fence = getFenceStalls(SU);
   Costs.RAWVdst = getVALUToMemStalls(SU);
+  Costs.WARVdst = getVALUToMemWARStalls(SU);
   Costs.Effective = std::max({Costs.Ready, Costs.Structural, Costs.Latency,
-                              Costs.Carried, Costs.Buffer, Costs.Fence, Costs.RAWVdst});
+                              Costs.Carried, Costs.Buffer, Costs.Fence,
+                              Costs.RAWVdst, Costs.WARVdst});
   return Costs.Effective;
 }
 
@@ -1953,12 +2041,14 @@ bool CandidateHeuristics::tryEffectiveStall(
            << " (ready=" << TryCosts.Ready << ", struct=" << TryCosts.Structural
            << ", lat=" << TryCosts.Latency << ", carried=" << TryCosts.Carried
            << ", buffer=" << TryCosts.Buffer << ", fence=" << TryCosts.Fence
-           << ", rawvdst=" << TryCosts.RAWVdst << ", missedSlots=" << CandMissedSlots
+           << ", rawvdst=" << TryCosts.RAWVdst << ", warvdst=" << TryCosts.WARVdst
+           << ", missedSlots=" << TryMissedSlots
            << ") cand=" << CandCosts.Effective << " (ready=" << CandCosts.Ready
            << ", struct=" << CandCosts.Structural
            << ", lat=" << CandCosts.Latency << ", carried=" << CandCosts.Carried
            << ", buffer=" << CandCosts.Buffer << ", fence=" << CandCosts.Fence
-           << ", rawvdst=" << CandCosts.RAWVdst << ", missedSlots=" << CandMissedSlots << ")\n";
+           << ", rawvdst=" << CandCosts.RAWVdst << ", warvdst=" << CandCosts.WARVdst
+           << ", missedSlots=" << CandMissedSlots << ")\n";
   });
 
   // Prefer lower combined cost (stalls + missed slots).
