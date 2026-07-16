@@ -81,7 +81,7 @@ define amdgpu_ps void @v_test_add_v2bf16_vc(ptr addrspace(1) %out, <2 x bfloat> 
 ; GCN-LABEL: v_test_add_v2bf16_vc:
 ; GCN:       ; %bb.0:
 ; GCN-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
-; GCN-NEXT:    v_pk_add_bf16 v2, v2, 2.0 op_sel_hi:[1,0]
+; GCN-NEXT:    v_pk_add_bf16 v2, v2, 2.0 op_sel:[0,1]
 ; GCN-NEXT:    global_store_b32 v[0:1], v2, off
 ; GCN-NEXT:    s_endpgm
   %add = fadd <2 x bfloat> %a, <bfloat 2.0, bfloat 2.0>
@@ -141,7 +141,7 @@ define amdgpu_ps void @v_test_sub_v2bf16_vc(ptr addrspace(1) %out, <2 x bfloat> 
 ; GCN-LABEL: v_test_sub_v2bf16_vc:
 ; GCN:       ; %bb.0:
 ; GCN-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
-; GCN-NEXT:    v_pk_add_bf16 v2, v2, -2.0 op_sel_hi:[1,0]
+; GCN-NEXT:    v_pk_add_bf16 v2, v2, -2.0 op_sel:[0,1]
 ; GCN-NEXT:    global_store_b32 v[0:1], v2, off
 ; GCN-NEXT:    s_endpgm
   %add = fsub <2 x bfloat> %a, <bfloat 2.0, bfloat 2.0>
@@ -177,7 +177,7 @@ define amdgpu_ps void @v_test_sub_v2bf16_iv(ptr addrspace(1) %out, <2 x bfloat> 
 ; GCN-LABEL: v_test_sub_v2bf16_iv:
 ; GCN:       ; %bb.0:
 ; GCN-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
-; GCN-NEXT:    v_pk_add_bf16 v2, v2, 1.0 op_sel_hi:[1,0] neg_lo:[1,0] neg_hi:[1,0]
+; GCN-NEXT:    v_pk_add_bf16 v2, v2, 1.0 op_sel:[0,1] neg_lo:[1,0] neg_hi:[1,0]
 ; GCN-NEXT:    global_store_b32 v[0:1], v2, off
 ; GCN-NEXT:    s_endpgm
   %add = fsub <2 x bfloat> <bfloat 1.0, bfloat 1.0>, %a
@@ -227,7 +227,7 @@ define amdgpu_ps void @v_test_mul_v2bf16_vc(ptr addrspace(1) %out, <2 x bfloat> 
 ; GCN-LABEL: v_test_mul_v2bf16_vc:
 ; GCN:       ; %bb.0:
 ; GCN-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
-; GCN-NEXT:    v_pk_mul_bf16 v2, v2, 0.5 op_sel_hi:[1,0]
+; GCN-NEXT:    v_pk_mul_bf16 v2, v2, 0.5 op_sel:[0,1]
 ; GCN-NEXT:    global_store_b32 v[0:1], v2, off
 ; GCN-NEXT:    s_endpgm
   %mul = fmul <2 x bfloat> %a, <bfloat 0.5, bfloat 0.5>
@@ -287,7 +287,7 @@ define amdgpu_ps void @v_test_min_v2bf16_vc(ptr addrspace(1) %out, <2 x bfloat> 
 ; GCN-LABEL: v_test_min_v2bf16_vc:
 ; GCN:       ; %bb.0:
 ; GCN-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
-; GCN-NEXT:    v_pk_min_num_bf16 v2, v2, 0.5 op_sel_hi:[1,0]
+; GCN-NEXT:    v_pk_min_num_bf16 v2, v2, 0.5 op_sel:[0,1]
 ; GCN-NEXT:    global_store_b32 v[0:1], v2, off
 ; GCN-NEXT:    s_endpgm
   %min = call <2 x bfloat> @llvm.minnum.v2bf16(<2 x bfloat> %a, <2 x bfloat> <bfloat 0.5, bfloat 0.5>)
@@ -347,7 +347,7 @@ define amdgpu_ps void @v_test_max_v2bf16_vc(ptr addrspace(1) %out, <2 x bfloat> 
 ; GCN-LABEL: v_test_max_v2bf16_vc:
 ; GCN:       ; %bb.0:
 ; GCN-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
-; GCN-NEXT:    v_pk_max_num_bf16 v2, v2, 0.5 op_sel_hi:[1,0]
+; GCN-NEXT:    v_pk_max_num_bf16 v2, v2, 0.5 op_sel:[0,1]
 ; GCN-NEXT:    global_store_b32 v[0:1], v2, off
 ; GCN-NEXT:    s_endpgm
   %max = call <2 x bfloat> @llvm.maxnum.v2bf16(<2 x bfloat> %a, <2 x bfloat> <bfloat 0.5, bfloat 0.5>)
@@ -558,7 +558,7 @@ define amdgpu_ps void @v_test_mul_add_v2bf16_vsc(ptr addrspace(1) %out, <2 x bfl
 ; GCN-LABEL: v_test_mul_add_v2bf16_vsc:
 ; GCN:       ; %bb.0:
 ; GCN-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
-; GCN-NEXT:    v_pk_fma_bf16 v2, v2, s0, 0.5 op_sel_hi:[1,1,0]
+; GCN-NEXT:    v_pk_fma_bf16 v2, v2, s0, 0.5 op_sel:[0,0,1]
 ; GCN-NEXT:    global_store_b32 v[0:1], v2, off
 ; GCN-NEXT:    s_endpgm
   %mul = fmul contract <2 x bfloat> %a, %b
@@ -624,7 +624,7 @@ define amdgpu_ps void @v_test_fma_v2bf16_vsc(ptr addrspace(1) %out, <2 x bfloat>
 ; GCN-LABEL: v_test_fma_v2bf16_vsc:
 ; GCN:       ; %bb.0:
 ; GCN-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
-; GCN-NEXT:    v_pk_fma_bf16 v2, v2, s0, 0.5 op_sel_hi:[1,1,0]
+; GCN-NEXT:    v_pk_fma_bf16 v2, v2, s0, 0.5 op_sel:[0,0,1]
 ; GCN-NEXT:    global_store_b32 v[0:1], v2, off
 ; GCN-NEXT:    s_endpgm
   %fma = call <2 x bfloat> @llvm.fma.v2bf16(<2 x bfloat> %a, <2 x bfloat> %b, <2 x bfloat> <bfloat 0.5, bfloat 0.5>)

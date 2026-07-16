@@ -626,6 +626,10 @@ defm Movrel : AMDGPUSubtargetFeature<"movrel",
   "Has v_movrel*_b32 instructions"
 >;
 
+defm BF16InlineConstFromUpperFP32 : AMDGPUSubtargetFeature<"bf16-from-upper-fp32",
+  "bf16 inline constants are actually selected from upper 16-bits of a fp32"
+>;
+
 defm VGPRIndexMode : AMDGPUSubtargetFeature<"vgpr-index-mode",
   "Has VGPR mode register indexing"
 >;
@@ -2181,6 +2185,7 @@ def FeatureISAVersion12_50_Common : FeatureSet<
    FeatureBF16TransInsts,
    FeatureBF16ConversionInsts,
    FeatureBF16PackedInsts,
+   FeatureBF16InlineConstFromUpperFP32,
    FeatureCvtPkF16F32Inst,
    FeatureFmaMixBF16Insts,
    FeatureMin3Max3PKF16,
@@ -2322,6 +2327,7 @@ def FeatureISAVersion13 : FeatureSet<
    FeatureBF16TransInsts,
    FeatureBF16ConversionInsts,
    FeatureBF16PackedInsts,
+   FeatureBF16InlineConstFromUpperFP32,
    FeaturePrngInst,
    FeaturePermlane16Swap,
    FeatureAshrPkInsts,
