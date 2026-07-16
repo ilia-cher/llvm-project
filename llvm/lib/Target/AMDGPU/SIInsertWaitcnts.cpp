@@ -666,9 +666,11 @@ public:
   }
 
   void setStateOnFunctionEntryOrReturn() {
-    setScoreUB(AMDGPU::STORE_CNT,
-               getScoreUB(AMDGPU::STORE_CNT) + getLimit(AMDGPU::STORE_CNT));
-    PendingEvents |= Context->getWaitEvents(AMDGPU::STORE_CNT);
+    if (Context->ST.hasVscnt()) {
+      setScoreUB(AMDGPU::STORE_CNT,
+                 getScoreUB(AMDGPU::STORE_CNT) + getLimit(AMDGPU::STORE_CNT));
+      PendingEvents |= Context->getWaitEvents(AMDGPU::STORE_CNT);
+    }
   }
 
   ArrayRef<const MachineInstr *> getLDSDMAStores() const {
@@ -1393,12 +1395,26 @@ void WaitcntBrackets::simplifyVmVsrc(const AMDGPU::Waitcnt &CheckWait,
   // Waiting for some counters implies waiting for VM_VSRC, since an
   // instruction that decrements a counter on completion would have
   // decremented VM_VSRC once its VGPR operands had been read.
-  if (CheckWait.get(AMDGPU::VM_VSRC) >=
-      std::min({CheckWait.get(AMDGPU::LOAD_CNT),
-                CheckWait.get(AMDGPU::STORE_CNT),
-                CheckWait.get(AMDGPU::SAMPLE_CNT),
-                CheckWait.get(AMDGPU::BVH_CNT), CheckWait.get(AMDGPU::DS_CNT)}))
-    UpdateWait.set(AMDGPU::VM_VSRC, ~0u);
+  static constexpr AMDGPU::InstCounterType VmemCounters[] = {
+      AMDGPU::LOAD_CNT, AMDGPU::STORE_CNT, AMDGPU::SAMPLE_CNT, AMDGPU::BVH_CNT,
+      AMDGPU::DS_CNT};
+  HWEventSet VmemEvents = llvm::accumulate(
+      VmemCounters, HWEventSet(), [&](HWEventSet Acc, AMDGPU::InstCounterType T) {
+        return Acc | Context->getWaitEvents(T);
+      });
+  HWEventSet PendingVmemEvents = PendingEvents & VmemEvents;
+  auto Simplify = [&](AMDGPU::InstCounterType T) {
+    unsigned CheckCount = CheckWait.get(T);
+    if (UpdateWait.get(AMDGPU::VM_VSRC) >= CheckCount &&
+        (CheckCount == 0 || !counterOutOfOrder(T)) &&
+        Context->getWaitEvents(T).contains(PendingVmemEvents))
+      UpdateWait.set(AMDGPU::VM_VSRC, ~0u);
+  };
+  Simplify(AMDGPU::LOAD_CNT);
+  Simplify(AMDGPU::STORE_CNT);
+  Simplify(AMDGPU::SAMPLE_CNT);
+  Simplify(AMDGPU::BVH_CNT);
+  Simplify(AMDGPU::DS_CNT);
   simplifyWaitcnt(UpdateWait, AMDGPU::VM_VSRC);
 }
 
