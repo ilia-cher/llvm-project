@@ -868,37 +868,6 @@ void CandidateHeuristics::initialize(ScheduleDAGMI *SchedDAG,
   NextWindow.clear();
   RegionCarriedLatency = BlockCarriedLatency.getNumOccurrences() ? BlockCarriedLatency : AMDGPU::CarriedLatency::Off;
 
-
-  if (!BlockCarriedLatency.getNumOccurrences()) {
-    auto WMMAHWUI = getHWUIFromFlavor(InstructionFlavor::WMMA);
-
-    bool MustHaveDSAfter = WMMAHWUI->size();
-    for (SUnit *SU : *WMMAHWUI) {
-      bool HasDSSucc= false;
-      for (auto &Succ : SU->Succs) {
-        // Skip boundary nodes (e.g. ExitSU) which have no MachineInstr.
-        if (!Succ.getSUnit()->getInstr())
-          continue;
-        if (classifyFlavor(*Succ.getSUnit()->getInstr(), *SII) == InstructionFlavor::DS) {
-          HasDSSucc = true;
-          break;
-        }
-      }
-
-      if (!HasDSSucc) {
-        MustHaveDSAfter = false;
-        break;
-      }
-
-    }
-
-    if (MustHaveDSAfter) {
-      RegionCarriedLatency = CarriedLatency::Fence;
-    }
-  }
-
-
-
   // Populate the initial window for the first producer.
   // Note: At initialization time, MixInfo is reset so no ready counts yet.
   // The window will be re-populated when scheduling begins and MixInfo is
@@ -1213,7 +1182,7 @@ bool CandidateHeuristics::tryLoopCarriedDSReadOrder(
 }
 
 unsigned CandidateHeuristics::getCarriedLatency(SUnit *SU) {
-  if (BlockCarriedLatency == CarriedLatency::Off)
+  if (RegionCarriedLatency == CarriedLatency::Off)
     return 0;
 
   MachineInstr *MI = SU->getInstr();
@@ -1239,7 +1208,7 @@ unsigned CandidateHeuristics::getCarriedLatency(SUnit *SU) {
     }
   }
 
-  if (BlockCarriedLatency == CarriedLatency::Fence)
+  if (RegionCarriedLatency == CarriedLatency::Fence)
     return 0;
 
   for (auto &Op : MI->operands()) {
@@ -1299,6 +1268,39 @@ unsigned CandidateHeuristics::getCarriedLatency(SUnit *SU) {
 void CandidateHeuristics::collectRegionSummary() {
   if (!SchedModel || !SchedModel->hasInstrSchedModel())
     return;
+
+
+  if (!BlockCarriedLatency.getNumOccurrences()) {
+    SmallVector<SUnit *, 16> RegionWMMAs;
+
+    for (auto &SU : DAG->SUnits) {
+      MachineInstr *MI = SU.getInstr();
+      const InstructionFlavor Flavor = classifyFlavor(*MI, *SII);
+      if (Flavor == InstructionFlavor::WMMA)
+        RegionWMMAs.push_back(&SU);
+    }
+
+    bool MustHaveDSAfter = RegionWMMAs.size();
+    for (SUnit *SU : RegionWMMAs) {
+      bool HasDSSucc= false;
+      for (auto &Succ : SU->Succs) {
+        if (classifyFlavor(*Succ.getSUnit()->getInstr(), *SII) == InstructionFlavor::DS) {
+          HasDSSucc = true;
+          break;
+        }
+      }
+
+      if (!HasDSSucc) {
+        MustHaveDSAfter = false;
+        break;
+      }
+
+    }
+
+    if (MustHaveDSAfter) {
+      RegionCarriedLatency = CarriedLatency::Fence;
+    }
+  }
 
   for (auto &SU : DAG->SUnits) {
     MachineInstr *MI = SU.getInstr();
