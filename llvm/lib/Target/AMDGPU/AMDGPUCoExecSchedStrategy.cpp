@@ -1274,6 +1274,8 @@ void CandidateHeuristics::collectRegionSummary() {
     SmallVector<SUnit *, 16> RegionWMMAs;
 
     for (auto &SU : DAG->SUnits) {
+      if (!SU.getInstr())
+        continue;
       MachineInstr *MI = SU.getInstr();
       const InstructionFlavor Flavor = classifyFlavor(*MI, *SII);
       if (Flavor == InstructionFlavor::WMMA)
@@ -1282,8 +1284,10 @@ void CandidateHeuristics::collectRegionSummary() {
 
     bool MustHaveDSAfter = RegionWMMAs.size();
     for (SUnit *SU : RegionWMMAs) {
-      bool HasDSSucc= false;
+      bool HasDSSucc = false;
       for (auto &Succ : SU->Succs) {
+        if (!Succ.getSUnit()->getInstr())
+          continue;
         if (classifyFlavor(*Succ.getSUnit()->getInstr(), *SII) == InstructionFlavor::DS) {
           HasDSSucc = true;
           break;
