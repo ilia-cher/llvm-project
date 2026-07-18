@@ -2114,7 +2114,56 @@ bool WaitcntGeneratorGFX12Plus::applyPreexistingWaitcnt(
     }
   }
 
-  ScoreBrackets.simplifyWaitcnt(Wait.combined(RequiredWait), Wait);
+  // Simplify Wait based on the combined waits. Note that RequiredWait contains
+  // soft waits that we're keeping because we haven't seen all predecessor
+  // states yet. These soft waits might be deleted on a later pass.
+  //
+  // For most counters, using the combined waits for simplification is fine.
+  // However, for VM_VSRC and X_CNT we must be careful: these can be simplified
+  // away based on other counters (e.g., DS_CNT implies VM_VSRC, LOAD_CNT/KM_CNT
+  // implies X_CNT). If those counters are only in RequiredWait and get deleted
+  // later, we'd lose the VM_VSRC/X_CNT protection.
+  //
+  // To handle this, we save Wait before simplification. After, if VM_VSRC or
+  // X_CNT was cleared but RequiredWait has counters that could have caused
+  // this, we re-check using the original Wait and restore if needed.
+  AMDGPU::Waitcnt OrigWait = Wait;
+  AMDGPU::Waitcnt CombinedWait = Wait.combined(RequiredWait);
+  ScoreBrackets.simplifyWaitcnt(CombinedWait, Wait);
+
+  // If VM_VSRC was simplified away and RequiredWait has VMEM counters,
+  // check if the simplification was due to RequiredWait.
+  if (OrigWait.get(AMDGPU::VM_VSRC) != ~0u &&
+      Wait.get(AMDGPU::VM_VSRC) == ~0u &&
+      (RequiredWait.get(AMDGPU::DS_CNT) != ~0u ||
+       RequiredWait.get(AMDGPU::LOAD_CNT) != ~0u ||
+       RequiredWait.get(AMDGPU::STORE_CNT) != ~0u ||
+       RequiredWait.get(AMDGPU::SAMPLE_CNT) != ~0u ||
+       RequiredWait.get(AMDGPU::BVH_CNT) != ~0u)) {
+    // Re-check using only the original Wait (excluding RequiredWait).
+    AMDGPU::Waitcnt TestWait;
+    TestWait.set(AMDGPU::VM_VSRC, OrigWait.get(AMDGPU::VM_VSRC));
+    ScoreBrackets.simplifyVmVsrc(OrigWait, TestWait);
+    // If VM_VSRC wasn't simplified when using only OrigWait, restore it.
+    if (TestWait.get(AMDGPU::VM_VSRC) != ~0u)
+      Wait.set(AMDGPU::VM_VSRC, OrigWait.get(AMDGPU::VM_VSRC));
+  }
+
+  // If X_CNT was simplified away and RequiredWait has KM_CNT or LOAD_CNT,
+  // check if the simplification was due to RequiredWait.
+  if (OrigWait.get(AMDGPU::X_CNT) != ~0u &&
+      Wait.get(AMDGPU::X_CNT) == ~0u &&
+      (RequiredWait.get(AMDGPU::KM_CNT) != ~0u ||
+       RequiredWait.get(AMDGPU::LOAD_CNT) != ~0u)) {
+    // Re-check using only the original Wait (excluding RequiredWait).
+    AMDGPU::Waitcnt TestWait;
+    TestWait.set(AMDGPU::X_CNT, OrigWait.get(AMDGPU::X_CNT));
+    ScoreBrackets.simplifyXcnt(OrigWait, TestWait);
+    // If X_CNT wasn't simplified when using only OrigWait, restore it.
+    if (TestWait.get(AMDGPU::X_CNT) != ~0u)
+      Wait.set(AMDGPU::X_CNT, OrigWait.get(AMDGPU::X_CNT));
+  }
+
   Wait = Wait.combined(RequiredWait);
 
   if (CombinedLoadDsCntInstr) {
