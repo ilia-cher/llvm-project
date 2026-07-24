@@ -102,6 +102,7 @@ enum class InstructionFlavor : uint8_t {
   TRANS,           // Transcendental ops (v_exp, v_log, etc.)
   MultiCycleVALU,  // VALU instructions with repeat rate > 1
   VMEM,            // FLAT/GLOBAL memory operations
+  SMEM,            // Scalar memory operations
   DS,              // LDS/GDS operations
   SALU,            // Scalar ALU
   DMA,             // Tensor DMA operations
@@ -131,6 +132,8 @@ inline CoExecMaskT flavorToCoExecMask(InstructionFlavor F) {
     return CoExecMask::DS;
   case InstructionFlavor::VMEM:
     return CoExecMask::VMEM;
+  case InstructionFlavor::SMEM:
+    return CoExecMask::SMEM;
   case InstructionFlavor::WMMA:
     return CoExecMask::WMMA;
   case InstructionFlavor::Fence:
@@ -144,9 +147,6 @@ inline CoExecMaskT flavorToCoExecMask(InstructionFlavor F) {
 
 inline CoExecMaskT
 getCoExecMaskForMI(const MachineInstr &MI, const SIInstrInfo &TII) {
-  // There is no SMEM InstructionFlavor
-  if (TII.isSMRD(MI))
-    return CoExecMask::SMEM;
   // classifyFlavor treats LDSDMA as DS, whilst the original HazardRecognizer
   // behavior expected them to be treated as VALU.
   if (TII.isLDSDMA(MI))
@@ -175,6 +175,8 @@ inline StringRef getFlavorName(InstructionFlavor F) {
     return "VALU(Nc)";
   case InstructionFlavor::VMEM:
     return "VMEM";
+  case InstructionFlavor::SMEM:
+    return "SMEM";
   case InstructionFlavor::DS:
     return "DS";
   case InstructionFlavor::SALU:
@@ -202,6 +204,8 @@ inline StringRef getFlavorShortName(InstructionFlavor F) {
   case InstructionFlavor::MultiCycleVALU:
     return "C";
   case InstructionFlavor::VMEM:
+    return "M";
+  case InstructionFlavor::SMEM:
     return "M";
   case InstructionFlavor::DS:
     return "D";

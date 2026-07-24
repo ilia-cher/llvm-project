@@ -206,6 +206,9 @@ InstructionFlavor llvm::AMDGPU::classifyFlavor(const MachineInstr &MI,
     return InstructionFlavor::SingleCycleVALU;
   }
 
+  if (SII.isSMRD(MI))
+    return InstructionFlavor::SMEM;
+
   if (SII.isDS(MI))
     return InstructionFlavor::DS;
 
@@ -1404,9 +1407,6 @@ void CandidateHeuristics::computeRooflineCoExec() {
 
     // Consumer: map to CoExecMask bit.
     CoExecMaskT Bit = flavorToCoExecMask(Flavor);
-    // Catch SMEM instructions that classifyFlavor maps to Other.
-    if (!Bit && SII->isSMRD(MI))
-      Bit = CoExecMask::SMEM;
     if (!Bit)
       continue;
     Roofline.ConsumerCount[coexecBitIndex(Bit)]++;
