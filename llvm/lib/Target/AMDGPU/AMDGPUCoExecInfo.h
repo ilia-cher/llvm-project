@@ -55,7 +55,7 @@ constexpr CoExecMaskT SALU = 1 << 3;  // Scalar ALU
 constexpr CoExecMaskT DS = 1 << 4;    // LDS read/write
 constexpr CoExecMaskT VMEM = 1 << 5;  // Global memory
 constexpr CoExecMaskT SMEM = 1 << 6;  // Scalar memory
-constexpr CoExecMaskT WMMA = 1 << 7;  // Next WMMA (V stages only)
+constexpr CoExecMaskT WMMA = 1 << 7;  // Next WMMA (V stages only), or MFMA
 constexpr CoExecMaskT All = 0xFFFF;
 
 constexpr CoExecMaskT MEM = DS | VMEM | SMEM;
@@ -676,6 +676,171 @@ inline CoExecInfo CoExecInfo::buildUniform(unsigned Occupancy,
   return Info;
 }
 
+inline CoExecInfo getMFMACoExecInfo(const MachineInstr &MI,
+                                    const SIInstrInfo &TII, bool HasScaling) {
+  CoExecInfo Res;
+  Res.HasScaling = HasScaling;
+  for (unsigned I = 0; I < MaxCoExecStages; ++I)
+    Res.Slots[I].Mask = CoExecMask::None;
+
+  // TODO: Implement proper patterns support (for debugging purposes).
+  // Existing pattern letters are WMMA-specific and will probably be confusing
+  // if used as-is for MFMA. Inventing new MFMA-specific letters is an option,
+  // but perhaps the pattern should be instead dynamically reconstructed when
+  // needed by printing specific slots in full instead of a key for them.
+  Res.Pattern = "undefinedundefinedundefinedundefined";
+
+  // TODO: Consider dropping LastIStage completely.
+  // We set it to the last stage before another MFMA can be co-executed to mimic
+  // the behavior of what is done for WMMA and to avoid the field to be
+  // uninitialized. However, not all MFMA instructions have clear equivalent
+  // of the WMMA I-stage and LastIStage field seems to be completely unused.
+
+  // MFMA co-exec slots are incremental, i.e. for every slot N it supports all
+  // instructions which were supported by the previous slot N-1 and may support
+  // something extra.
+  auto AllowCoExec = [](CoExecInfo &Info, CoExecMaskT ExtraBits,
+                        unsigned StartIndex) {
+    for (unsigned Index = StartIndex; Index < Info.TotalWindow; ++Index)
+      Info.Slots[Index].Mask |= ExtraBits;
+  };
+
+  switch (MI.getOpcode()) {
+  case V_MFMA_F32_16X16X128_F8F6F4_f4_f4_e64:
+  case V_MFMA_F32_16X16X128_F8F6F4_f4_f4_vgprcd_e64:
+  case V_MFMA_F32_16X16X128_F8F6F4_f4_f6_e64:
+  case V_MFMA_F32_16X16X128_F8F6F4_f4_f6_vgprcd_e64:
+  case V_MFMA_F32_16X16X128_F8F6F4_f6_f4_e64:
+  case V_MFMA_F32_16X16X128_F8F6F4_f6_f4_vgprcd_e64:
+  case V_MFMA_F32_16X16X128_F8F6F4_f6_f6_e64:
+  case V_MFMA_F32_16X16X128_F8F6F4_f6_f6_vgprcd_e64:
+  case V_MFMA_F32_16X16X32_BF16_e64:
+  case V_MFMA_F32_16X16X32_BF16_vgprcd_e64:
+  case V_MFMA_I32_16X16X64_I8_e64:
+  case V_MFMA_I32_16X16X64_I8_vgprcd_e64:
+  case V_MFMA_F32_16X16X32_F16_e64:
+  case V_MFMA_F32_16X16X32_F16_vgprcd_e64:
+    // Distinction marker to simplify mapping to the programming guide
+  case V_SMFMAC_F32_16X16X64_BF16_e64:
+  case V_SMFMAC_I32_16X16X128_I8_e64:
+  case V_SMFMAC_F32_16X16X128_BF8_BF8_e64:
+  case V_SMFMAC_F32_16X16X128_BF8_FP8_e64:
+  case V_SMFMAC_F32_16X16X128_FP8_BF8_e64:
+  case V_SMFMAC_F32_16X16X128_FP8_FP8_e64:
+  case V_SMFMAC_F32_16X16X64_F16_e64:
+    Res.TotalWindow = 8;
+    Res.Occupancy = 4;
+    AllowCoExec(Res, CoExecMask::DS | CoExecMask::VALU, 2);
+    Res.LastIStage = 3;
+    AllowCoExec(Res, CoExecMask::WMMA, 4);
+    return Res;
+  case V_MFMA_F32_16X16X128_F8F6F4_f4_f8_e64:
+  case V_MFMA_F32_16X16X128_F8F6F4_f4_f8_vgprcd_e64:
+  case V_MFMA_F32_16X16X128_F8F6F4_f6_f8_e64:
+  case V_MFMA_F32_16X16X128_F8F6F4_f6_f8_vgprcd_e64:
+  case V_MFMA_F32_16X16X128_F8F6F4_f8_f4_e64:
+  case V_MFMA_F32_16X16X128_F8F6F4_f8_f4_vgprcd_e64:
+  case V_MFMA_F32_16X16X128_F8F6F4_f8_f6_e64:
+  case V_MFMA_F32_16X16X128_F8F6F4_f8_f6_vgprcd_e64:
+  case V_MFMA_F32_16X16X128_F8F6F4_f8_f8_e64:
+  case V_MFMA_F32_16X16X128_F8F6F4_f8_f8_vgprcd_e64:
+    Res.TotalWindow = 12;
+    Res.Occupancy = 8;
+    AllowCoExec(Res, CoExecMask::DS, 2);
+    AllowCoExec(Res, CoExecMask::VALU, 3);
+    Res.LastIStage = 7;
+    AllowCoExec(Res, CoExecMask::WMMA, 8);
+    return Res;
+  case V_MFMA_F32_32X32X64_F8F6F4_f4_f4_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f4_f4_mac_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f4_f4_mac_vgprcd_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f4_f4_vgprcd_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f4_f6_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f4_f6_mac_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f4_f6_mac_vgprcd_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f4_f6_vgprcd_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f6_f4_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f6_f4_mac_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f6_f4_mac_vgprcd_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f6_f4_vgprcd_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f6_f6_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f6_f6_mac_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f6_f6_mac_vgprcd_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f6_f6_vgprcd_e64:
+  case V_MFMA_F32_32X32X16_BF16_e64:
+  case V_MFMA_F32_32X32X16_BF16_mac_e64:
+  case V_MFMA_F32_32X32X16_BF16_mac_vgprcd_e64:
+  case V_MFMA_F32_32X32X16_BF16_vgprcd_e64:
+  case V_MFMA_I32_32X32X16I8_e64:
+  case V_MFMA_I32_32X32X16I8_mac_e64:
+  case V_MFMA_I32_32X32X16I8_mac_vgprcd_e64:
+  case V_MFMA_I32_32X32X16I8_vgprcd_e64:
+  case V_MFMA_F32_32X32X16_F16_e64:
+  case V_MFMA_F32_32X32X16_F16_mac_e64:
+  case V_MFMA_F32_32X32X16_F16_mac_vgprcd_e64:
+  case V_MFMA_F32_32X32X16_F16_vgprcd_e64:
+    Res.TotalWindow = 8;
+    Res.Occupancy = 4;
+    AllowCoExec(Res, CoExecMask::DS | CoExecMask::VALU, 2);
+    Res.LastIStage = 3;
+    AllowCoExec(Res, CoExecMask::WMMA, 4);
+    return Res;
+  case V_MFMA_F32_32X32X64_F8F6F4_f4_f8_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f4_f8_mac_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f4_f8_mac_vgprcd_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f4_f8_vgprcd_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f6_f8_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f6_f8_mac_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f6_f8_mac_vgprcd_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f6_f8_vgprcd_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f8_f4_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f8_f4_mac_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f8_f4_mac_vgprcd_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f8_f4_vgprcd_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f8_f6_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f8_f6_mac_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f8_f6_mac_vgprcd_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f8_f6_vgprcd_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f8_f8_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f8_f8_mac_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f8_f8_mac_vgprcd_e64:
+  case V_MFMA_F32_32X32X64_F8F6F4_f8_f8_vgprcd_e64:
+    Res.TotalWindow = 20;
+    Res.Occupancy = 16;
+    AllowCoExec(Res, CoExecMask::DS, 2);
+    AllowCoExec(Res, CoExecMask::VALU, 3);
+    Res.LastIStage = 15;
+    AllowCoExec(Res, CoExecMask::WMMA, 16);
+    return Res;
+  case V_SMFMAC_F32_32X32X32_BF16_e64:
+  case V_SMFMAC_I32_32X32X64_I8_e64:
+  case V_SMFMAC_F32_32X32X64_BF8_BF8_e64:
+  case V_SMFMAC_F32_32X32X64_BF8_FP8_e64:
+  case V_SMFMAC_F32_32X32X64_FP8_BF8_e64:
+  case V_SMFMAC_F32_32X32X64_FP8_FP8_e64:
+  case V_SMFMAC_F32_32X32X32_F16_e64:
+    Res.TotalWindow = 12;
+    Res.Occupancy = 9;
+    AllowCoExec(Res, CoExecMask::DS | CoExecMask::VALU, 4);
+    Res.LastIStage = 8;
+    AllowCoExec(Res, CoExecMask::WMMA, 9);
+    return Res;
+  case V_MFMA_F64_16X16X4F64_e64:
+  case V_MFMA_F64_16X16X4F64_mac_e64:
+  case V_MFMA_F64_16X16X4F64_mac_vgprcd_e64:
+  case V_MFMA_F64_16X16X4F64_vgprcd_e64:
+    Res.TotalWindow = 19;
+    Res.Occupancy = 18;
+    AllowCoExec(Res, CoExecMask::DS, 0);
+    Res.LastIStage = 18; // Questionable, see TODO above about LastIStage
+    AllowCoExec(Res, CoExecMask::WMMA | CoExecMask::VALU, 18);
+    return Res;
+  default:
+    // Default fallback: permissive 8-cycle pattern
+    return CoExecInfo::build(8, 9, "AAAAAAAAA", 7, HasScaling);
+  }
+}
+
 /// Get co-execution info for a multi-cycle instruction.
 /// For WMMA: returns detailed pattern based on opcode.
 /// For TRANS/MultiCycleVALU: returns uniform pattern based on repeat rate.
@@ -701,6 +866,9 @@ inline CoExecInfo getCoExecInfo(const MachineInstr &MI,
 
   // Check for scaled variants (LD_SCALE rule applies)
   bool HasScaling = Name.contains_insensitive("scale");
+
+  if (TII.isMFMA(MI))
+    return getMFMACoExecInfo(MI, TII, HasScaling);
 
   if (Name.contains_insensitive("16x16x64_iu8")) {
     return CoExecInfo::build(16, 17, "0EIIEEIIEEIIEEIIV", 15, HasScaling);
