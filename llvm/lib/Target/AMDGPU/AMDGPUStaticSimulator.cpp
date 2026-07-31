@@ -1690,9 +1690,7 @@ void logWMMAWindow(const GPUSimState &State, InstClass IC) {
          << State.ActiveWMMA.Info.TotalWindow << "]";
   if (Stage) {
     CoExecMaskT Mask = State.ActiveWMMA.Info.getMask(*Stage);
-    CoExecStageType ST = CoExecInfo::getStageType(Mask);
-    const char *StageNames[] = {"?", "E0", "E", "I", "V"};
-    dbgs() << " " << StageNames[(int)ST];
+    dbgs() << " " << getStageTypeName(CoExecInfo::getStageType(Mask));
   }
   dbgs() << " (cycles " << State.ActiveWMMA.StartCycle << "-"
          << State.ActiveWMMA.EndCycle << ")\n";
