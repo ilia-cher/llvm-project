@@ -96,7 +96,6 @@ define amdgpu_kernel void @kernel(i32 %a, ptr addrspace(1) %x, i32 noundef %n) {
 ; UNIFY-NEXT:    br label [[IF_END6]]
 ; UNIFY:       if.end6:
 ; UNIFY-NEXT:    ret void
-;
 entry:
   %tid = call i32 @llvm.amdgcn.workitem.id.x()
   %cmp = icmp eq i32 %n, 256
@@ -139,13 +138,15 @@ define amdgpu_kernel void @kernel_callbr(i32 %a, ptr addrspace(1) %x, i32 nounde
 ; CHECK-NEXT:    s_waitcnt lgkmcnt(0)
 ; CHECK-NEXT:    s_cmpk_eq_i32 s1, 0x100
 ; CHECK-NEXT:    s_cselect_b64 s[2:3], -1, 0
-; CHECK-NEXT:    v_cndmask_b32_e64 v1, 0, 1, s[2:3]
+; CHECK-NEXT:    s_and_b64 s[2:3], s[2:3], exec
+; CHECK-NEXT:    s_cselect_b32 s1, 1, 0
 ; CHECK-NEXT:    ;;#ASMSTART
 ; CHECK-NEXT:    ;;#ASMEND
 ; CHECK-NEXT:  ; %bb.1: ; %if.then
 ; CHECK-NEXT:    s_cmp_eq_u32 s0, 0
 ; CHECK-NEXT:    s_cselect_b64 s[2:3], -1, 0
-; CHECK-NEXT:    v_cndmask_b32_e64 v1, 0, 1, s[2:3]
+; CHECK-NEXT:    s_and_b64 s[2:3], s[2:3], exec
+; CHECK-NEXT:    s_cselect_b32 s1, 1, 0
 ; CHECK-NEXT:    ;;#ASMSTART
 ; CHECK-NEXT:    ;;#ASMEND
 ; CHECK-NEXT:  .LBB1_2: ; %if.end6.sink.split
@@ -170,7 +171,8 @@ define amdgpu_kernel void @kernel_callbr(i32 %a, ptr addrspace(1) %x, i32 nounde
 ; CHECK-NEXT:  ; %bb.5: ; %if.then3
 ; CHECK-NEXT:    s_cmp_eq_u32 s0, 0
 ; CHECK-NEXT:    s_cselect_b64 s[2:3], -1, 0
-; CHECK-NEXT:    v_cndmask_b32_e64 v1, 0, 1, s[2:3]
+; CHECK-NEXT:    s_and_b64 s[2:3], s[2:3], exec
+; CHECK-NEXT:    s_cselect_b32 s1, 1, 0
 ; CHECK-NEXT:    ;;#ASMSTART
 ; CHECK-NEXT:    ;;#ASMEND
 ; CHECK-NEXT:    s_branch .LBB1_2
@@ -218,7 +220,6 @@ define amdgpu_kernel void @kernel_callbr(i32 %a, ptr addrspace(1) %x, i32 nounde
 ; UNIFY-NEXT:            to label [[IF_END6]] []
 ; UNIFY:       if.end6:
 ; UNIFY-NEXT:    ret void
-;
 entry:
   %tid = call i32 @llvm.amdgcn.workitem.id.x()
   %cmp = icmp eq i32 %n, 256
