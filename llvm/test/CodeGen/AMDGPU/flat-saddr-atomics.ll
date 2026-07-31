@@ -10,6 +10,8 @@
 define amdgpu_ps void @flat_xchg_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_xchg_saddr_i32_nortn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -53,6 +55,8 @@ define amdgpu_ps void @flat_xchg_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset,
 define amdgpu_ps void @flat_xchg_saddr_i32_nortn_offset_2047(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_xchg_saddr_i32_nortn_offset_2047:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -97,6 +101,8 @@ define amdgpu_ps void @flat_xchg_saddr_i32_nortn_offset_2047(ptr inreg %sbase, i
 define amdgpu_ps void @flat_xchg_saddr_i32_nortn_offset_neg2048(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_xchg_saddr_i32_nortn_offset_neg2048:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -146,6 +152,8 @@ define amdgpu_ps void @flat_xchg_saddr_i32_nortn_offset_neg2048(ptr inreg %sbase
 define amdgpu_ps float @flat_xchg_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_xchg_saddr_i32_rtn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -189,6 +197,8 @@ define amdgpu_ps float @flat_xchg_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps float @flat_xchg_saddr_i32_rtn_2048(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_xchg_saddr_i32_rtn_2048:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -233,6 +243,8 @@ define amdgpu_ps float @flat_xchg_saddr_i32_rtn_2048(ptr inreg %sbase, i32 %voff
 define amdgpu_ps float @flat_xchg_saddr_i32_rtn_neg2048(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_xchg_saddr_i32_rtn_neg2048:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -290,6 +302,8 @@ define amdgpu_ps float @flat_xchg_saddr_i32_rtn_neg2048(ptr inreg %sbase, i32 %v
 define amdgpu_ps float @flat_xchg_saddr_uniform_ptr_in_vgprs_rtn(i32 %voffset, i32 %data) {
 ; GFX1250-SDAG-LABEL: flat_xchg_saddr_uniform_ptr_in_vgprs_rtn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v2, 0
 ; GFX1250-SDAG-NEXT:    ds_load_b64 v[2:3], v2
@@ -306,6 +320,8 @@ define amdgpu_ps float @flat_xchg_saddr_uniform_ptr_in_vgprs_rtn(i32 %voffset, i
 ;
 ; GFX1250-GISEL-LABEL: flat_xchg_saddr_uniform_ptr_in_vgprs_rtn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_mov_b32_e32 v2, 0
 ; GFX1250-GISEL-NEXT:    ds_load_b64 v[2:3], v2
@@ -361,6 +377,8 @@ define amdgpu_ps float @flat_xchg_saddr_uniform_ptr_in_vgprs_rtn(i32 %voffset, i
 define amdgpu_ps float @flat_xchg_saddr_uniform_ptr_in_vgprs_rtn_immoffset(i32 %voffset, i32 %data) {
 ; GFX1250-SDAG-LABEL: flat_xchg_saddr_uniform_ptr_in_vgprs_rtn_immoffset:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v2, 0
 ; GFX1250-SDAG-NEXT:    ds_load_b64 v[2:3], v2
@@ -377,6 +395,8 @@ define amdgpu_ps float @flat_xchg_saddr_uniform_ptr_in_vgprs_rtn_immoffset(i32 %
 ;
 ; GFX1250-GISEL-LABEL: flat_xchg_saddr_uniform_ptr_in_vgprs_rtn_immoffset:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_mov_b32_e32 v2, 0
 ; GFX1250-GISEL-NEXT:    ds_load_b64 v[2:3], v2
@@ -433,6 +453,8 @@ define amdgpu_ps float @flat_xchg_saddr_uniform_ptr_in_vgprs_rtn_immoffset(i32 %
 define amdgpu_ps void @flat_xchg_saddr_uniform_ptr_in_vgprs_nortn(i32 %voffset, i32 %data) {
 ; GFX1250-SDAG-LABEL: flat_xchg_saddr_uniform_ptr_in_vgprs_nortn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v2, 0
 ; GFX1250-SDAG-NEXT:    ds_load_b64 v[2:3], v2
@@ -449,6 +471,8 @@ define amdgpu_ps void @flat_xchg_saddr_uniform_ptr_in_vgprs_nortn(i32 %voffset, 
 ;
 ; GFX1250-GISEL-LABEL: flat_xchg_saddr_uniform_ptr_in_vgprs_nortn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_mov_b32_e32 v2, 0
 ; GFX1250-GISEL-NEXT:    ds_load_b64 v[2:3], v2
@@ -503,6 +527,8 @@ define amdgpu_ps void @flat_xchg_saddr_uniform_ptr_in_vgprs_nortn(i32 %voffset, 
 define amdgpu_ps void @flat_xchg_saddr_uniform_ptr_in_vgprs_nortn_immoffset(i32 %voffset, i32 %data) {
 ; GFX1250-SDAG-LABEL: flat_xchg_saddr_uniform_ptr_in_vgprs_nortn_immoffset:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v2, 0
 ; GFX1250-SDAG-NEXT:    ds_load_b64 v[2:3], v2
@@ -519,6 +545,8 @@ define amdgpu_ps void @flat_xchg_saddr_uniform_ptr_in_vgprs_nortn_immoffset(i32 
 ;
 ; GFX1250-GISEL-LABEL: flat_xchg_saddr_uniform_ptr_in_vgprs_nortn_immoffset:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_mov_b32_e32 v2, 0
 ; GFX1250-GISEL-NEXT:    ds_load_b64 v[2:3], v2
@@ -581,6 +609,8 @@ define amdgpu_ps void @flat_xchg_saddr_uniform_ptr_in_vgprs_nortn_immoffset(i32 
 define amdgpu_ps <2 x float> @flat_xchg_saddr_i64_rtn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_xchg_saddr_i64_rtn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -626,6 +656,8 @@ define amdgpu_ps <2 x float> @flat_xchg_saddr_i64_rtn(ptr inreg %sbase, i32 %vof
 ;
 ; GFX1250-GISEL-LABEL: flat_xchg_saddr_i64_rtn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -762,6 +794,8 @@ define amdgpu_ps <2 x float> @flat_xchg_saddr_i64_rtn(ptr inreg %sbase, i32 %vof
 define amdgpu_ps <2 x float> @flat_xchg_saddr_i64_rtn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_xchg_saddr_i64_rtn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -810,6 +844,8 @@ define amdgpu_ps <2 x float> @flat_xchg_saddr_i64_rtn_neg128(ptr inreg %sbase, i
 ;
 ; GFX1250-GISEL-LABEL: flat_xchg_saddr_i64_rtn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -956,6 +992,8 @@ define amdgpu_ps <2 x float> @flat_xchg_saddr_i64_rtn_neg128(ptr inreg %sbase, i
 define amdgpu_ps void @flat_xchg_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_xchg_saddr_i64_nortn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -993,6 +1031,8 @@ define amdgpu_ps void @flat_xchg_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset,
 ;
 ; GFX1250-GISEL-LABEL: flat_xchg_saddr_i64_nortn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -1104,6 +1144,8 @@ define amdgpu_ps void @flat_xchg_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset,
 define amdgpu_ps void @flat_xchg_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_xchg_saddr_i64_nortn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -1143,6 +1185,8 @@ define amdgpu_ps void @flat_xchg_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %v
 ;
 ; GFX1250-GISEL-LABEL: flat_xchg_saddr_i64_nortn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -1269,6 +1313,8 @@ define amdgpu_ps void @flat_xchg_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %v
 define amdgpu_ps float @flat_add_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_add_saddr_i32_rtn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -1312,6 +1358,8 @@ define amdgpu_ps float @flat_add_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i
 define amdgpu_ps float @flat_add_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_add_saddr_i32_rtn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -1362,6 +1410,8 @@ define amdgpu_ps float @flat_add_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %vof
 define amdgpu_ps void @flat_add_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_add_saddr_i32_nortn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -1404,6 +1454,8 @@ define amdgpu_ps void @flat_add_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps void @flat_add_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_add_saddr_i32_nortn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -1453,6 +1505,8 @@ define amdgpu_ps void @flat_add_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps <2 x float> @flat_add_saddr_i64_rtn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_add_saddr_i64_rtn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -1498,6 +1552,8 @@ define amdgpu_ps <2 x float> @flat_add_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 ;
 ; GFX1250-GISEL-LABEL: flat_add_saddr_i64_rtn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -1638,6 +1694,8 @@ define amdgpu_ps <2 x float> @flat_add_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 define amdgpu_ps <2 x float> @flat_add_saddr_i64_rtn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_add_saddr_i64_rtn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -1686,6 +1744,8 @@ define amdgpu_ps <2 x float> @flat_add_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 ;
 ; GFX1250-GISEL-LABEL: flat_add_saddr_i64_rtn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -1836,6 +1896,8 @@ define amdgpu_ps <2 x float> @flat_add_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 define amdgpu_ps void @flat_add_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_add_saddr_i64_nortn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -1876,6 +1938,8 @@ define amdgpu_ps void @flat_add_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, 
 ;
 ; GFX1250-GISEL-LABEL: flat_add_saddr_i64_nortn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -1998,6 +2062,8 @@ define amdgpu_ps void @flat_add_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps void @flat_add_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_add_saddr_i64_nortn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -2040,6 +2106,8 @@ define amdgpu_ps void @flat_add_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vo
 ;
 ; GFX1250-GISEL-LABEL: flat_add_saddr_i64_nortn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -2177,6 +2245,8 @@ define amdgpu_ps void @flat_add_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps float @flat_sub_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_sub_saddr_i32_rtn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -2220,6 +2290,8 @@ define amdgpu_ps float @flat_sub_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i
 define amdgpu_ps float @flat_sub_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_sub_saddr_i32_rtn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -2270,6 +2342,8 @@ define amdgpu_ps float @flat_sub_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %vof
 define amdgpu_ps void @flat_sub_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_sub_saddr_i32_nortn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -2312,6 +2386,8 @@ define amdgpu_ps void @flat_sub_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps void @flat_sub_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_sub_saddr_i32_nortn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -2361,6 +2437,8 @@ define amdgpu_ps void @flat_sub_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps <2 x float> @flat_sub_saddr_i64_rtn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_sub_saddr_i64_rtn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -2406,6 +2484,8 @@ define amdgpu_ps <2 x float> @flat_sub_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 ;
 ; GFX1250-GISEL-LABEL: flat_sub_saddr_i64_rtn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -2548,6 +2628,8 @@ define amdgpu_ps <2 x float> @flat_sub_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 define amdgpu_ps <2 x float> @flat_sub_saddr_i64_rtn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_sub_saddr_i64_rtn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -2596,6 +2678,8 @@ define amdgpu_ps <2 x float> @flat_sub_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 ;
 ; GFX1250-GISEL-LABEL: flat_sub_saddr_i64_rtn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -2748,6 +2832,8 @@ define amdgpu_ps <2 x float> @flat_sub_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 define amdgpu_ps void @flat_sub_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_sub_saddr_i64_nortn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -2788,6 +2874,8 @@ define amdgpu_ps void @flat_sub_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, 
 ;
 ; GFX1250-GISEL-LABEL: flat_sub_saddr_i64_nortn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -2912,6 +3000,8 @@ define amdgpu_ps void @flat_sub_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps void @flat_sub_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_sub_saddr_i64_nortn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -2954,6 +3044,8 @@ define amdgpu_ps void @flat_sub_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vo
 ;
 ; GFX1250-GISEL-LABEL: flat_sub_saddr_i64_nortn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -3093,6 +3185,8 @@ define amdgpu_ps void @flat_sub_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps float @flat_and_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_and_saddr_i32_rtn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -3136,6 +3230,8 @@ define amdgpu_ps float @flat_and_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i
 define amdgpu_ps float @flat_and_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_and_saddr_i32_rtn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -3186,6 +3282,8 @@ define amdgpu_ps float @flat_and_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %vof
 define amdgpu_ps void @flat_and_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_and_saddr_i32_nortn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -3228,6 +3326,8 @@ define amdgpu_ps void @flat_and_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps void @flat_and_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_and_saddr_i32_nortn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -3277,6 +3377,8 @@ define amdgpu_ps void @flat_and_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps <2 x float> @flat_and_saddr_i64_rtn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_and_saddr_i64_rtn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -3323,6 +3425,8 @@ define amdgpu_ps <2 x float> @flat_and_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 ;
 ; GFX1250-GISEL-LABEL: flat_and_saddr_i64_rtn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -3464,6 +3568,8 @@ define amdgpu_ps <2 x float> @flat_and_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 define amdgpu_ps <2 x float> @flat_and_saddr_i64_rtn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_and_saddr_i64_rtn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -3513,6 +3619,8 @@ define amdgpu_ps <2 x float> @flat_and_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 ;
 ; GFX1250-GISEL-LABEL: flat_and_saddr_i64_rtn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -3664,6 +3772,8 @@ define amdgpu_ps <2 x float> @flat_and_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 define amdgpu_ps void @flat_and_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_and_saddr_i64_nortn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -3705,6 +3815,8 @@ define amdgpu_ps void @flat_and_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, 
 ;
 ; GFX1250-GISEL-LABEL: flat_and_saddr_i64_nortn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -3828,6 +3940,8 @@ define amdgpu_ps void @flat_and_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps void @flat_and_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_and_saddr_i64_nortn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -3871,6 +3985,8 @@ define amdgpu_ps void @flat_and_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vo
 ;
 ; GFX1250-GISEL-LABEL: flat_and_saddr_i64_nortn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -4009,6 +4125,8 @@ define amdgpu_ps void @flat_and_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps float @flat_or_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_or_saddr_i32_rtn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -4052,6 +4170,8 @@ define amdgpu_ps float @flat_or_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i3
 define amdgpu_ps float @flat_or_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_or_saddr_i32_rtn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -4102,6 +4222,8 @@ define amdgpu_ps float @flat_or_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %voff
 define amdgpu_ps void @flat_or_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_or_saddr_i32_nortn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -4144,6 +4266,8 @@ define amdgpu_ps void @flat_or_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, i
 define amdgpu_ps void @flat_or_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_or_saddr_i32_nortn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -4193,6 +4317,8 @@ define amdgpu_ps void @flat_or_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %vof
 define amdgpu_ps <2 x float> @flat_or_saddr_i64_rtn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_or_saddr_i64_rtn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -4239,6 +4365,8 @@ define amdgpu_ps <2 x float> @flat_or_saddr_i64_rtn(ptr inreg %sbase, i32 %voffs
 ;
 ; GFX1250-GISEL-LABEL: flat_or_saddr_i64_rtn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -4380,6 +4508,8 @@ define amdgpu_ps <2 x float> @flat_or_saddr_i64_rtn(ptr inreg %sbase, i32 %voffs
 define amdgpu_ps <2 x float> @flat_or_saddr_i64_rtn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_or_saddr_i64_rtn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -4429,6 +4559,8 @@ define amdgpu_ps <2 x float> @flat_or_saddr_i64_rtn_neg128(ptr inreg %sbase, i32
 ;
 ; GFX1250-GISEL-LABEL: flat_or_saddr_i64_rtn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -4580,6 +4712,8 @@ define amdgpu_ps <2 x float> @flat_or_saddr_i64_rtn_neg128(ptr inreg %sbase, i32
 define amdgpu_ps void @flat_or_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_or_saddr_i64_nortn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -4621,6 +4755,8 @@ define amdgpu_ps void @flat_or_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, i
 ;
 ; GFX1250-GISEL-LABEL: flat_or_saddr_i64_nortn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -4744,6 +4880,8 @@ define amdgpu_ps void @flat_or_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, i
 define amdgpu_ps void @flat_or_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_or_saddr_i64_nortn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -4787,6 +4925,8 @@ define amdgpu_ps void @flat_or_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vof
 ;
 ; GFX1250-GISEL-LABEL: flat_or_saddr_i64_nortn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -4925,6 +5065,8 @@ define amdgpu_ps void @flat_or_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vof
 define amdgpu_ps float @flat_xor_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_xor_saddr_i32_rtn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -4968,6 +5110,8 @@ define amdgpu_ps float @flat_xor_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i
 define amdgpu_ps float @flat_xor_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_xor_saddr_i32_rtn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -5018,6 +5162,8 @@ define amdgpu_ps float @flat_xor_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %vof
 define amdgpu_ps void @flat_xor_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_xor_saddr_i32_nortn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -5060,6 +5206,8 @@ define amdgpu_ps void @flat_xor_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps void @flat_xor_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_xor_saddr_i32_nortn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    global_wb scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
@@ -5109,6 +5257,8 @@ define amdgpu_ps void @flat_xor_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps <2 x float> @flat_xor_saddr_i64_rtn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_xor_saddr_i64_rtn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -5155,6 +5305,8 @@ define amdgpu_ps <2 x float> @flat_xor_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 ;
 ; GFX1250-GISEL-LABEL: flat_xor_saddr_i64_rtn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -5296,6 +5448,8 @@ define amdgpu_ps <2 x float> @flat_xor_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 define amdgpu_ps <2 x float> @flat_xor_saddr_i64_rtn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_xor_saddr_i64_rtn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -5345,6 +5499,8 @@ define amdgpu_ps <2 x float> @flat_xor_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 ;
 ; GFX1250-GISEL-LABEL: flat_xor_saddr_i64_rtn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -5496,6 +5652,8 @@ define amdgpu_ps <2 x float> @flat_xor_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 define amdgpu_ps void @flat_xor_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_xor_saddr_i64_nortn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -5537,6 +5695,8 @@ define amdgpu_ps void @flat_xor_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, 
 ;
 ; GFX1250-GISEL-LABEL: flat_xor_saddr_i64_nortn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -5660,6 +5820,8 @@ define amdgpu_ps void @flat_xor_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps void @flat_xor_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_xor_saddr_i64_nortn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -5703,6 +5865,8 @@ define amdgpu_ps void @flat_xor_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vo
 ;
 ; GFX1250-GISEL-LABEL: flat_xor_saddr_i64_nortn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -5841,6 +6005,8 @@ define amdgpu_ps void @flat_xor_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps float @flat_max_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_max_saddr_i32_rtn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_max_i32 v0, v0, v1, s[2:3] th:TH_ATOMIC_RETURN
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
@@ -5874,6 +6040,8 @@ define amdgpu_ps float @flat_max_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i
 define amdgpu_ps float @flat_max_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_max_saddr_i32_rtn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_max_i32 v0, v0, v1, s[2:3] offset:-128 th:TH_ATOMIC_RETURN
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
@@ -5914,6 +6082,8 @@ define amdgpu_ps float @flat_max_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %vof
 define amdgpu_ps void @flat_max_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_max_saddr_i32_nortn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_max_i32 v0, v1, s[2:3]
 ; GFX1250-NEXT:    s_wait_storecnt_dscnt 0x0
@@ -5946,6 +6116,8 @@ define amdgpu_ps void @flat_max_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps void @flat_max_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_max_saddr_i32_nortn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_max_i32 v0, v1, s[2:3] offset:-128
 ; GFX1250-NEXT:    s_wait_storecnt_dscnt 0x0
@@ -5985,6 +6157,8 @@ define amdgpu_ps void @flat_max_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps <2 x float> @flat_max_saddr_i64_rtn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_max_saddr_i64_rtn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -6017,7 +6191,8 @@ define amdgpu_ps <2 x float> @flat_max_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 ; GFX1250-SDAG-NEXT:    v_cndmask_b32_e32 v4, -1, v0, vcc_lo
 ; GFX1250-SDAG-NEXT:    scratch_load_b64 v[0:1], v4, off
 ; GFX1250-SDAG-NEXT:    s_wait_loadcnt 0x0
-; GFX1250-SDAG-NEXT:    v_max_i64 v[2:3], v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_cmp_gt_i64_e32 vcc_lo, v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_dual_cndmask_b32 v3, v3, v1 :: v_dual_cndmask_b32 v2, v2, v0
 ; GFX1250-SDAG-NEXT:    scratch_store_b64 v4, v[2:3], off
 ; GFX1250-SDAG-NEXT:    s_wait_xcnt 0x0
 ; GFX1250-SDAG-NEXT:    s_or_b32 exec_lo, exec_lo, s0
@@ -6026,6 +6201,8 @@ define amdgpu_ps <2 x float> @flat_max_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 ;
 ; GFX1250-GISEL-LABEL: flat_max_saddr_i64_rtn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -6162,6 +6339,8 @@ define amdgpu_ps <2 x float> @flat_max_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 define amdgpu_ps <2 x float> @flat_max_saddr_i64_rtn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_max_saddr_i64_rtn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -6197,7 +6376,8 @@ define amdgpu_ps <2 x float> @flat_max_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 ; GFX1250-SDAG-NEXT:    v_cndmask_b32_e32 v4, -1, v0, vcc_lo
 ; GFX1250-SDAG-NEXT:    scratch_load_b64 v[0:1], v4, off
 ; GFX1250-SDAG-NEXT:    s_wait_loadcnt 0x0
-; GFX1250-SDAG-NEXT:    v_max_i64 v[2:3], v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_cmp_gt_i64_e32 vcc_lo, v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_dual_cndmask_b32 v3, v3, v1 :: v_dual_cndmask_b32 v2, v2, v0
 ; GFX1250-SDAG-NEXT:    scratch_store_b64 v4, v[2:3], off
 ; GFX1250-SDAG-NEXT:    s_wait_xcnt 0x0
 ; GFX1250-SDAG-NEXT:    s_or_b32 exec_lo, exec_lo, s0
@@ -6206,6 +6386,8 @@ define amdgpu_ps <2 x float> @flat_max_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 ;
 ; GFX1250-GISEL-LABEL: flat_max_saddr_i64_rtn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -6352,6 +6534,8 @@ define amdgpu_ps <2 x float> @flat_max_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 define amdgpu_ps void @flat_max_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_max_saddr_i64_nortn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -6383,12 +6567,15 @@ define amdgpu_ps void @flat_max_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, 
 ; GFX1250-SDAG-NEXT:    v_cndmask_b32_e32 v4, -1, v4, vcc_lo
 ; GFX1250-SDAG-NEXT:    scratch_load_b64 v[0:1], v4, off
 ; GFX1250-SDAG-NEXT:    s_wait_loadcnt 0x0
-; GFX1250-SDAG-NEXT:    v_max_i64 v[0:1], v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_cmp_gt_i64_e32 vcc_lo, v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_dual_cndmask_b32 v1, v3, v1 :: v_dual_cndmask_b32 v0, v2, v0
 ; GFX1250-SDAG-NEXT:    scratch_store_b64 v4, v[0:1], off
 ; GFX1250-SDAG-NEXT:    s_endpgm
 ;
 ; GFX1250-GISEL-LABEL: flat_max_saddr_i64_nortn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -6506,6 +6693,8 @@ define amdgpu_ps void @flat_max_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps void @flat_max_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_max_saddr_i64_nortn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -6539,12 +6728,15 @@ define amdgpu_ps void @flat_max_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vo
 ; GFX1250-SDAG-NEXT:    v_cndmask_b32_e32 v4, -1, v4, vcc_lo
 ; GFX1250-SDAG-NEXT:    scratch_load_b64 v[0:1], v4, off
 ; GFX1250-SDAG-NEXT:    s_wait_loadcnt 0x0
-; GFX1250-SDAG-NEXT:    v_max_i64 v[0:1], v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_cmp_gt_i64_e32 vcc_lo, v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_dual_cndmask_b32 v1, v3, v1 :: v_dual_cndmask_b32 v0, v2, v0
 ; GFX1250-SDAG-NEXT:    scratch_store_b64 v4, v[0:1], off
 ; GFX1250-SDAG-NEXT:    s_endpgm
 ;
 ; GFX1250-GISEL-LABEL: flat_max_saddr_i64_nortn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -6677,6 +6869,8 @@ define amdgpu_ps void @flat_max_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps float @flat_min_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_min_saddr_i32_rtn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_min_i32 v0, v0, v1, s[2:3] th:TH_ATOMIC_RETURN
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
@@ -6710,6 +6904,8 @@ define amdgpu_ps float @flat_min_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i
 define amdgpu_ps float @flat_min_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_min_saddr_i32_rtn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_min_i32 v0, v0, v1, s[2:3] offset:-128 th:TH_ATOMIC_RETURN
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
@@ -6750,6 +6946,8 @@ define amdgpu_ps float @flat_min_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %vof
 define amdgpu_ps void @flat_min_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_min_saddr_i32_nortn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_min_i32 v0, v1, s[2:3]
 ; GFX1250-NEXT:    s_wait_storecnt_dscnt 0x0
@@ -6782,6 +6980,8 @@ define amdgpu_ps void @flat_min_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps void @flat_min_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_min_saddr_i32_nortn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_min_i32 v0, v1, s[2:3] offset:-128
 ; GFX1250-NEXT:    s_wait_storecnt_dscnt 0x0
@@ -6821,6 +7021,8 @@ define amdgpu_ps void @flat_min_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps <2 x float> @flat_min_saddr_i64_rtn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_min_saddr_i64_rtn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -6853,7 +7055,8 @@ define amdgpu_ps <2 x float> @flat_min_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 ; GFX1250-SDAG-NEXT:    v_cndmask_b32_e32 v4, -1, v0, vcc_lo
 ; GFX1250-SDAG-NEXT:    scratch_load_b64 v[0:1], v4, off
 ; GFX1250-SDAG-NEXT:    s_wait_loadcnt 0x0
-; GFX1250-SDAG-NEXT:    v_min_i64 v[2:3], v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_cmp_le_i64_e32 vcc_lo, v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_dual_cndmask_b32 v3, v3, v1 :: v_dual_cndmask_b32 v2, v2, v0
 ; GFX1250-SDAG-NEXT:    scratch_store_b64 v4, v[2:3], off
 ; GFX1250-SDAG-NEXT:    s_wait_xcnt 0x0
 ; GFX1250-SDAG-NEXT:    s_or_b32 exec_lo, exec_lo, s0
@@ -6862,6 +7065,8 @@ define amdgpu_ps <2 x float> @flat_min_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 ;
 ; GFX1250-GISEL-LABEL: flat_min_saddr_i64_rtn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -6998,6 +7203,8 @@ define amdgpu_ps <2 x float> @flat_min_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 define amdgpu_ps <2 x float> @flat_min_saddr_i64_rtn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_min_saddr_i64_rtn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -7033,7 +7240,8 @@ define amdgpu_ps <2 x float> @flat_min_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 ; GFX1250-SDAG-NEXT:    v_cndmask_b32_e32 v4, -1, v0, vcc_lo
 ; GFX1250-SDAG-NEXT:    scratch_load_b64 v[0:1], v4, off
 ; GFX1250-SDAG-NEXT:    s_wait_loadcnt 0x0
-; GFX1250-SDAG-NEXT:    v_min_i64 v[2:3], v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_cmp_le_i64_e32 vcc_lo, v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_dual_cndmask_b32 v3, v3, v1 :: v_dual_cndmask_b32 v2, v2, v0
 ; GFX1250-SDAG-NEXT:    scratch_store_b64 v4, v[2:3], off
 ; GFX1250-SDAG-NEXT:    s_wait_xcnt 0x0
 ; GFX1250-SDAG-NEXT:    s_or_b32 exec_lo, exec_lo, s0
@@ -7042,6 +7250,8 @@ define amdgpu_ps <2 x float> @flat_min_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 ;
 ; GFX1250-GISEL-LABEL: flat_min_saddr_i64_rtn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -7188,6 +7398,8 @@ define amdgpu_ps <2 x float> @flat_min_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 define amdgpu_ps void @flat_min_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_min_saddr_i64_nortn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -7219,12 +7431,15 @@ define amdgpu_ps void @flat_min_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, 
 ; GFX1250-SDAG-NEXT:    v_cndmask_b32_e32 v4, -1, v4, vcc_lo
 ; GFX1250-SDAG-NEXT:    scratch_load_b64 v[0:1], v4, off
 ; GFX1250-SDAG-NEXT:    s_wait_loadcnt 0x0
-; GFX1250-SDAG-NEXT:    v_min_i64 v[0:1], v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_cmp_le_i64_e32 vcc_lo, v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_dual_cndmask_b32 v1, v3, v1 :: v_dual_cndmask_b32 v0, v2, v0
 ; GFX1250-SDAG-NEXT:    scratch_store_b64 v4, v[0:1], off
 ; GFX1250-SDAG-NEXT:    s_endpgm
 ;
 ; GFX1250-GISEL-LABEL: flat_min_saddr_i64_nortn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -7342,6 +7557,8 @@ define amdgpu_ps void @flat_min_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps void @flat_min_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_min_saddr_i64_nortn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -7375,12 +7592,15 @@ define amdgpu_ps void @flat_min_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vo
 ; GFX1250-SDAG-NEXT:    v_cndmask_b32_e32 v4, -1, v4, vcc_lo
 ; GFX1250-SDAG-NEXT:    scratch_load_b64 v[0:1], v4, off
 ; GFX1250-SDAG-NEXT:    s_wait_loadcnt 0x0
-; GFX1250-SDAG-NEXT:    v_min_i64 v[0:1], v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_cmp_le_i64_e32 vcc_lo, v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_dual_cndmask_b32 v1, v3, v1 :: v_dual_cndmask_b32 v0, v2, v0
 ; GFX1250-SDAG-NEXT:    scratch_store_b64 v4, v[0:1], off
 ; GFX1250-SDAG-NEXT:    s_endpgm
 ;
 ; GFX1250-GISEL-LABEL: flat_min_saddr_i64_nortn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -7513,6 +7733,8 @@ define amdgpu_ps void @flat_min_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps float @flat_umax_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_umax_saddr_i32_rtn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_max_u32 v0, v0, v1, s[2:3] th:TH_ATOMIC_RETURN
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
@@ -7546,6 +7768,8 @@ define amdgpu_ps float @flat_umax_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps float @flat_umax_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_umax_saddr_i32_rtn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_max_u32 v0, v0, v1, s[2:3] offset:-128 th:TH_ATOMIC_RETURN
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
@@ -7586,6 +7810,8 @@ define amdgpu_ps float @flat_umax_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps void @flat_umax_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_umax_saddr_i32_nortn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_max_u32 v0, v1, s[2:3]
 ; GFX1250-NEXT:    s_wait_storecnt_dscnt 0x0
@@ -7618,6 +7844,8 @@ define amdgpu_ps void @flat_umax_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset,
 define amdgpu_ps void @flat_umax_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_umax_saddr_i32_nortn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_max_u32 v0, v1, s[2:3] offset:-128
 ; GFX1250-NEXT:    s_wait_storecnt_dscnt 0x0
@@ -7657,6 +7885,8 @@ define amdgpu_ps void @flat_umax_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %v
 define amdgpu_ps <2 x float> @flat_umax_saddr_i64_rtn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_umax_saddr_i64_rtn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -7689,7 +7919,8 @@ define amdgpu_ps <2 x float> @flat_umax_saddr_i64_rtn(ptr inreg %sbase, i32 %vof
 ; GFX1250-SDAG-NEXT:    v_cndmask_b32_e32 v4, -1, v0, vcc_lo
 ; GFX1250-SDAG-NEXT:    scratch_load_b64 v[0:1], v4, off
 ; GFX1250-SDAG-NEXT:    s_wait_loadcnt 0x0
-; GFX1250-SDAG-NEXT:    v_max_u64 v[2:3], v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_cmp_gt_u64_e32 vcc_lo, v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_dual_cndmask_b32 v3, v3, v1 :: v_dual_cndmask_b32 v2, v2, v0
 ; GFX1250-SDAG-NEXT:    scratch_store_b64 v4, v[2:3], off
 ; GFX1250-SDAG-NEXT:    s_wait_xcnt 0x0
 ; GFX1250-SDAG-NEXT:    s_or_b32 exec_lo, exec_lo, s0
@@ -7698,6 +7929,8 @@ define amdgpu_ps <2 x float> @flat_umax_saddr_i64_rtn(ptr inreg %sbase, i32 %vof
 ;
 ; GFX1250-GISEL-LABEL: flat_umax_saddr_i64_rtn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -7834,6 +8067,8 @@ define amdgpu_ps <2 x float> @flat_umax_saddr_i64_rtn(ptr inreg %sbase, i32 %vof
 define amdgpu_ps <2 x float> @flat_umax_saddr_i64_rtn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_umax_saddr_i64_rtn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -7869,7 +8104,8 @@ define amdgpu_ps <2 x float> @flat_umax_saddr_i64_rtn_neg128(ptr inreg %sbase, i
 ; GFX1250-SDAG-NEXT:    v_cndmask_b32_e32 v4, -1, v0, vcc_lo
 ; GFX1250-SDAG-NEXT:    scratch_load_b64 v[0:1], v4, off
 ; GFX1250-SDAG-NEXT:    s_wait_loadcnt 0x0
-; GFX1250-SDAG-NEXT:    v_max_u64 v[2:3], v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_cmp_gt_u64_e32 vcc_lo, v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_dual_cndmask_b32 v3, v3, v1 :: v_dual_cndmask_b32 v2, v2, v0
 ; GFX1250-SDAG-NEXT:    scratch_store_b64 v4, v[2:3], off
 ; GFX1250-SDAG-NEXT:    s_wait_xcnt 0x0
 ; GFX1250-SDAG-NEXT:    s_or_b32 exec_lo, exec_lo, s0
@@ -7878,6 +8114,8 @@ define amdgpu_ps <2 x float> @flat_umax_saddr_i64_rtn_neg128(ptr inreg %sbase, i
 ;
 ; GFX1250-GISEL-LABEL: flat_umax_saddr_i64_rtn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -8024,6 +8262,8 @@ define amdgpu_ps <2 x float> @flat_umax_saddr_i64_rtn_neg128(ptr inreg %sbase, i
 define amdgpu_ps void @flat_umax_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_umax_saddr_i64_nortn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -8055,12 +8295,15 @@ define amdgpu_ps void @flat_umax_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset,
 ; GFX1250-SDAG-NEXT:    v_cndmask_b32_e32 v4, -1, v4, vcc_lo
 ; GFX1250-SDAG-NEXT:    scratch_load_b64 v[0:1], v4, off
 ; GFX1250-SDAG-NEXT:    s_wait_loadcnt 0x0
-; GFX1250-SDAG-NEXT:    v_max_u64 v[0:1], v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_cmp_gt_u64_e32 vcc_lo, v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_dual_cndmask_b32 v1, v3, v1 :: v_dual_cndmask_b32 v0, v2, v0
 ; GFX1250-SDAG-NEXT:    scratch_store_b64 v4, v[0:1], off
 ; GFX1250-SDAG-NEXT:    s_endpgm
 ;
 ; GFX1250-GISEL-LABEL: flat_umax_saddr_i64_nortn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -8178,6 +8421,8 @@ define amdgpu_ps void @flat_umax_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset,
 define amdgpu_ps void @flat_umax_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_umax_saddr_i64_nortn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -8211,12 +8456,15 @@ define amdgpu_ps void @flat_umax_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %v
 ; GFX1250-SDAG-NEXT:    v_cndmask_b32_e32 v4, -1, v4, vcc_lo
 ; GFX1250-SDAG-NEXT:    scratch_load_b64 v[0:1], v4, off
 ; GFX1250-SDAG-NEXT:    s_wait_loadcnt 0x0
-; GFX1250-SDAG-NEXT:    v_max_u64 v[0:1], v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_cmp_gt_u64_e32 vcc_lo, v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_dual_cndmask_b32 v1, v3, v1 :: v_dual_cndmask_b32 v0, v2, v0
 ; GFX1250-SDAG-NEXT:    scratch_store_b64 v4, v[0:1], off
 ; GFX1250-SDAG-NEXT:    s_endpgm
 ;
 ; GFX1250-GISEL-LABEL: flat_umax_saddr_i64_nortn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -8349,6 +8597,8 @@ define amdgpu_ps void @flat_umax_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %v
 define amdgpu_ps float @flat_umin_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_umin_saddr_i32_rtn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_min_u32 v0, v0, v1, s[2:3] th:TH_ATOMIC_RETURN
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
@@ -8382,6 +8632,8 @@ define amdgpu_ps float @flat_umin_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps float @flat_umin_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_umin_saddr_i32_rtn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_min_u32 v0, v0, v1, s[2:3] offset:-128 th:TH_ATOMIC_RETURN
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
@@ -8422,6 +8674,8 @@ define amdgpu_ps float @flat_umin_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps void @flat_umin_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_umin_saddr_i32_nortn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_min_u32 v0, v1, s[2:3]
 ; GFX1250-NEXT:    s_wait_storecnt_dscnt 0x0
@@ -8454,6 +8708,8 @@ define amdgpu_ps void @flat_umin_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset,
 define amdgpu_ps void @flat_umin_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_umin_saddr_i32_nortn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_min_u32 v0, v1, s[2:3] offset:-128
 ; GFX1250-NEXT:    s_wait_storecnt_dscnt 0x0
@@ -8493,6 +8749,8 @@ define amdgpu_ps void @flat_umin_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %v
 define amdgpu_ps <2 x float> @flat_umin_saddr_i64_rtn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_umin_saddr_i64_rtn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -8525,7 +8783,8 @@ define amdgpu_ps <2 x float> @flat_umin_saddr_i64_rtn(ptr inreg %sbase, i32 %vof
 ; GFX1250-SDAG-NEXT:    v_cndmask_b32_e32 v4, -1, v0, vcc_lo
 ; GFX1250-SDAG-NEXT:    scratch_load_b64 v[0:1], v4, off
 ; GFX1250-SDAG-NEXT:    s_wait_loadcnt 0x0
-; GFX1250-SDAG-NEXT:    v_min_u64 v[2:3], v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_cmp_le_u64_e32 vcc_lo, v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_dual_cndmask_b32 v3, v3, v1 :: v_dual_cndmask_b32 v2, v2, v0
 ; GFX1250-SDAG-NEXT:    scratch_store_b64 v4, v[2:3], off
 ; GFX1250-SDAG-NEXT:    s_wait_xcnt 0x0
 ; GFX1250-SDAG-NEXT:    s_or_b32 exec_lo, exec_lo, s0
@@ -8534,6 +8793,8 @@ define amdgpu_ps <2 x float> @flat_umin_saddr_i64_rtn(ptr inreg %sbase, i32 %vof
 ;
 ; GFX1250-GISEL-LABEL: flat_umin_saddr_i64_rtn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -8670,6 +8931,8 @@ define amdgpu_ps <2 x float> @flat_umin_saddr_i64_rtn(ptr inreg %sbase, i32 %vof
 define amdgpu_ps <2 x float> @flat_umin_saddr_i64_rtn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_umin_saddr_i64_rtn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -8705,7 +8968,8 @@ define amdgpu_ps <2 x float> @flat_umin_saddr_i64_rtn_neg128(ptr inreg %sbase, i
 ; GFX1250-SDAG-NEXT:    v_cndmask_b32_e32 v4, -1, v0, vcc_lo
 ; GFX1250-SDAG-NEXT:    scratch_load_b64 v[0:1], v4, off
 ; GFX1250-SDAG-NEXT:    s_wait_loadcnt 0x0
-; GFX1250-SDAG-NEXT:    v_min_u64 v[2:3], v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_cmp_le_u64_e32 vcc_lo, v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_dual_cndmask_b32 v3, v3, v1 :: v_dual_cndmask_b32 v2, v2, v0
 ; GFX1250-SDAG-NEXT:    scratch_store_b64 v4, v[2:3], off
 ; GFX1250-SDAG-NEXT:    s_wait_xcnt 0x0
 ; GFX1250-SDAG-NEXT:    s_or_b32 exec_lo, exec_lo, s0
@@ -8714,6 +8978,8 @@ define amdgpu_ps <2 x float> @flat_umin_saddr_i64_rtn_neg128(ptr inreg %sbase, i
 ;
 ; GFX1250-GISEL-LABEL: flat_umin_saddr_i64_rtn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -8860,6 +9126,8 @@ define amdgpu_ps <2 x float> @flat_umin_saddr_i64_rtn_neg128(ptr inreg %sbase, i
 define amdgpu_ps void @flat_umin_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_umin_saddr_i64_nortn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -8891,12 +9159,15 @@ define amdgpu_ps void @flat_umin_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset,
 ; GFX1250-SDAG-NEXT:    v_cndmask_b32_e32 v4, -1, v4, vcc_lo
 ; GFX1250-SDAG-NEXT:    scratch_load_b64 v[0:1], v4, off
 ; GFX1250-SDAG-NEXT:    s_wait_loadcnt 0x0
-; GFX1250-SDAG-NEXT:    v_min_u64 v[0:1], v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_cmp_le_u64_e32 vcc_lo, v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_dual_cndmask_b32 v1, v3, v1 :: v_dual_cndmask_b32 v0, v2, v0
 ; GFX1250-SDAG-NEXT:    scratch_store_b64 v4, v[0:1], off
 ; GFX1250-SDAG-NEXT:    s_endpgm
 ;
 ; GFX1250-GISEL-LABEL: flat_umin_saddr_i64_nortn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -9014,6 +9285,8 @@ define amdgpu_ps void @flat_umin_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset,
 define amdgpu_ps void @flat_umin_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_umin_saddr_i64_nortn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -9047,12 +9320,15 @@ define amdgpu_ps void @flat_umin_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %v
 ; GFX1250-SDAG-NEXT:    v_cndmask_b32_e32 v4, -1, v4, vcc_lo
 ; GFX1250-SDAG-NEXT:    scratch_load_b64 v[0:1], v4, off
 ; GFX1250-SDAG-NEXT:    s_wait_loadcnt 0x0
-; GFX1250-SDAG-NEXT:    v_min_u64 v[0:1], v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_cmp_le_u64_e32 vcc_lo, v[0:1], v[2:3]
+; GFX1250-SDAG-NEXT:    v_dual_cndmask_b32 v1, v3, v1 :: v_dual_cndmask_b32 v0, v2, v0
 ; GFX1250-SDAG-NEXT:    scratch_store_b64 v4, v[0:1], off
 ; GFX1250-SDAG-NEXT:    s_endpgm
 ;
 ; GFX1250-GISEL-LABEL: flat_umin_saddr_i64_nortn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -9185,6 +9461,8 @@ define amdgpu_ps void @flat_umin_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %v
 define amdgpu_ps float @flat_cmpxchg_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i32 %cmp, i32 %data) {
 ; GFX1250-LABEL: flat_cmpxchg_saddr_i32_rtn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    v_mov_b32_e32 v3, v1
 ; GFX1250-NEXT:    global_wb scope:SCOPE_SYS
@@ -9231,6 +9509,8 @@ define amdgpu_ps float @flat_cmpxchg_saddr_i32_rtn(ptr inreg %sbase, i32 %voffse
 define amdgpu_ps float @flat_cmpxchg_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %voffset, i32 %cmp, i32 %data) {
 ; GFX1250-LABEL: flat_cmpxchg_saddr_i32_rtn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    v_mov_b32_e32 v3, v1
 ; GFX1250-NEXT:    global_wb scope:SCOPE_SYS
@@ -9284,6 +9564,8 @@ define amdgpu_ps float @flat_cmpxchg_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 
 define amdgpu_ps void @flat_cmpxchg_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, i32 %cmp, i32 %data) {
 ; GFX1250-LABEL: flat_cmpxchg_saddr_i32_nortn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    v_mov_b32_e32 v3, v1
 ; GFX1250-NEXT:    global_wb scope:SCOPE_SYS
@@ -9328,6 +9610,8 @@ define amdgpu_ps void @flat_cmpxchg_saddr_i32_nortn(ptr inreg %sbase, i32 %voffs
 define amdgpu_ps void @flat_cmpxchg_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %voffset, i32 %cmp, i32 %data) {
 ; GFX1250-LABEL: flat_cmpxchg_saddr_i32_nortn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    v_mov_b32_e32 v3, v1
 ; GFX1250-NEXT:    global_wb scope:SCOPE_SYS
@@ -9379,6 +9663,8 @@ define amdgpu_ps void @flat_cmpxchg_saddr_i32_nortn_neg128(ptr inreg %sbase, i32
 define amdgpu_ps <2 x float> @flat_cmpxchg_saddr_i64_rtn(ptr inreg %sbase, i32 %voffset, i64 %cmp, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_cmpxchg_saddr_i64_rtn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v7, v2 :: v_dual_mov_b32 v6, v1
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v1, 0 :: v_dual_mov_b32 v5, v4
@@ -9426,6 +9712,8 @@ define amdgpu_ps <2 x float> @flat_cmpxchg_saddr_i64_rtn(ptr inreg %sbase, i32 %
 ;
 ; GFX1250-GISEL-LABEL: flat_cmpxchg_saddr_i64_rtn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v5, v0 :: v_dual_mov_b32 v8, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -9577,6 +9865,8 @@ define amdgpu_ps <2 x float> @flat_cmpxchg_saddr_i64_rtn(ptr inreg %sbase, i32 %
 define amdgpu_ps <2 x float> @flat_cmpxchg_saddr_i64_rtn_neg128(ptr inreg %sbase, i32 %voffset, i64 %cmp, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_cmpxchg_saddr_i64_rtn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v7, v2 :: v_dual_mov_b32 v6, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -9627,6 +9917,8 @@ define amdgpu_ps <2 x float> @flat_cmpxchg_saddr_i64_rtn_neg128(ptr inreg %sbase
 ;
 ; GFX1250-GISEL-LABEL: flat_cmpxchg_saddr_i64_rtn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v5, v0 :: v_dual_mov_b32 v8, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -9788,6 +10080,8 @@ define amdgpu_ps <2 x float> @flat_cmpxchg_saddr_i64_rtn_neg128(ptr inreg %sbase
 define amdgpu_ps void @flat_cmpxchg_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, i64 %cmp, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_cmpxchg_saddr_i64_nortn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v7, v2 :: v_dual_mov_b32 v6, v1
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v1, 0 :: v_dual_mov_b32 v5, v4
@@ -9830,6 +10124,8 @@ define amdgpu_ps void @flat_cmpxchg_saddr_i64_nortn(ptr inreg %sbase, i32 %voffs
 ;
 ; GFX1250-GISEL-LABEL: flat_cmpxchg_saddr_i64_nortn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v8, v1 :: v_dual_mov_b32 v9, v2
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v6, v3 :: v_dual_mov_b32 v7, v4
@@ -9962,6 +10258,8 @@ define amdgpu_ps void @flat_cmpxchg_saddr_i64_nortn(ptr inreg %sbase, i32 %voffs
 define amdgpu_ps void @flat_cmpxchg_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %voffset, i64 %cmp, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_cmpxchg_saddr_i64_nortn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v7, v2 :: v_dual_mov_b32 v6, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -10006,6 +10304,8 @@ define amdgpu_ps void @flat_cmpxchg_saddr_i64_nortn_neg128(ptr inreg %sbase, i32
 ;
 ; GFX1250-GISEL-LABEL: flat_cmpxchg_saddr_i64_nortn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v8, v1 :: v_dual_mov_b32 v9, v2
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v6, v3 :: v_dual_mov_b32 v7, v4
@@ -10153,6 +10453,8 @@ define amdgpu_ps void @flat_cmpxchg_saddr_i64_nortn_neg128(ptr inreg %sbase, i32
 define amdgpu_ps float @flat_inc_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_inc_saddr_i32_rtn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_inc_u32 v0, v0, v1, s[2:3] th:TH_ATOMIC_RETURN scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
@@ -10186,6 +10488,8 @@ define amdgpu_ps float @flat_inc_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i
 define amdgpu_ps float @flat_inc_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_inc_saddr_i32_rtn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_inc_u32 v0, v0, v1, s[2:3] offset:-128 th:TH_ATOMIC_RETURN scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
@@ -10226,6 +10530,8 @@ define amdgpu_ps float @flat_inc_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %vof
 define amdgpu_ps void @flat_inc_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_inc_saddr_i32_nortn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_inc_u32 v0, v1, s[2:3] scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_endpgm
@@ -10255,6 +10561,8 @@ define amdgpu_ps void @flat_inc_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps void @flat_inc_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_inc_saddr_i32_nortn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_inc_u32 v0, v1, s[2:3] offset:-128 scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_endpgm
@@ -10291,6 +10599,8 @@ define amdgpu_ps void @flat_inc_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps <2 x float> @flat_inc_saddr_i64_rtn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_inc_saddr_i64_rtn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -10336,6 +10646,8 @@ define amdgpu_ps <2 x float> @flat_inc_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 ;
 ; GFX1250-GISEL-LABEL: flat_inc_saddr_i64_rtn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -10482,6 +10794,8 @@ define amdgpu_ps <2 x float> @flat_inc_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 define amdgpu_ps <2 x float> @flat_inc_saddr_i64_rtn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_inc_saddr_i64_rtn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -10530,6 +10844,8 @@ define amdgpu_ps <2 x float> @flat_inc_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 ;
 ; GFX1250-GISEL-LABEL: flat_inc_saddr_i64_rtn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -10686,6 +11002,8 @@ define amdgpu_ps <2 x float> @flat_inc_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 define amdgpu_ps void @flat_inc_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_inc_saddr_i64_nortn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -10724,6 +11042,8 @@ define amdgpu_ps void @flat_inc_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, 
 ;
 ; GFX1250-GISEL-LABEL: flat_inc_saddr_i64_nortn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -10846,6 +11166,8 @@ define amdgpu_ps void @flat_inc_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps void @flat_inc_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_inc_saddr_i64_nortn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -10886,6 +11208,8 @@ define amdgpu_ps void @flat_inc_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vo
 ;
 ; GFX1250-GISEL-LABEL: flat_inc_saddr_i64_nortn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -11024,6 +11348,8 @@ define amdgpu_ps void @flat_inc_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps float @flat_dec_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_dec_saddr_i32_rtn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_dec_u32 v0, v0, v1, s[2:3] th:TH_ATOMIC_RETURN scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
@@ -11057,6 +11383,8 @@ define amdgpu_ps float @flat_dec_saddr_i32_rtn(ptr inreg %sbase, i32 %voffset, i
 define amdgpu_ps float @flat_dec_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_dec_saddr_i32_rtn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_dec_u32 v0, v0, v1, s[2:3] offset:-128 th:TH_ATOMIC_RETURN scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
@@ -11097,6 +11425,8 @@ define amdgpu_ps float @flat_dec_saddr_i32_rtn_neg128(ptr inreg %sbase, i32 %vof
 define amdgpu_ps void @flat_dec_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_dec_saddr_i32_nortn:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_dec_u32 v0, v1, s[2:3] scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_endpgm
@@ -11126,6 +11456,8 @@ define amdgpu_ps void @flat_dec_saddr_i32_nortn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps void @flat_dec_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %voffset, i32 %data) {
 ; GFX1250-LABEL: flat_dec_saddr_i32_nortn_neg128:
 ; GFX1250:       ; %bb.0:
+; GFX1250-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-NEXT:    v_nop
 ; GFX1250-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-NEXT:    flat_atomic_dec_u32 v0, v1, s[2:3] offset:-128 scope:SCOPE_DEV
 ; GFX1250-NEXT:    s_endpgm
@@ -11162,6 +11494,8 @@ define amdgpu_ps void @flat_dec_saddr_i32_nortn_neg128(ptr inreg %sbase, i32 %vo
 define amdgpu_ps <2 x float> @flat_dec_saddr_i64_rtn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_dec_saddr_i64_rtn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -11209,6 +11543,8 @@ define amdgpu_ps <2 x float> @flat_dec_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 ;
 ; GFX1250-GISEL-LABEL: flat_dec_saddr_i64_rtn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -11359,6 +11695,8 @@ define amdgpu_ps <2 x float> @flat_dec_saddr_i64_rtn(ptr inreg %sbase, i32 %voff
 define amdgpu_ps <2 x float> @flat_dec_saddr_i64_rtn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_dec_saddr_i64_rtn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -11409,6 +11747,8 @@ define amdgpu_ps <2 x float> @flat_dec_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 ;
 ; GFX1250-GISEL-LABEL: flat_dec_saddr_i64_rtn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v1
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[0:1], s[2:3]
@@ -11569,6 +11909,8 @@ define amdgpu_ps <2 x float> @flat_dec_saddr_i64_rtn_neg128(ptr inreg %sbase, i3
 define amdgpu_ps void @flat_dec_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_dec_saddr_i64_nortn:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -11609,6 +11951,8 @@ define amdgpu_ps void @flat_dec_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, 
 ;
 ; GFX1250-GISEL-LABEL: flat_dec_saddr_i64_nortn:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -11735,6 +12079,8 @@ define amdgpu_ps void @flat_dec_saddr_i64_nortn(ptr inreg %sbase, i32 %voffset, 
 define amdgpu_ps void @flat_dec_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %voffset, i64 %data) {
 ; GFX1250-SDAG-LABEL: flat_dec_saddr_i64_nortn_neg128:
 ; GFX1250-SDAG:       ; %bb.0:
+; GFX1250-SDAG-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-SDAG-NEXT:    v_nop
 ; GFX1250-SDAG-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-SDAG-NEXT:    v_dual_mov_b32 v3, v2 :: v_dual_mov_b32 v2, v1
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v1, 0
@@ -11777,6 +12123,8 @@ define amdgpu_ps void @flat_dec_saddr_i64_nortn_neg128(ptr inreg %sbase, i32 %vo
 ;
 ; GFX1250-GISEL-LABEL: flat_dec_saddr_i64_nortn_neg128:
 ; GFX1250-GISEL:       ; %bb.0:
+; GFX1250-GISEL-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; GFX1250-GISEL-NEXT:    v_nop
 ; GFX1250-GISEL-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; GFX1250-GISEL-NEXT:    v_dual_mov_b32 v4, v1 :: v_dual_mov_b32 v5, v2
 ; GFX1250-GISEL-NEXT:    v_mov_b64_e32 v[2:3], s[2:3]
@@ -11921,15 +12269,21 @@ define double @flat_atomic_fadd_f64_saddr_rtn(ptr inreg %ptr, double %data) {
 ; GFX1250-SDAG-NEXT:    s_delay_alu instid0(SALU_CYCLE_1) | instskip(SKIP_1) | instid1(SALU_CYCLE_1)
 ; GFX1250-SDAG-NEXT:    s_cmp_eq_u32 s1, s3
 ; GFX1250-SDAG-NEXT:    s_cselect_b32 s2, -1, 0
-; GFX1250-SDAG-NEXT:    s_and_not1_b32 vcc_lo, exec_lo, s2
-; GFX1250-SDAG-NEXT:    s_cbranch_vccz .LBB110_3
+; GFX1250-SDAG-NEXT:    s_and_b32 s2, s2, exec_lo
+; GFX1250-SDAG-NEXT:    s_cselect_b32 s2, 1, 0
+; GFX1250-SDAG-NEXT:    s_delay_alu instid0(SALU_CYCLE_1)
+; GFX1250-SDAG-NEXT:    s_cmp_lg_u32 s2, 1
+; GFX1250-SDAG-NEXT:    s_cbranch_scc0 .LBB110_3
 ; GFX1250-SDAG-NEXT:  ; %bb.1: ; %atomicrmw.check.private
 ; GFX1250-SDAG-NEXT:    s_xor_b32 s2, s1, src_flat_scratch_base_hi
 ; GFX1250-SDAG-NEXT:    s_delay_alu instid0(SALU_CYCLE_1) | instskip(SKIP_1) | instid1(SALU_CYCLE_1)
 ; GFX1250-SDAG-NEXT:    s_cmp_lt_u32 s2, 0x4000000
 ; GFX1250-SDAG-NEXT:    s_cselect_b32 s2, -1, 0
-; GFX1250-SDAG-NEXT:    s_and_not1_b32 vcc_lo, exec_lo, s2
-; GFX1250-SDAG-NEXT:    s_cbranch_vccz .LBB110_4
+; GFX1250-SDAG-NEXT:    s_and_b32 s2, s2, exec_lo
+; GFX1250-SDAG-NEXT:    s_cselect_b32 s2, 1, 0
+; GFX1250-SDAG-NEXT:    s_delay_alu instid0(SALU_CYCLE_1)
+; GFX1250-SDAG-NEXT:    s_cmp_lg_u32 s2, 1
+; GFX1250-SDAG-NEXT:    s_cbranch_scc0 .LBB110_4
 ; GFX1250-SDAG-NEXT:  ; %bb.2: ; %atomicrmw.global
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v2, 0
 ; GFX1250-SDAG-NEXT:    s_wait_storecnt 0x0
@@ -12030,14 +12384,18 @@ define double @flat_atomic_fadd_f64_saddr_rtn(ptr inreg %ptr, double %data) {
 ; GFX950-SDAG-NEXT:    s_addc_u32 s1, s1, 0
 ; GFX950-SDAG-NEXT:    s_cmp_eq_u32 s1, s3
 ; GFX950-SDAG-NEXT:    s_cselect_b64 s[2:3], -1, 0
-; GFX950-SDAG-NEXT:    s_andn2_b64 vcc, exec, s[2:3]
-; GFX950-SDAG-NEXT:    s_cbranch_vccz .LBB110_3
+; GFX950-SDAG-NEXT:    s_and_b64 s[2:3], s[2:3], exec
+; GFX950-SDAG-NEXT:    s_cselect_b32 s2, 1, 0
+; GFX950-SDAG-NEXT:    s_cmp_lg_u32 s2, 1
+; GFX950-SDAG-NEXT:    s_cbranch_scc0 .LBB110_3
 ; GFX950-SDAG-NEXT:  ; %bb.1: ; %atomicrmw.check.private
 ; GFX950-SDAG-NEXT:    s_mov_b64 s[2:3], src_private_base
 ; GFX950-SDAG-NEXT:    s_cmp_eq_u32 s1, s3
 ; GFX950-SDAG-NEXT:    s_cselect_b64 s[2:3], -1, 0
-; GFX950-SDAG-NEXT:    s_andn2_b64 vcc, exec, s[2:3]
-; GFX950-SDAG-NEXT:    s_cbranch_vccz .LBB110_4
+; GFX950-SDAG-NEXT:    s_and_b64 s[2:3], s[2:3], exec
+; GFX950-SDAG-NEXT:    s_cselect_b32 s2, 1, 0
+; GFX950-SDAG-NEXT:    s_cmp_lg_u32 s2, 1
+; GFX950-SDAG-NEXT:    s_cbranch_scc0 .LBB110_4
 ; GFX950-SDAG-NEXT:  ; %bb.2: ; %atomicrmw.global
 ; GFX950-SDAG-NEXT:    v_mov_b32_e32 v2, 0
 ; GFX950-SDAG-NEXT:    global_atomic_add_f64 v[2:3], v2, v[0:1], s[0:1] sc0
@@ -12134,9 +12492,12 @@ define void @flat_atomic_fadd_f64_saddr_nortn(ptr inreg %ptr, double %data) {
 ; GFX1250-SDAG-NEXT:    s_delay_alu instid0(SALU_CYCLE_1) | instskip(SKIP_1) | instid1(SALU_CYCLE_1)
 ; GFX1250-SDAG-NEXT:    s_cmp_eq_u32 s1, s3
 ; GFX1250-SDAG-NEXT:    s_cselect_b32 s2, -1, 0
-; GFX1250-SDAG-NEXT:    s_and_not1_b32 vcc_lo, exec_lo, s2
+; GFX1250-SDAG-NEXT:    s_and_b32 s2, s2, exec_lo
+; GFX1250-SDAG-NEXT:    s_cselect_b32 s2, 1, 0
+; GFX1250-SDAG-NEXT:    s_delay_alu instid0(SALU_CYCLE_1)
+; GFX1250-SDAG-NEXT:    s_cmp_lg_u32 s2, 1
 ; GFX1250-SDAG-NEXT:    s_mov_b32 s2, -1
-; GFX1250-SDAG-NEXT:    s_cbranch_vccnz .LBB111_3
+; GFX1250-SDAG-NEXT:    s_cbranch_scc1 .LBB111_3
 ; GFX1250-SDAG-NEXT:  ; %bb.1: ; %Flow2
 ; GFX1250-SDAG-NEXT:    s_and_not1_b32 vcc_lo, exec_lo, s2
 ; GFX1250-SDAG-NEXT:    s_cbranch_vccz .LBB111_8
@@ -12147,9 +12508,12 @@ define void @flat_atomic_fadd_f64_saddr_nortn(ptr inreg %ptr, double %data) {
 ; GFX1250-SDAG-NEXT:    s_delay_alu instid0(SALU_CYCLE_1) | instskip(SKIP_1) | instid1(SALU_CYCLE_1)
 ; GFX1250-SDAG-NEXT:    s_cmp_lt_u32 s2, 0x4000000
 ; GFX1250-SDAG-NEXT:    s_cselect_b32 s2, -1, 0
-; GFX1250-SDAG-NEXT:    s_and_not1_b32 vcc_lo, exec_lo, s2
+; GFX1250-SDAG-NEXT:    s_and_b32 s2, s2, exec_lo
+; GFX1250-SDAG-NEXT:    s_cselect_b32 s2, 1, 0
+; GFX1250-SDAG-NEXT:    s_delay_alu instid0(SALU_CYCLE_1)
+; GFX1250-SDAG-NEXT:    s_cmp_lg_u32 s2, 1
 ; GFX1250-SDAG-NEXT:    s_mov_b32 s2, -1
-; GFX1250-SDAG-NEXT:    s_cbranch_vccz .LBB111_5
+; GFX1250-SDAG-NEXT:    s_cbranch_scc0 .LBB111_5
 ; GFX1250-SDAG-NEXT:  ; %bb.4: ; %atomicrmw.global
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v2, 0
 ; GFX1250-SDAG-NEXT:    s_mov_b32 s2, 0
@@ -12242,9 +12606,11 @@ define void @flat_atomic_fadd_f64_saddr_nortn(ptr inreg %ptr, double %data) {
 ; GFX950-SDAG-NEXT:    s_addc_u32 s1, s1, 0
 ; GFX950-SDAG-NEXT:    s_cmp_eq_u32 s1, s3
 ; GFX950-SDAG-NEXT:    s_cselect_b64 s[2:3], -1, 0
-; GFX950-SDAG-NEXT:    s_andn2_b64 vcc, exec, s[2:3]
+; GFX950-SDAG-NEXT:    s_and_b64 s[2:3], s[2:3], exec
+; GFX950-SDAG-NEXT:    s_cselect_b32 s2, 1, 0
+; GFX950-SDAG-NEXT:    s_cmp_lg_u32 s2, 1
 ; GFX950-SDAG-NEXT:    s_mov_b64 s[2:3], -1
-; GFX950-SDAG-NEXT:    s_cbranch_vccnz .LBB111_3
+; GFX950-SDAG-NEXT:    s_cbranch_scc1 .LBB111_3
 ; GFX950-SDAG-NEXT:  ; %bb.1: ; %Flow2
 ; GFX950-SDAG-NEXT:    s_andn2_b64 vcc, exec, s[2:3]
 ; GFX950-SDAG-NEXT:    s_cbranch_vccz .LBB111_8
@@ -12255,9 +12621,11 @@ define void @flat_atomic_fadd_f64_saddr_nortn(ptr inreg %ptr, double %data) {
 ; GFX950-SDAG-NEXT:    s_mov_b64 s[2:3], src_private_base
 ; GFX950-SDAG-NEXT:    s_cmp_eq_u32 s1, s3
 ; GFX950-SDAG-NEXT:    s_cselect_b64 s[2:3], -1, 0
-; GFX950-SDAG-NEXT:    s_andn2_b64 vcc, exec, s[2:3]
+; GFX950-SDAG-NEXT:    s_and_b64 s[2:3], s[2:3], exec
+; GFX950-SDAG-NEXT:    s_cselect_b32 s2, 1, 0
+; GFX950-SDAG-NEXT:    s_cmp_lg_u32 s2, 1
 ; GFX950-SDAG-NEXT:    s_mov_b64 s[2:3], -1
-; GFX950-SDAG-NEXT:    s_cbranch_vccz .LBB111_5
+; GFX950-SDAG-NEXT:    s_cbranch_scc0 .LBB111_5
 ; GFX950-SDAG-NEXT:  ; %bb.4: ; %atomicrmw.global
 ; GFX950-SDAG-NEXT:    v_mov_b32_e32 v2, 0
 ; GFX950-SDAG-NEXT:    global_atomic_add_f64 v2, v[0:1], s[0:1]
@@ -12341,9 +12709,11 @@ define double @flat_atomic_fmax_f64_saddr_rtn(ptr inreg %ptr, double %data) {
 ; GFX1250-SDAG-NEXT:    s_xor_b32 s2, s1, src_flat_scratch_base_hi
 ; GFX1250-SDAG-NEXT:    s_cmp_lt_u32 s2, 0x4000000
 ; GFX1250-SDAG-NEXT:    s_cselect_b32 s2, -1, 0
-; GFX1250-SDAG-NEXT:    s_delay_alu instid0(SALU_CYCLE_1)
-; GFX1250-SDAG-NEXT:    s_and_not1_b32 vcc_lo, exec_lo, s2
-; GFX1250-SDAG-NEXT:    s_cbranch_vccz .LBB112_2
+; GFX1250-SDAG-NEXT:    s_delay_alu instid0(SALU_CYCLE_1) | instskip(SKIP_1) | instid1(SALU_CYCLE_1)
+; GFX1250-SDAG-NEXT:    s_and_b32 s2, s2, exec_lo
+; GFX1250-SDAG-NEXT:    s_cselect_b32 s2, 1, 0
+; GFX1250-SDAG-NEXT:    s_cmp_lg_u32 s2, 1
+; GFX1250-SDAG-NEXT:    s_cbranch_scc0 .LBB112_2
 ; GFX1250-SDAG-NEXT:  ; %bb.1: ; %atomicrmw.global
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v2, 0
 ; GFX1250-SDAG-NEXT:    s_wait_storecnt 0x0
@@ -12416,8 +12786,10 @@ define double @flat_atomic_fmax_f64_saddr_rtn(ptr inreg %ptr, double %data) {
 ; GFX950-SDAG-NEXT:    s_addc_u32 s1, s1, 0
 ; GFX950-SDAG-NEXT:    s_cmp_eq_u32 s1, s3
 ; GFX950-SDAG-NEXT:    s_cselect_b64 s[2:3], -1, 0
-; GFX950-SDAG-NEXT:    s_andn2_b64 vcc, exec, s[2:3]
-; GFX950-SDAG-NEXT:    s_cbranch_vccz .LBB112_2
+; GFX950-SDAG-NEXT:    s_and_b64 s[2:3], s[2:3], exec
+; GFX950-SDAG-NEXT:    s_cselect_b32 s2, 1, 0
+; GFX950-SDAG-NEXT:    s_cmp_lg_u32 s2, 1
+; GFX950-SDAG-NEXT:    s_cbranch_scc0 .LBB112_2
 ; GFX950-SDAG-NEXT:  ; %bb.1: ; %atomicrmw.global
 ; GFX950-SDAG-NEXT:    v_mov_b64_e32 v[2:3], s[0:1]
 ; GFX950-SDAG-NEXT:    flat_atomic_max_f64 v[2:3], v[2:3], v[0:1] sc0
@@ -12489,10 +12861,12 @@ define void @flat_atomic_fmax_f64_saddr_nortn(ptr inreg %ptr, double %data) {
 ; GFX1250-SDAG-NEXT:    s_xor_b32 s2, s1, src_flat_scratch_base_hi
 ; GFX1250-SDAG-NEXT:    s_cmp_lt_u32 s2, 0x4000000
 ; GFX1250-SDAG-NEXT:    s_cselect_b32 s2, -1, 0
-; GFX1250-SDAG-NEXT:    s_delay_alu instid0(SALU_CYCLE_1)
-; GFX1250-SDAG-NEXT:    s_and_not1_b32 vcc_lo, exec_lo, s2
+; GFX1250-SDAG-NEXT:    s_delay_alu instid0(SALU_CYCLE_1) | instskip(SKIP_1) | instid1(SALU_CYCLE_1)
+; GFX1250-SDAG-NEXT:    s_and_b32 s2, s2, exec_lo
+; GFX1250-SDAG-NEXT:    s_cselect_b32 s2, 1, 0
+; GFX1250-SDAG-NEXT:    s_cmp_lg_u32 s2, 1
 ; GFX1250-SDAG-NEXT:    s_mov_b32 s2, -1
-; GFX1250-SDAG-NEXT:    s_cbranch_vccnz .LBB113_3
+; GFX1250-SDAG-NEXT:    s_cbranch_scc1 .LBB113_3
 ; GFX1250-SDAG-NEXT:  ; %bb.1: ; %Flow
 ; GFX1250-SDAG-NEXT:    s_and_not1_b32 vcc_lo, exec_lo, s2
 ; GFX1250-SDAG-NEXT:    s_cbranch_vccz .LBB113_4
@@ -12562,9 +12936,11 @@ define void @flat_atomic_fmax_f64_saddr_nortn(ptr inreg %ptr, double %data) {
 ; GFX950-SDAG-NEXT:    s_addc_u32 s1, s1, 0
 ; GFX950-SDAG-NEXT:    s_cmp_eq_u32 s1, s3
 ; GFX950-SDAG-NEXT:    s_cselect_b64 s[2:3], -1, 0
-; GFX950-SDAG-NEXT:    s_andn2_b64 vcc, exec, s[2:3]
+; GFX950-SDAG-NEXT:    s_and_b64 s[2:3], s[2:3], exec
+; GFX950-SDAG-NEXT:    s_cselect_b32 s2, 1, 0
+; GFX950-SDAG-NEXT:    s_cmp_lg_u32 s2, 1
 ; GFX950-SDAG-NEXT:    s_mov_b64 s[2:3], -1
-; GFX950-SDAG-NEXT:    s_cbranch_vccnz .LBB113_3
+; GFX950-SDAG-NEXT:    s_cbranch_scc1 .LBB113_3
 ; GFX950-SDAG-NEXT:  ; %bb.1: ; %Flow
 ; GFX950-SDAG-NEXT:    s_andn2_b64 vcc, exec, s[2:3]
 ; GFX950-SDAG-NEXT:    s_cbranch_vccz .LBB113_4
@@ -12633,9 +13009,11 @@ define double @flat_atomic_fmin_f64_saddr_rtn(ptr inreg %ptr, double %data) {
 ; GFX1250-SDAG-NEXT:    s_xor_b32 s2, s1, src_flat_scratch_base_hi
 ; GFX1250-SDAG-NEXT:    s_cmp_lt_u32 s2, 0x4000000
 ; GFX1250-SDAG-NEXT:    s_cselect_b32 s2, -1, 0
-; GFX1250-SDAG-NEXT:    s_delay_alu instid0(SALU_CYCLE_1)
-; GFX1250-SDAG-NEXT:    s_and_not1_b32 vcc_lo, exec_lo, s2
-; GFX1250-SDAG-NEXT:    s_cbranch_vccz .LBB114_2
+; GFX1250-SDAG-NEXT:    s_delay_alu instid0(SALU_CYCLE_1) | instskip(SKIP_1) | instid1(SALU_CYCLE_1)
+; GFX1250-SDAG-NEXT:    s_and_b32 s2, s2, exec_lo
+; GFX1250-SDAG-NEXT:    s_cselect_b32 s2, 1, 0
+; GFX1250-SDAG-NEXT:    s_cmp_lg_u32 s2, 1
+; GFX1250-SDAG-NEXT:    s_cbranch_scc0 .LBB114_2
 ; GFX1250-SDAG-NEXT:  ; %bb.1: ; %atomicrmw.global
 ; GFX1250-SDAG-NEXT:    v_mov_b32_e32 v2, 0
 ; GFX1250-SDAG-NEXT:    s_wait_storecnt 0x0
@@ -12708,8 +13086,10 @@ define double @flat_atomic_fmin_f64_saddr_rtn(ptr inreg %ptr, double %data) {
 ; GFX950-SDAG-NEXT:    s_addc_u32 s1, s1, 0
 ; GFX950-SDAG-NEXT:    s_cmp_eq_u32 s1, s3
 ; GFX950-SDAG-NEXT:    s_cselect_b64 s[2:3], -1, 0
-; GFX950-SDAG-NEXT:    s_andn2_b64 vcc, exec, s[2:3]
-; GFX950-SDAG-NEXT:    s_cbranch_vccz .LBB114_2
+; GFX950-SDAG-NEXT:    s_and_b64 s[2:3], s[2:3], exec
+; GFX950-SDAG-NEXT:    s_cselect_b32 s2, 1, 0
+; GFX950-SDAG-NEXT:    s_cmp_lg_u32 s2, 1
+; GFX950-SDAG-NEXT:    s_cbranch_scc0 .LBB114_2
 ; GFX950-SDAG-NEXT:  ; %bb.1: ; %atomicrmw.global
 ; GFX950-SDAG-NEXT:    v_mov_b64_e32 v[2:3], s[0:1]
 ; GFX950-SDAG-NEXT:    flat_atomic_min_f64 v[2:3], v[2:3], v[0:1] sc0
@@ -12781,10 +13161,12 @@ define void @flat_atomic_fmin_f64_saddr_nortn(ptr inreg %ptr, double %data) {
 ; GFX1250-SDAG-NEXT:    s_xor_b32 s2, s1, src_flat_scratch_base_hi
 ; GFX1250-SDAG-NEXT:    s_cmp_lt_u32 s2, 0x4000000
 ; GFX1250-SDAG-NEXT:    s_cselect_b32 s2, -1, 0
-; GFX1250-SDAG-NEXT:    s_delay_alu instid0(SALU_CYCLE_1)
-; GFX1250-SDAG-NEXT:    s_and_not1_b32 vcc_lo, exec_lo, s2
+; GFX1250-SDAG-NEXT:    s_delay_alu instid0(SALU_CYCLE_1) | instskip(SKIP_1) | instid1(SALU_CYCLE_1)
+; GFX1250-SDAG-NEXT:    s_and_b32 s2, s2, exec_lo
+; GFX1250-SDAG-NEXT:    s_cselect_b32 s2, 1, 0
+; GFX1250-SDAG-NEXT:    s_cmp_lg_u32 s2, 1
 ; GFX1250-SDAG-NEXT:    s_mov_b32 s2, -1
-; GFX1250-SDAG-NEXT:    s_cbranch_vccnz .LBB115_3
+; GFX1250-SDAG-NEXT:    s_cbranch_scc1 .LBB115_3
 ; GFX1250-SDAG-NEXT:  ; %bb.1: ; %Flow
 ; GFX1250-SDAG-NEXT:    s_and_not1_b32 vcc_lo, exec_lo, s2
 ; GFX1250-SDAG-NEXT:    s_cbranch_vccz .LBB115_4
@@ -12854,9 +13236,11 @@ define void @flat_atomic_fmin_f64_saddr_nortn(ptr inreg %ptr, double %data) {
 ; GFX950-SDAG-NEXT:    s_addc_u32 s1, s1, 0
 ; GFX950-SDAG-NEXT:    s_cmp_eq_u32 s1, s3
 ; GFX950-SDAG-NEXT:    s_cselect_b64 s[2:3], -1, 0
-; GFX950-SDAG-NEXT:    s_andn2_b64 vcc, exec, s[2:3]
+; GFX950-SDAG-NEXT:    s_and_b64 s[2:3], s[2:3], exec
+; GFX950-SDAG-NEXT:    s_cselect_b32 s2, 1, 0
+; GFX950-SDAG-NEXT:    s_cmp_lg_u32 s2, 1
 ; GFX950-SDAG-NEXT:    s_mov_b64 s[2:3], -1
-; GFX950-SDAG-NEXT:    s_cbranch_vccnz .LBB115_3
+; GFX950-SDAG-NEXT:    s_cbranch_scc1 .LBB115_3
 ; GFX950-SDAG-NEXT:  ; %bb.1: ; %Flow
 ; GFX950-SDAG-NEXT:    s_andn2_b64 vcc, exec, s[2:3]
 ; GFX950-SDAG-NEXT:    s_cbranch_vccz .LBB115_4
@@ -13002,6 +13386,7 @@ define float @flat_atomic_fmax_f32_saddr_rtn(ptr inreg %ptr, float %data) {
 ; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; GFX950-NEXT:    v_max_f32_e32 v0, v1, v1
 ; GFX950-NEXT:    v_max_f32_e32 v0, v0, v4
+; GFX950-NEXT:    s_waitcnt lgkmcnt(0)
 ; GFX950-NEXT:    flat_atomic_cmpswap v0, v[2:3], v[0:1] offset:40 sc0
 ; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; GFX950-NEXT:    v_cmp_eq_u32_e32 vcc, v0, v1
@@ -13040,6 +13425,7 @@ define void @flat_atomic_fmax_f32_saddr_nortn(ptr inreg %ptr, float %data) {
 ; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; GFX950-NEXT:    v_max_f32_e32 v0, v1, v1
 ; GFX950-NEXT:    v_max_f32_e32 v0, v0, v4
+; GFX950-NEXT:    s_waitcnt lgkmcnt(0)
 ; GFX950-NEXT:    flat_atomic_cmpswap v0, v[2:3], v[0:1] offset:40 sc0
 ; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; GFX950-NEXT:    v_cmp_eq_u32_e32 vcc, v0, v1
@@ -13078,6 +13464,7 @@ define float @flat_atomic_fmin_f32_saddr_rtn(ptr inreg %ptr, float %data) {
 ; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; GFX950-NEXT:    v_max_f32_e32 v0, v1, v1
 ; GFX950-NEXT:    v_min_f32_e32 v0, v0, v4
+; GFX950-NEXT:    s_waitcnt lgkmcnt(0)
 ; GFX950-NEXT:    flat_atomic_cmpswap v0, v[2:3], v[0:1] offset:40 sc0
 ; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; GFX950-NEXT:    v_cmp_eq_u32_e32 vcc, v0, v1
@@ -13116,6 +13503,7 @@ define void @flat_atomic_fmin_f32_saddr_nortn(ptr inreg %ptr, float %data) {
 ; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; GFX950-NEXT:    v_max_f32_e32 v0, v1, v1
 ; GFX950-NEXT:    v_min_f32_e32 v0, v0, v4
+; GFX950-NEXT:    s_waitcnt lgkmcnt(0)
 ; GFX950-NEXT:    flat_atomic_cmpswap v0, v[2:3], v[0:1] offset:40 sc0
 ; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; GFX950-NEXT:    v_cmp_eq_u32_e32 vcc, v0, v1
@@ -13214,6 +13602,7 @@ define <2 x half> @flat_atomic_fmax_v2f16_saddr_rtn(ptr inreg %ptr, <2 x half> %
 ; GFX1250-NEXT:    v_pk_max_num_f16 v4, v0, v1
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
 ; GFX1250-NEXT:    s_wait_xcnt 0x0
+; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
 ; GFX1250-NEXT:    flat_atomic_cmpswap_b32 v0, v2, v[4:5], s[0:1] offset:40 th:TH_ATOMIC_RETURN
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
 ; GFX1250-NEXT:    v_cmp_eq_u32_e32 vcc_lo, v0, v5
@@ -13239,6 +13628,7 @@ define <2 x half> @flat_atomic_fmax_v2f16_saddr_rtn(ptr inreg %ptr, <2 x half> %
 ; GFX950-NEXT:    v_pk_max_f16 v0, v1, v1
 ; GFX950-NEXT:    s_nop 0
 ; GFX950-NEXT:    v_pk_max_f16 v0, v0, v4
+; GFX950-NEXT:    s_waitcnt lgkmcnt(0)
 ; GFX950-NEXT:    flat_atomic_cmpswap v0, v[2:3], v[0:1] offset:40 sc0
 ; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; GFX950-NEXT:    v_cmp_eq_u32_e32 vcc, v0, v1
@@ -13271,6 +13661,7 @@ define void @flat_atomic_fmax_v2f16_saddr_nortn(ptr inreg %ptr, <2 x half> %data
 ; GFX1250-NEXT:    v_pk_max_num_f16 v0, v0, v3
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
 ; GFX1250-NEXT:    s_wait_xcnt 0x0
+; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
 ; GFX1250-NEXT:    flat_atomic_cmpswap_b32 v0, v2, v[0:1], s[0:1] offset:40 th:TH_ATOMIC_RETURN
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
 ; GFX1250-NEXT:    v_cmp_eq_u32_e32 vcc_lo, v0, v1
@@ -13297,6 +13688,7 @@ define void @flat_atomic_fmax_v2f16_saddr_nortn(ptr inreg %ptr, <2 x half> %data
 ; GFX950-NEXT:    v_pk_max_f16 v0, v1, v1
 ; GFX950-NEXT:    s_nop 0
 ; GFX950-NEXT:    v_pk_max_f16 v0, v0, v4
+; GFX950-NEXT:    s_waitcnt lgkmcnt(0)
 ; GFX950-NEXT:    flat_atomic_cmpswap v0, v[2:3], v[0:1] offset:40 sc0
 ; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; GFX950-NEXT:    v_cmp_eq_u32_e32 vcc, v0, v1
@@ -13331,6 +13723,7 @@ define <2 x half> @flat_atomic_fmin_v2f16_saddr_rtn(ptr inreg %ptr, <2 x half> %
 ; GFX1250-NEXT:    v_pk_min_num_f16 v4, v0, v1
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
 ; GFX1250-NEXT:    s_wait_xcnt 0x0
+; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
 ; GFX1250-NEXT:    flat_atomic_cmpswap_b32 v0, v2, v[4:5], s[0:1] offset:40 th:TH_ATOMIC_RETURN
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
 ; GFX1250-NEXT:    v_cmp_eq_u32_e32 vcc_lo, v0, v5
@@ -13356,6 +13749,7 @@ define <2 x half> @flat_atomic_fmin_v2f16_saddr_rtn(ptr inreg %ptr, <2 x half> %
 ; GFX950-NEXT:    v_pk_max_f16 v0, v1, v1
 ; GFX950-NEXT:    s_nop 0
 ; GFX950-NEXT:    v_pk_min_f16 v0, v0, v4
+; GFX950-NEXT:    s_waitcnt lgkmcnt(0)
 ; GFX950-NEXT:    flat_atomic_cmpswap v0, v[2:3], v[0:1] offset:40 sc0
 ; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; GFX950-NEXT:    v_cmp_eq_u32_e32 vcc, v0, v1
@@ -13388,6 +13782,7 @@ define void @flat_atomic_fmin_v2f16_saddr_nortn(ptr inreg %ptr, <2 x half> %data
 ; GFX1250-NEXT:    v_pk_min_num_f16 v0, v0, v3
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
 ; GFX1250-NEXT:    s_wait_xcnt 0x0
+; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
 ; GFX1250-NEXT:    flat_atomic_cmpswap_b32 v0, v2, v[0:1], s[0:1] offset:40 th:TH_ATOMIC_RETURN
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
 ; GFX1250-NEXT:    v_cmp_eq_u32_e32 vcc_lo, v0, v1
@@ -13414,6 +13809,7 @@ define void @flat_atomic_fmin_v2f16_saddr_nortn(ptr inreg %ptr, <2 x half> %data
 ; GFX950-NEXT:    v_pk_max_f16 v0, v1, v1
 ; GFX950-NEXT:    s_nop 0
 ; GFX950-NEXT:    v_pk_min_f16 v0, v0, v4
+; GFX950-NEXT:    s_waitcnt lgkmcnt(0)
 ; GFX950-NEXT:    flat_atomic_cmpswap v0, v[2:3], v[0:1] offset:40 sc0
 ; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; GFX950-NEXT:    v_cmp_eq_u32_e32 vcc, v0, v1
@@ -13493,6 +13889,7 @@ define <2 x bfloat> @flat_atomic_fmax_v2bf16_saddr_rtn(ptr inreg %ptr, <2 x bflo
 ; GFX1250-NEXT:    v_pk_max_num_bf16 v4, v5, v0
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
 ; GFX1250-NEXT:    s_wait_xcnt 0x0
+; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
 ; GFX1250-NEXT:    flat_atomic_cmpswap_b32 v1, v2, v[4:5], s[0:1] offset:40 th:TH_ATOMIC_RETURN
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
 ; GFX1250-NEXT:    v_cmp_eq_u32_e32 vcc_lo, v1, v5
@@ -13522,6 +13919,7 @@ define <2 x bfloat> @flat_atomic_fmax_v2bf16_saddr_rtn(ptr inreg %ptr, <2 x bflo
 ; GFX950-NEXT:    v_max_f32_e32 v0, v0, v4
 ; GFX950-NEXT:    v_max_f32_e32 v6, v6, v5
 ; GFX950-NEXT:    v_cvt_pk_bf16_f32 v0, v6, v0
+; GFX950-NEXT:    s_waitcnt lgkmcnt(0)
 ; GFX950-NEXT:    flat_atomic_cmpswap v0, v[2:3], v[0:1] offset:40 sc0
 ; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; GFX950-NEXT:    v_cmp_eq_u32_e32 vcc, v0, v1
@@ -13551,6 +13949,7 @@ define void @flat_atomic_fmax_v2bf16_saddr_nortn(ptr inreg %ptr, <2 x bfloat> %d
 ; GFX1250-NEXT:    v_pk_max_num_bf16 v2, v3, v0
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
 ; GFX1250-NEXT:    s_wait_xcnt 0x0
+; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
 ; GFX1250-NEXT:    flat_atomic_cmpswap_b32 v2, v1, v[2:3], s[0:1] offset:40 th:TH_ATOMIC_RETURN
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
 ; GFX1250-NEXT:    v_cmp_eq_u32_e32 vcc_lo, v2, v3
@@ -13580,6 +13979,7 @@ define void @flat_atomic_fmax_v2bf16_saddr_nortn(ptr inreg %ptr, <2 x bfloat> %d
 ; GFX950-NEXT:    v_max_f32_e32 v0, v0, v4
 ; GFX950-NEXT:    v_max_f32_e32 v6, v6, v5
 ; GFX950-NEXT:    v_cvt_pk_bf16_f32 v0, v6, v0
+; GFX950-NEXT:    s_waitcnt lgkmcnt(0)
 ; GFX950-NEXT:    flat_atomic_cmpswap v0, v[2:3], v[0:1] offset:40 sc0
 ; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; GFX950-NEXT:    v_cmp_eq_u32_e32 vcc, v0, v1
@@ -13611,6 +14011,7 @@ define <2 x bfloat> @flat_atomic_fmin_v2bf16_saddr_rtn(ptr inreg %ptr, <2 x bflo
 ; GFX1250-NEXT:    v_pk_min_num_bf16 v4, v5, v0
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
 ; GFX1250-NEXT:    s_wait_xcnt 0x0
+; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
 ; GFX1250-NEXT:    flat_atomic_cmpswap_b32 v1, v2, v[4:5], s[0:1] offset:40 th:TH_ATOMIC_RETURN
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
 ; GFX1250-NEXT:    v_cmp_eq_u32_e32 vcc_lo, v1, v5
@@ -13640,6 +14041,7 @@ define <2 x bfloat> @flat_atomic_fmin_v2bf16_saddr_rtn(ptr inreg %ptr, <2 x bflo
 ; GFX950-NEXT:    v_min_f32_e32 v0, v0, v4
 ; GFX950-NEXT:    v_min_f32_e32 v6, v6, v5
 ; GFX950-NEXT:    v_cvt_pk_bf16_f32 v0, v6, v0
+; GFX950-NEXT:    s_waitcnt lgkmcnt(0)
 ; GFX950-NEXT:    flat_atomic_cmpswap v0, v[2:3], v[0:1] offset:40 sc0
 ; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; GFX950-NEXT:    v_cmp_eq_u32_e32 vcc, v0, v1
@@ -13669,6 +14071,7 @@ define void @flat_atomic_fmin_v2bf16_saddr_nortn(ptr inreg %ptr, <2 x bfloat> %d
 ; GFX1250-NEXT:    v_pk_min_num_bf16 v2, v3, v0
 ; GFX1250-NEXT:    s_wait_storecnt 0x0
 ; GFX1250-NEXT:    s_wait_xcnt 0x0
+; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
 ; GFX1250-NEXT:    flat_atomic_cmpswap_b32 v2, v1, v[2:3], s[0:1] offset:40 th:TH_ATOMIC_RETURN
 ; GFX1250-NEXT:    s_wait_loadcnt_dscnt 0x0
 ; GFX1250-NEXT:    v_cmp_eq_u32_e32 vcc_lo, v2, v3
@@ -13698,6 +14101,7 @@ define void @flat_atomic_fmin_v2bf16_saddr_nortn(ptr inreg %ptr, <2 x bfloat> %d
 ; GFX950-NEXT:    v_min_f32_e32 v0, v0, v4
 ; GFX950-NEXT:    v_min_f32_e32 v6, v6, v5
 ; GFX950-NEXT:    v_cvt_pk_bf16_f32 v0, v6, v0
+; GFX950-NEXT:    s_waitcnt lgkmcnt(0)
 ; GFX950-NEXT:    flat_atomic_cmpswap v0, v[2:3], v[0:1] offset:40 sc0
 ; GFX950-NEXT:    s_waitcnt vmcnt(0) lgkmcnt(0)
 ; GFX950-NEXT:    v_cmp_eq_u32_e32 vcc, v0, v1

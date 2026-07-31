@@ -65,7 +65,7 @@ body:             |
     ; CHECK-NEXT: renamable $vgpr8_vgpr9_vgpr10_vgpr11_vgpr12_vgpr13_vgpr14_vgpr15 = IMPLICIT_DEF
     ; CHECK-NEXT: renamable $vgpr24 = IMPLICIT_DEF
     ; CHECK-NEXT: renamable $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23 = IMPLICIT_DEF
-    ; CHECK-NEXT: early-clobber renamable $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23 = V_WMMA_F32_16X16X32_BF16_w32_twoaddr 8, killed $vgpr0_vgpr1_vgpr2_vgpr3_vgpr4_vgpr5_vgpr6_vgpr7, 8, killed $vgpr8_vgpr9_vgpr10_vgpr11_vgpr12_vgpr13_vgpr14_vgpr15, 8, killed $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23, 0, 0, 0, 0, implicit $exec
+    ; CHECK-NEXT: early-clobber renamable $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23 = V_WMMA_F32_16X16X32_BF16_w32_twoaddr killed $vgpr0_vgpr1_vgpr2_vgpr3_vgpr4_vgpr5_vgpr6_vgpr7, killed $vgpr8_vgpr9_vgpr10_vgpr11_vgpr12_vgpr13_vgpr14_vgpr15, 8, killed $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23, 0, 0, 0, 0, implicit $exec
     ; CHECK-NEXT: renamable $vgpr25 = V_ADD_U32_e32 1, $vgpr24, implicit $exec
     ; CHECK-NEXT: renamable $vgpr26 = V_ADD_U32_e32 2, $vgpr24, implicit $exec
     ; CHECK-NEXT: renamable $vgpr27 = V_ADD_U32_e32 3, $vgpr24, implicit $exec
@@ -81,7 +81,7 @@ body:             |
     ; CHECK-NO-ANTIHINT-NEXT: renamable $vgpr8_vgpr9_vgpr10_vgpr11_vgpr12_vgpr13_vgpr14_vgpr15 = IMPLICIT_DEF
     ; CHECK-NO-ANTIHINT-NEXT: renamable $vgpr24 = IMPLICIT_DEF
     ; CHECK-NO-ANTIHINT-NEXT: renamable $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23 = IMPLICIT_DEF
-    ; CHECK-NO-ANTIHINT-NEXT: early-clobber renamable $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23 = V_WMMA_F32_16X16X32_BF16_w32_twoaddr 8, killed $vgpr0_vgpr1_vgpr2_vgpr3_vgpr4_vgpr5_vgpr6_vgpr7, 8, killed $vgpr8_vgpr9_vgpr10_vgpr11_vgpr12_vgpr13_vgpr14_vgpr15, 8, killed $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23, 0, 0, 0, 0, implicit $exec
+    ; CHECK-NO-ANTIHINT-NEXT: early-clobber renamable $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23 = V_WMMA_F32_16X16X32_BF16_w32_twoaddr killed $vgpr0_vgpr1_vgpr2_vgpr3_vgpr4_vgpr5_vgpr6_vgpr7, killed $vgpr8_vgpr9_vgpr10_vgpr11_vgpr12_vgpr13_vgpr14_vgpr15, 8, killed $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23, 0, 0, 0, 0, implicit $exec
     ; CHECK-NO-ANTIHINT-NEXT: V_NOP_e32 implicit $exec
     ; CHECK-NO-ANTIHINT-NEXT: V_NOP_e32 implicit $exec
     ; CHECK-NO-ANTIHINT-NEXT: V_NOP_e32 implicit $exec
@@ -99,7 +99,7 @@ body:             |
     %1:vreg_256_align2 = IMPLICIT_DEF
     %4:vgpr_32 = IMPLICIT_DEF
     %5:vreg_256_align2 = IMPLICIT_DEF
-    %6:vreg_256_align2 = V_WMMA_F32_16X16X32_BF16_w32_twoaddr 8, %0, 8, %1, 8, %5, 0, 0, 0, 0, implicit $exec
+    %6:vreg_256_align2 = V_WMMA_F32_16X16X32_BF16_w32_twoaddr %0, %1, 8, %5, 0, 0, 0, 0, implicit $exec
     %7:vgpr_32 = V_ADD_U32_e32 1, %4, implicit $exec
     %8:vgpr_32 = V_ADD_U32_e32 2, %4, implicit $exec
     %9:vgpr_32 = V_ADD_U32_e32 3, %4, implicit $exec
@@ -166,7 +166,7 @@ body:             |
     ; CHECK-NEXT: renamable $vgpr8_vgpr9_vgpr10_vgpr11_vgpr12_vgpr13_vgpr14_vgpr15 = IMPLICIT_DEF
     ; CHECK-NEXT: renamable $vgpr24 = IMPLICIT_DEF
     ; CHECK-NEXT: renamable $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23 = IMPLICIT_DEF
-    ; CHECK-NEXT: early-clobber renamable $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23 = V_WMMA_F32_16X16X32_F16_w32_twoaddr 8, killed $vgpr0_vgpr1_vgpr2_vgpr3_vgpr4_vgpr5_vgpr6_vgpr7, 8, killed $vgpr8_vgpr9_vgpr10_vgpr11_vgpr12_vgpr13_vgpr14_vgpr15, 8, killed $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23, 0, 0, 0, 0, implicit $exec
+    ; CHECK-NEXT: early-clobber renamable $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23 = V_WMMA_F32_16X16X32_F16_w32_twoaddr killed $vgpr0_vgpr1_vgpr2_vgpr3_vgpr4_vgpr5_vgpr6_vgpr7, killed $vgpr8_vgpr9_vgpr10_vgpr11_vgpr12_vgpr13_vgpr14_vgpr15, 8, killed $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23, 0, 0, 0, 0, implicit $exec
     ; CHECK-NEXT: renamable $vgpr25 = V_ADD_U32_e32 1, $vgpr24, implicit $exec
     ; CHECK-NEXT: renamable $vgpr26 = V_ADD_U32_e32 2, $vgpr24, implicit $exec
     ; CHECK-NEXT: renamable $vgpr27 = V_ADD_U32_e32 3, $vgpr24, implicit $exec
@@ -182,7 +182,7 @@ body:             |
     ; CHECK-NO-ANTIHINT-NEXT: renamable $vgpr8_vgpr9_vgpr10_vgpr11_vgpr12_vgpr13_vgpr14_vgpr15 = IMPLICIT_DEF
     ; CHECK-NO-ANTIHINT-NEXT: renamable $vgpr24 = IMPLICIT_DEF
     ; CHECK-NO-ANTIHINT-NEXT: renamable $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23 = IMPLICIT_DEF
-    ; CHECK-NO-ANTIHINT-NEXT: early-clobber renamable $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23 = V_WMMA_F32_16X16X32_F16_w32_twoaddr 8, killed $vgpr0_vgpr1_vgpr2_vgpr3_vgpr4_vgpr5_vgpr6_vgpr7, 8, killed $vgpr8_vgpr9_vgpr10_vgpr11_vgpr12_vgpr13_vgpr14_vgpr15, 8, killed $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23, 0, 0, 0, 0, implicit $exec
+    ; CHECK-NO-ANTIHINT-NEXT: early-clobber renamable $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23 = V_WMMA_F32_16X16X32_F16_w32_twoaddr killed $vgpr0_vgpr1_vgpr2_vgpr3_vgpr4_vgpr5_vgpr6_vgpr7, killed $vgpr8_vgpr9_vgpr10_vgpr11_vgpr12_vgpr13_vgpr14_vgpr15, 8, killed $vgpr16_vgpr17_vgpr18_vgpr19_vgpr20_vgpr21_vgpr22_vgpr23, 0, 0, 0, 0, implicit $exec
     ; CHECK-NO-ANTIHINT-NEXT: V_NOP_e32 implicit $exec
     ; CHECK-NO-ANTIHINT-NEXT: V_NOP_e32 implicit $exec
     ; CHECK-NO-ANTIHINT-NEXT: V_NOP_e32 implicit $exec
@@ -200,7 +200,7 @@ body:             |
     %1:vreg_256_align2 = IMPLICIT_DEF
     %4:vgpr_32 = IMPLICIT_DEF
     %5:vreg_256_align2 = IMPLICIT_DEF
-    %6:vreg_256_align2 = V_WMMA_F32_16X16X32_F16_w32_twoaddr 8, %0, 8, %1, 8, %5, 0, 0, 0, 0, implicit $exec
+    %6:vreg_256_align2 = V_WMMA_F32_16X16X32_F16_w32_twoaddr %0, %1, 8, %5, 0, 0, 0, 0, implicit $exec
     %7:vgpr_32 = V_ADD_U32_e32 1, %4, implicit $exec
     %8:vgpr_32 = V_ADD_U32_e32 2, %4, implicit $exec
     %9:vgpr_32 = V_ADD_U32_e32 3, %4, implicit $exec

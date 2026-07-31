@@ -39,26 +39,25 @@ machineFunctionInfo:
 body:             |
   bb.0:
     ; GFX1250-LABEL: name: waitcnt_forcezero_gfx1250
-    ; GFX1250: S_WAIT_LOADCNT_DSCNT .Loadcnt_0_Dscnt_0
+    ; GFX1250: GLOBAL_PREFETCH_B8_SADDR undef $sgpr0_sgpr1, undef $vgpr0, 0, 8, implicit $exec
+    ; GFX1250-NEXT: V_NOP_e32 implicit $exec
+    ; GFX1250-NEXT: S_WAIT_LOADCNT_DSCNT .Loadcnt_0_Dscnt_0
     ; GFX1250-NEXT: S_WAIT_EXPCNT 0
     ; GFX1250-NEXT: S_WAIT_SAMPLECNT 0
     ; GFX1250-NEXT: S_WAIT_BVHCNT 0
     ; GFX1250-NEXT: S_WAIT_KMCNT 0
-    ; GFX1250-NEXT: S_WAIT_TENSORCNT 0, implicit-def $tensorcnt, implicit $tensorcnt
     ; GFX1250-NEXT: S_NOP 0
     ; GFX1250-NEXT: S_WAIT_LOADCNT_DSCNT .Loadcnt_0_Dscnt_0
     ; GFX1250-NEXT: S_WAIT_EXPCNT 0
     ; GFX1250-NEXT: S_WAIT_SAMPLECNT 0
     ; GFX1250-NEXT: S_WAIT_BVHCNT 0
     ; GFX1250-NEXT: S_WAIT_KMCNT 0
-    ; GFX1250-NEXT: S_WAIT_TENSORCNT 0, implicit-def $tensorcnt, implicit $tensorcnt
     ; GFX1250-NEXT: S_NOP 0
     ; GFX1250-NEXT: S_WAIT_LOADCNT_DSCNT .Loadcnt_0_Dscnt_0
     ; GFX1250-NEXT: S_WAIT_EXPCNT 0
     ; GFX1250-NEXT: S_WAIT_SAMPLECNT 0
     ; GFX1250-NEXT: S_WAIT_BVHCNT 0
     ; GFX1250-NEXT: S_WAIT_KMCNT 0
-    ; GFX1250-NEXT: S_WAIT_TENSORCNT 0, implicit-def $tensorcnt, implicit $tensorcnt
     ; GFX1250-NEXT: S_NOP 0
     ; GFX1250-NEXT: S_ENDPGM 0
     ;

@@ -60,7 +60,7 @@ body: |
 # loop-carried DS_READ lane slice and the recording phase must fire on
 # at least the first top-of-loop consumer.
 # ON: DSReadByConsumerOrder: loop-carried DS_READ slices ({{[1-9][0-9]*}} across {{[1-9][0-9]*}} vregs):
-# ON: DSReadByConsumerOrder: SU({{[0-9]+}}) consumes {{.*}} at pos 0
+# ON: DSReadByConsumerOrder: SU({{[0-9]+}}) consumes {{.*}} at slot {{[0-9]+}}r
 
 # Lane-precise mixed-lifetime test. %12 is a 256-bit vreg loaded by two
 # partial DS_READs that fill disjoint halves:
@@ -121,4 +121,4 @@ body: |
 
 # The recording phase must fire on the same upper-half slice from the
 # top-of-loop consumer (V_MOV_B32 reading %12.sub4).
-# MIXED: DSReadByConsumerOrder: SU({{[0-9]+}}) consumes %{{[0-9]+}} lanes=0000000000000300 at pos {{[0-9]+}}
+# MIXED: DSReadByConsumerOrder: SU({{[0-9]+}}) consumes %{{[0-9]+}} lanes=0000000000000300 at slot {{[0-9]+}}r

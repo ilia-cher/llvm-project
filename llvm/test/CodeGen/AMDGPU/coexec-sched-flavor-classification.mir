@@ -6,7 +6,8 @@
 # CHECK-DAG: VMEM: {{[0-9]+}} cycles, 10 instrs
 # CHECK-DAG: DS: {{[0-9]+}} cycles, 4 instrs
 # CHECK-DAG: DMA: {{[0-9]+}} cycles, 2 instrs
-# CHECK-DAG: VALU(1c): {{[0-9]+}} cycles, 4 instrs
+# CHECK-DAG: VALU(1c): {{[0-9]+}} cycles, 2 instrs
+# CHECK-DAG: VALU(Nc): {{[0-9]+}} cycles, 2 instrs
 # CHECK-DAG: TRANS: {{[0-9]+}} cycles, 2 instrs
 
 --- |

@@ -3,64 +3,21 @@
 
 define amdgpu_kernel void @test() #0 {
 ; CHECK-LABEL: test:
-; CHECK:       ;=== Block: 153 cycles ===
-; CHECK-NEXT:  ; VALU:109(VOPD:95) SALU:25 Ctrl:1
-; CHECK-NEXT:  ; Stall: 18 cycles (12%)
-; CHECK-NEXT:  ; FU:12 | ISFetch:6 (14 fetches)
-; CHECK-NEXT:  ; FU: VALU:12
+; CHECK:       ;=== Block: 159 cycles ===
+; CHECK-NEXT:  ; VALU:110(VOPD:95) SALU:25 VMEM:1 Ctrl:2
+; CHECK-NEXT:  ; Stall: 21 cycles (13%)
+; CHECK-NEXT:  ; FU:10 | VaSSRC:5 | ISFetch:6 (14 fetches)
+; CHECK-NEXT:  ; FU: VALU:10
 ; CHECK-NEXT:  ; %bb.0: ; %entry
+; CHECK-NEXT:    global_prefetch_b8 v0, s[0:1] scope:SCOPE_SE
+; CHECK-NEXT:    v_nop
 ; CHECK-NEXT:    s_setreg_imm32_b32 hwreg(HW_REG_WAVE_MODE, 25, 1), 1 ; msbs: dst=0 src0=0 src1=0 src2=0
 ; CHECK-NEXT:    v_mov_b32_e32 v0, 0
 ; CHECK-NEXT:    s_mov_b32 s16, 0
 ; CHECK-NEXT:    ;Sim: Fused
-; CHECK-NEXT:    s_delay_alu instid0(SALU_CYCLE_1)
-; CHECK-NEXT:    s_mov_b32 s17, s16
-; CHECK-NEXT:    s_mov_b32 s18, s16
-; CHECK-NEXT:    s_mov_b32 s19, s16
-; CHECK-NEXT:    s_mov_b32 s20, s16
-; CHECK-NEXT:    s_mov_b32 s21, s16
-; CHECK-NEXT:    s_mov_b32 s22, s16
-; CHECK-NEXT:    s_mov_b32 s23, s16
+; CHECK-NEXT:    s_delay_alu instid0(SALU_CYCLE_1) | instskip(SKIP_1) | instid1(VALU_DEP_1)
 ; CHECK-NEXT:    s_mov_b32 s0, s16
 ; CHECK-NEXT:    s_mov_b32 s1, s16
-; CHECK-NEXT:    s_mov_b32 s2, s16
-; CHECK-NEXT:    s_mov_b32 s3, s16
-; CHECK-NEXT:    s_mov_b32 s4, s16
-; CHECK-NEXT:    s_mov_b32 s5, s16
-; CHECK-NEXT:    s_mov_b32 s6, s16
-; CHECK-NEXT:    s_mov_b32 s7, s16
-; CHECK-NEXT:    s_mov_b32 s8, s16
-; CHECK-NEXT:    s_mov_b32 s9, s16
-; CHECK-NEXT:    s_mov_b32 s10, s16
-; CHECK-NEXT:    s_mov_b32 s11, s16
-; CHECK-NEXT:    s_mov_b32 s12, s16
-; CHECK-NEXT:    s_mov_b32 s13, s16
-; CHECK-NEXT:    s_mov_b32 s14, s16
-; CHECK-NEXT:    s_mov_b32 s15, s16
-; CHECK-NEXT:    v_mov_b64_e32 v[214:215], s[22:23]
-; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
-; CHECK-NEXT:    v_mov_b64_e32 v[212:213], s[20:21]
-; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
-; CHECK-NEXT:    v_mov_b64_e32 v[210:211], s[18:19]
-; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
-; CHECK-NEXT:    v_mov_b64_e32 v[208:209], s[16:17]
-; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
-; CHECK-NEXT:    v_mov_b64_e32 v[30:31], s[14:15]
-; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
-; CHECK-NEXT:    v_mov_b64_e32 v[28:29], s[12:13]
-; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
-; CHECK-NEXT:    v_mov_b64_e32 v[26:27], s[10:11]
-; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
-; CHECK-NEXT:    v_mov_b64_e32 v[24:25], s[8:9]
-; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
-; CHECK-NEXT:    v_mov_b64_e32 v[22:23], s[6:7]
-; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
-; CHECK-NEXT:    v_mov_b64_e32 v[20:21], s[4:5]
-; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
-; CHECK-NEXT:    v_mov_b64_e32 v[18:19], s[2:3]
-; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
-; CHECK-NEXT:    v_mov_b64_e32 v[16:17], s[0:1]
-; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
 ; CHECK-NEXT:    v_dual_mov_b32 v1, v0 :: v_dual_mov_b32 v2, v0
 ; CHECK-NEXT:    ;Sim: Cache($$)
 ; CHECK-NEXT:    v_dual_mov_b32 v3, v0 :: v_dual_mov_b32 v4, v0
@@ -75,7 +32,23 @@ define amdgpu_kernel void @test() #0 {
 ; CHECK-NEXT:    ;Sim: Cache($$)
 ; CHECK-NEXT:    v_dual_mov_b32 v13, v0 :: v_dual_mov_b32 v14, v0
 ; CHECK-NEXT:    ;Sim: Cache($$)
-; CHECK-NEXT:    v_dual_mov_b32 v15, v0 :: v_dual_mov_b32 v32, v0
+; CHECK-NEXT:    v_dual_mov_b32 v15, v0 :: v_dual_mov_b32 v16, v0
+; CHECK-NEXT:    ;Sim: Cache($$)
+; CHECK-NEXT:    v_dual_mov_b32 v17, v0 :: v_dual_mov_b32 v18, v0
+; CHECK-NEXT:    ;Sim: Cache($$)
+; CHECK-NEXT:    v_dual_mov_b32 v19, v0 :: v_dual_mov_b32 v20, v0
+; CHECK-NEXT:    ;Sim: Cache($$)
+; CHECK-NEXT:    v_dual_mov_b32 v21, v0 :: v_dual_mov_b32 v22, v0
+; CHECK-NEXT:    ;Sim: Cache($$)
+; CHECK-NEXT:    v_dual_mov_b32 v23, v0 :: v_dual_mov_b32 v24, v0
+; CHECK-NEXT:    ;Sim: Cache($$)
+; CHECK-NEXT:    v_dual_mov_b32 v25, v0 :: v_dual_mov_b32 v26, v0
+; CHECK-NEXT:    ;Sim: Cache($$)
+; CHECK-NEXT:    v_dual_mov_b32 v27, v0 :: v_dual_mov_b32 v28, v0
+; CHECK-NEXT:    ;Sim: Cache($$)
+; CHECK-NEXT:    v_dual_mov_b32 v29, v0 :: v_dual_mov_b32 v30, v0
+; CHECK-NEXT:    ;Sim: Cache($$)
+; CHECK-NEXT:    v_dual_mov_b32 v31, v0 :: v_dual_mov_b32 v32, v0
 ; CHECK-NEXT:    ;Sim: Cache($$)
 ; CHECK-NEXT:    v_dual_mov_b32 v33, v0 :: v_dual_mov_b32 v34, v0
 ; CHECK-NEXT:    ;Sim: Cache($$)
@@ -234,30 +207,60 @@ define amdgpu_kernel void @test() #0 {
 ; CHECK-NEXT:    v_dual_mov_b32 v187, v0 :: v_dual_mov_b32 v188, v0
 ; CHECK-NEXT:    ;Sim: Cache($$)
 ; CHECK-NEXT:    v_dual_mov_b32 v189, v0 :: v_dual_mov_b32 v190, v0
-; CHECK-NEXT:    ;Sim: Cache($$)
-; CHECK-NEXT:    v_dual_mov_b32 v191, v0 :: v_dual_mov_b32 v192, v0
-; CHECK-NEXT:    ;Sim: Cache($$)
-; CHECK-NEXT:    v_dual_mov_b32 v193, v0 :: v_dual_mov_b32 v194, v0
-; CHECK-NEXT:    ;Sim: Cache($$)
-; CHECK-NEXT:    v_dual_mov_b32 v195, v0 :: v_dual_mov_b32 v196, v0
-; CHECK-NEXT:    ;Sim: Cache($$)
-; CHECK-NEXT:    v_dual_mov_b32 v197, v0 :: v_dual_mov_b32 v198, v0
-; CHECK-NEXT:    ;Sim: Cache($$)
-; CHECK-NEXT:    v_dual_mov_b32 v199, v0 :: v_dual_mov_b32 v200, v0
-; CHECK-NEXT:    ;Sim: Cache($$)
-; CHECK-NEXT:    v_dual_mov_b32 v201, v0 :: v_dual_mov_b32 v202, v0
-; CHECK-NEXT:    ;Sim: Cache($$)
-; CHECK-NEXT:    v_dual_mov_b32 v203, v0 :: v_dual_mov_b32 v204, v0
-; CHECK-NEXT:    ;Sim: Cache($$)
-; CHECK-NEXT:    v_dual_mov_b32 v205, v0 :: v_dual_mov_b32 v206, v0
 ; CHECK-NEXT:    ;Sim: Cache($)
-; CHECK-NEXT:    v_mov_b32_e32 v207, v0
-; CHECK-NEXT:  ;=== Block (loop): Cold=104cyc Warm=101cyc Trip=32 Scaled=3235cyc [header] ===
+; CHECK-NEXT:    v_mov_b32_e32 v191, v0
+; CHECK-NEXT:    s_mov_b32 s2, s16
+; CHECK-NEXT:    s_mov_b32 s3, s16
+; CHECK-NEXT:    s_mov_b32 s4, s16
+; CHECK-NEXT:    s_mov_b32 s5, s16
+; CHECK-NEXT:    s_mov_b32 s6, s16
+; CHECK-NEXT:    s_mov_b32 s7, s16
+; CHECK-NEXT:    s_mov_b32 s8, s16
+; CHECK-NEXT:    s_mov_b32 s9, s16
+; CHECK-NEXT:    s_mov_b32 s10, s16
+; CHECK-NEXT:    s_mov_b32 s11, s16
+; CHECK-NEXT:    s_mov_b32 s12, s16
+; CHECK-NEXT:    s_mov_b32 s13, s16
+; CHECK-NEXT:    s_mov_b32 s14, s16
+; CHECK-NEXT:    s_mov_b32 s15, s16
+; CHECK-NEXT:    s_mov_b32 s17, s16
+; CHECK-NEXT:    v_mov_b64_e32 v[206:207], s[14:15]
+; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
+; CHECK-NEXT:    v_mov_b64_e32 v[204:205], s[12:13]
+; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
+; CHECK-NEXT:    v_mov_b64_e32 v[202:203], s[10:11]
+; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
+; CHECK-NEXT:    v_mov_b64_e32 v[200:201], s[8:9]
+; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
+; CHECK-NEXT:    v_mov_b64_e32 v[198:199], s[6:7]
+; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
+; CHECK-NEXT:    v_mov_b64_e32 v[196:197], s[4:5]
+; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
+; CHECK-NEXT:    v_mov_b64_e32 v[194:195], s[2:3]
+; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
+; CHECK-NEXT:    v_mov_b64_e32 v[192:193], s[0:1]
+; CHECK-NEXT:    ;Sim: Stall:5 [VA_SSRC blocked]
+; CHECK-NEXT:    s_mov_b32 s18, s16
+; CHECK-NEXT:    s_mov_b32 s19, s16
+; CHECK-NEXT:    s_mov_b32 s20, s16
+; CHECK-NEXT:    s_mov_b32 s21, s16
+; CHECK-NEXT:    s_mov_b32 s22, s16
+; CHECK-NEXT:    s_mov_b32 s23, s16
+; CHECK-NEXT:    ;Sim: Fused
+; CHECK-NEXT:    s_delay_alu instid0(SALU_CYCLE_1)
+; CHECK-NEXT:    v_mov_b64_e32 v[214:215], s[22:23]
+; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
+; CHECK-NEXT:    v_mov_b64_e32 v[212:213], s[20:21]
+; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
+; CHECK-NEXT:    v_mov_b64_e32 v[210:211], s[18:19]
+; CHECK-NEXT:    ;Sim: Stall:1 [FU busy]
+; CHECK-NEXT:    v_mov_b64_e32 v[208:209], s[16:17]
+; CHECK-NEXT:  ;=== Block (loop): Cold=106cyc Warm=101cyc Trip=32 Scaled=3237cyc [header] ===
 ; CHECK-NEXT:  ; SALU:2 WMMA:12 Ctrl:2
 ; CHECK-NEXT:  ; Stall: 85 cycles (84%)
 ; CHECK-NEXT:  ; FU:78 | WMMACoExec:7(Other:7)
 ; CHECK-NEXT:  ; FU: XDL:78
-; CHECK-NEXT:  ; Speedup: 1.03x warm vs cold
+; CHECK-NEXT:  ; Speedup: 1.05x warm vs cold
 ; CHECK-NEXT:  ; WMMA efficiency: 96 / 101 cycles (95%)
 ; CHECK-NEXT:  .LBB0_1: ; %loop
 ; CHECK-NEXT:    ; =>This Inner Loop Header: Depth=1
@@ -265,31 +268,32 @@ define amdgpu_kernel void @test() #0 {
 ; CHECK-NEXT:    ;Sim: Fused
 ; CHECK-NEXT:    s_delay_alu instid0(VALU_DEP_1) | instid1(SALU_CYCLE_1)
 ; CHECK-NEXT:    ;Sim: 0EEIEIESVV Cache($$)
-; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[192:207], v[16:31], v[208:215], v[192:207], s16, s16
+; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[176:191], v[192:207], v[208:215], v[176:191], s16, s16
 ; CHECK-NEXT:    ;Sim: 0EEIEIESVV | Stall:8 [FU busy] Cache($$)
-; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[176:191], v[16:31], v[208:215], v[176:191], s16, s16
+; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[160:175], v[192:207], v[208:215], v[160:175], s16, s16
 ; CHECK-NEXT:    ;Sim: 0EEIEIESVV | Stall:7 [FU busy] Cache($$)
-; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[160:175], v[16:31], v[208:215], v[160:175], s16, s16
+; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[144:159], v[192:207], v[208:215], v[144:159], s16, s16
 ; CHECK-NEXT:    ;Sim: 0EEIEIESVV | Stall:7 [FU busy] Cache($$)
-; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[144:159], v[16:31], v[208:215], v[144:159], s16, s16
+; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[128:143], v[192:207], v[208:215], v[128:143], s16, s16
 ; CHECK-NEXT:    ;Sim: 0EEIEIESVV | Stall:7 [FU busy] Cache($$)
-; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[128:143], v[16:31], v[208:215], v[128:143], s16, s16
+; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[112:127], v[192:207], v[208:215], v[112:127], s16, s16
 ; CHECK-NEXT:    ;Sim: 0EEIEIESVV | Stall:7 [FU busy] Cache($$)
-; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[112:127], v[16:31], v[208:215], v[112:127], s16, s16
+; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[96:111], v[192:207], v[208:215], v[96:111], s16, s16
 ; CHECK-NEXT:    ;Sim: 0EEIEIESVV | Stall:7 [FU busy] Cache($$)
-; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[96:111], v[16:31], v[208:215], v[96:111], s16, s16
+; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[80:95], v[192:207], v[208:215], v[80:95], s16, s16
 ; CHECK-NEXT:    ;Sim: 0EEIEIESVV | Stall:7 [FU busy] Cache($$)
-; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[80:95], v[16:31], v[208:215], v[80:95], s16, s16
+; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[64:79], v[192:207], v[208:215], v[64:79], s16, s16
 ; CHECK-NEXT:    ;Sim: 0EEIEIESVV | Stall:7 [FU busy] Cache($$)
-; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[64:79], v[16:31], v[208:215], v[64:79], s16, s16
+; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[48:63], v[192:207], v[208:215], v[48:63], s16, s16
 ; CHECK-NEXT:    ;Sim: 0EEIEIESVV | Stall:7 [FU busy] Cache($$)
-; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[48:63], v[16:31], v[208:215], v[48:63], s16, s16
+; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[32:47], v[192:207], v[208:215], v[32:47], s16, s16
 ; CHECK-NEXT:    ;Sim: 0EEIEIESVV | Stall:7 [FU busy] Cache($$)
-; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[32:47], v[16:31], v[208:215], v[32:47], s16, s16
+; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[16:31], v[192:207], v[208:215], v[16:31], s16, s16
 ; CHECK-NEXT:    ;Sim: 0EEIEIESVV | Stall:7 [FU busy] Cache($$)
-; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[0:15], v[16:31], v[208:215], v[0:15], s16, s16
-; CHECK-NEXT:    ;Sim: WMMA[1/6] E | Stall:7 [VA_SSRC blocked]
+; CHECK-NEXT:    v_wmma_scale_f32_32x16x128_f4 v[0:15], v[192:207], v[208:215], v[0:15], s16, s16
+; CHECK-NEXT:    ;Sim: WMMA[1/10] E | Stall:7 [VA_SSRC blocked]
 ; CHECK-NEXT:    s_cmp_lt_i32 s16, 32
+; CHECK-NEXT:    ;Sim: WMMA[9/10] V OK
 ; CHECK-NEXT:    s_cbranch_scc1 .LBB0_1
 ; CHECK-NEXT:  ;=== Block: 1 cycles ===
 ; CHECK-NEXT:  ; SALU:1

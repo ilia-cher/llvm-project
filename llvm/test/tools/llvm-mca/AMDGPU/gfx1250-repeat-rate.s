@@ -24,30 +24,30 @@ v_cos_f32 v7, v7
 #
 # RepeatRate = 2, Trans32Repeat2 (latency 8) - BF16 transcendentals
 #
-v_exp_bf16 v8, v8
-v_log_bf16 v9, v9
-v_rcp_bf16 v10, v10
-v_rsq_bf16 v11, v11
-v_sqrt_bf16 v12, v12
-v_sin_bf16 v13, v13
-v_cos_bf16 v14, v14
+v_exp_bf16 v8.l, v8.l
+v_log_bf16 v9.l, v9.l
+v_rcp_bf16 v10.l, v10.l
+v_rsq_bf16 v11.l, v11.l
+v_sqrt_bf16 v12.l, v12.l
+v_sin_bf16 v13.l, v13.l
+v_cos_bf16 v14.l, v14.l
 
 #
 # RepeatRate = 2, Trans32Repeat2 (latency 8) - F16 transcendentals
 #
-v_exp_f16 v15, v15
-v_log_f16 v16, v16
-v_rcp_f16 v17, v17
-v_rsq_f16 v18, v18
-v_sqrt_f16 v19, v19
-v_sin_f16 v20, v20
-v_cos_f16 v21, v21
+v_exp_f16 v15.l, v15.l
+v_log_f16 v16.l, v16.l
+v_rcp_f16 v17.l, v17.l
+v_rsq_f16 v18.l, v18.l
+v_sqrt_f16 v19.l, v19.l
+v_sin_f16 v20.l, v20.l
+v_cos_f16 v21.l, v21.l
 
 #
 # RepeatRate = 2, Trans32Repeat2 (latency 8) - TANH instructions
 #
-v_tanh_bf16 v22, v22
-v_tanh_f16 v23, v23
+v_tanh_bf16 v22.l, v22.l
+v_tanh_f16 v23.l, v23.l
 v_tanh_f32 v24, v24
 
 #
@@ -246,22 +246,22 @@ v_maximum_f64 v[114:115], v[114:115], v[116:117]
 # CHECK-NEXT:  1      8     1.00                  U     v_sqrt_f32_e32 v5, v5
 # CHECK-NEXT:  1      8     1.00                  U     v_sin_f32_e32 v6, v6
 # CHECK-NEXT:  1      8     1.00                  U     v_cos_f32_e32 v7, v7
-# CHECK-NEXT:  1      8     1.00                  U     v_exp_bf16_e32 v8, v8
-# CHECK-NEXT:  1      8     1.00                  U     v_log_bf16_e32 v9, v9
-# CHECK-NEXT:  1      8     1.00                  U     v_rcp_bf16_e32 v10, v10
-# CHECK-NEXT:  1      8     1.00                  U     v_rsq_bf16_e32 v11, v11
-# CHECK-NEXT:  1      8     1.00                  U     v_sqrt_bf16_e32 v12, v12
-# CHECK-NEXT:  1      8     1.00                  U     v_sin_bf16_e32 v13, v13
-# CHECK-NEXT:  1      8     1.00                  U     v_cos_bf16_e32 v14, v14
-# CHECK-NEXT:  1      8     1.00                  U     v_exp_f16_e32 v15, v15
-# CHECK-NEXT:  1      8     1.00                  U     v_log_f16_e32 v16, v16
-# CHECK-NEXT:  1      8     1.00                  U     v_rcp_f16_e32 v17, v17
-# CHECK-NEXT:  1      8     1.00                  U     v_rsq_f16_e32 v18, v18
-# CHECK-NEXT:  1      8     1.00                  U     v_sqrt_f16_e32 v19, v19
-# CHECK-NEXT:  1      8     1.00                  U     v_sin_f16_e32 v20, v20
-# CHECK-NEXT:  1      8     1.00                  U     v_cos_f16_e32 v21, v21
-# CHECK-NEXT:  1      8     1.00                  U     v_tanh_bf16_e32 v22, v22
-# CHECK-NEXT:  1      8     1.00                  U     v_tanh_f16_e32 v23, v23
+# CHECK-NEXT:  1      8     1.00                  U     v_exp_bf16_e32 v8.l, v8.l
+# CHECK-NEXT:  1      8     1.00                  U     v_log_bf16_e32 v9.l, v9.l
+# CHECK-NEXT:  1      8     1.00                  U     v_rcp_bf16_e32 v10.l, v10.l
+# CHECK-NEXT:  1      8     1.00                  U     v_rsq_bf16_e32 v11.l, v11.l
+# CHECK-NEXT:  1      8     1.00                  U     v_sqrt_bf16_e32 v12.l, v12.l
+# CHECK-NEXT:  1      8     1.00                  U     v_sin_bf16_e32 v13.l, v13.l
+# CHECK-NEXT:  1      8     1.00                  U     v_cos_bf16_e32 v14.l, v14.l
+# CHECK-NEXT:  1      8     1.00                  U     v_exp_f16_e32 v15.l, v15.l
+# CHECK-NEXT:  1      8     1.00                  U     v_log_f16_e32 v16.l, v16.l
+# CHECK-NEXT:  1      8     1.00                  U     v_rcp_f16_e32 v17.l, v17.l
+# CHECK-NEXT:  1      8     1.00                  U     v_rsq_f16_e32 v18.l, v18.l
+# CHECK-NEXT:  1      8     1.00                  U     v_sqrt_f16_e32 v19.l, v19.l
+# CHECK-NEXT:  1      8     1.00                  U     v_sin_f16_e32 v20.l, v20.l
+# CHECK-NEXT:  1      8     1.00                  U     v_cos_f16_e32 v21.l, v21.l
+# CHECK-NEXT:  1      8     1.00                  U     v_tanh_bf16_e32 v22.l, v22.l
+# CHECK-NEXT:  1      8     1.00                  U     v_tanh_f16_e32 v23.l, v23.l
 # CHECK-NEXT:  1      8     1.00                  U     v_tanh_f32_e32 v24, v24
 # CHECK-NEXT:  1      6     1.00                  U     v_lshlrev_b64_e32 v[26:27], v0, v[26:27]
 # CHECK-NEXT:  1      6     1.00                  U     v_lshrrev_b64 v[28:29], v0, v[28:29]
@@ -393,22 +393,22 @@ v_maximum_f64 v[114:115], v[114:115], v[116:117]
 # CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_sqrt_f32_e32 v5, v5
 # CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_sin_f32_e32 v6, v6
 # CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_cos_f32_e32 v7, v7
-# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_exp_bf16_e32 v8, v8
-# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_log_bf16_e32 v9, v9
-# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_rcp_bf16_e32 v10, v10
-# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_rsq_bf16_e32 v11, v11
-# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_sqrt_bf16_e32 v12, v12
-# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_sin_bf16_e32 v13, v13
-# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_cos_bf16_e32 v14, v14
-# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_exp_f16_e32 v15, v15
-# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_log_f16_e32 v16, v16
-# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_rcp_f16_e32 v17, v17
-# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_rsq_f16_e32 v18, v18
-# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_sqrt_f16_e32 v19, v19
-# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_sin_f16_e32 v20, v20
-# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_cos_f16_e32 v21, v21
-# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_tanh_bf16_e32 v22, v22
-# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_tanh_f16_e32 v23, v23
+# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_exp_bf16_e32 v8.l, v8.l
+# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_log_bf16_e32 v9.l, v9.l
+# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_rcp_bf16_e32 v10.l, v10.l
+# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_rsq_bf16_e32 v11.l, v11.l
+# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_sqrt_bf16_e32 v12.l, v12.l
+# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_sin_bf16_e32 v13.l, v13.l
+# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_cos_bf16_e32 v14.l, v14.l
+# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_exp_f16_e32 v15.l, v15.l
+# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_log_f16_e32 v16.l, v16.l
+# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_rcp_f16_e32 v17.l, v17.l
+# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_rsq_f16_e32 v18.l, v18.l
+# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_sqrt_f16_e32 v19.l, v19.l
+# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_sin_f16_e32 v20.l, v20.l
+# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_cos_f16_e32 v21.l, v21.l
+# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_tanh_bf16_e32 v22.l, v22.l
+# CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_tanh_f16_e32 v23.l, v23.l
 # CHECK-NEXT:  -      -      -     1.00    -     1.00    -      -      -     v_tanh_f32_e32 v24, v24
 # CHECK-NEXT:  -      -      -     1.00    -      -     1.00    -      -     v_lshlrev_b64_e32 v[26:27], v0, v[26:27]
 # CHECK-NEXT:  -      -      -     1.00    -      -     1.00    -      -     v_lshrrev_b64 v[28:29], v0, v[28:29]
@@ -527,22 +527,22 @@ v_maximum_f64 v[114:115], v[114:115], v[116:117]
 # CHECK-NEXT: [0,6]     .    .    DeeeeeeeE .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_sqrt_f32_e32 v5, v5
 # CHECK-NEXT: [0,7]     .    .    .DeeeeeeeE.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_sin_f32_e32 v6, v6
 # CHECK-NEXT: [0,8]     .    .    . DeeeeeeeE    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_cos_f32_e32 v7, v7
-# CHECK-NEXT: [0,9]     .    .    .  DeeeeeeeE   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_exp_bf16_e32 v8, v8
-# CHECK-NEXT: [0,10]    .    .    .   DeeeeeeeE  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_log_bf16_e32 v9, v9
-# CHECK-NEXT: [0,11]    .    .    .    DeeeeeeeE .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_rcp_bf16_e32 v10, v10
-# CHECK-NEXT: [0,12]    .    .    .    .DeeeeeeeE.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_rsq_bf16_e32 v11, v11
-# CHECK-NEXT: [0,13]    .    .    .    . DeeeeeeeE    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_sqrt_bf16_e32 v12, v12
-# CHECK-NEXT: [0,14]    .    .    .    .  DeeeeeeeE   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_sin_bf16_e32 v13, v13
-# CHECK-NEXT: [0,15]    .    .    .    .   DeeeeeeeE  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_cos_bf16_e32 v14, v14
-# CHECK-NEXT: [0,16]    .    .    .    .    DeeeeeeeE .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_exp_f16_e32 v15, v15
-# CHECK-NEXT: [0,17]    .    .    .    .    .DeeeeeeeE.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_log_f16_e32 v16, v16
-# CHECK-NEXT: [0,18]    .    .    .    .    . DeeeeeeeE    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_rcp_f16_e32 v17, v17
-# CHECK-NEXT: [0,19]    .    .    .    .    .  DeeeeeeeE   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_rsq_f16_e32 v18, v18
-# CHECK-NEXT: [0,20]    .    .    .    .    .   DeeeeeeeE  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_sqrt_f16_e32 v19, v19
-# CHECK-NEXT: [0,21]    .    .    .    .    .    DeeeeeeeE .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_sin_f16_e32 v20, v20
-# CHECK-NEXT: [0,22]    .    .    .    .    .    .DeeeeeeeE.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_cos_f16_e32 v21, v21
-# CHECK-NEXT: [0,23]    .    .    .    .    .    . DeeeeeeeE    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_tanh_bf16_e32 v22, v22
-# CHECK-NEXT: [0,24]    .    .    .    .    .    .  DeeeeeeeE   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_tanh_f16_e32 v23, v23
+# CHECK-NEXT: [0,9]     .    .    .  DeeeeeeeE   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_exp_bf16_e32 v8.l, v8.l
+# CHECK-NEXT: [0,10]    .    .    .   DeeeeeeeE  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_log_bf16_e32 v9.l, v9.l
+# CHECK-NEXT: [0,11]    .    .    .    DeeeeeeeE .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_rcp_bf16_e32 v10.l, v10.l
+# CHECK-NEXT: [0,12]    .    .    .    .DeeeeeeeE.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_rsq_bf16_e32 v11.l, v11.l
+# CHECK-NEXT: [0,13]    .    .    .    . DeeeeeeeE    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_sqrt_bf16_e32 v12.l, v12.l
+# CHECK-NEXT: [0,14]    .    .    .    .  DeeeeeeeE   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_sin_bf16_e32 v13.l, v13.l
+# CHECK-NEXT: [0,15]    .    .    .    .   DeeeeeeeE  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_cos_bf16_e32 v14.l, v14.l
+# CHECK-NEXT: [0,16]    .    .    .    .    DeeeeeeeE .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_exp_f16_e32 v15.l, v15.l
+# CHECK-NEXT: [0,17]    .    .    .    .    .DeeeeeeeE.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_log_f16_e32 v16.l, v16.l
+# CHECK-NEXT: [0,18]    .    .    .    .    . DeeeeeeeE    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_rcp_f16_e32 v17.l, v17.l
+# CHECK-NEXT: [0,19]    .    .    .    .    .  DeeeeeeeE   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_rsq_f16_e32 v18.l, v18.l
+# CHECK-NEXT: [0,20]    .    .    .    .    .   DeeeeeeeE  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_sqrt_f16_e32 v19.l, v19.l
+# CHECK-NEXT: [0,21]    .    .    .    .    .    DeeeeeeeE .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_sin_f16_e32 v20.l, v20.l
+# CHECK-NEXT: [0,22]    .    .    .    .    .    .DeeeeeeeE.    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_cos_f16_e32 v21.l, v21.l
+# CHECK-NEXT: [0,23]    .    .    .    .    .    . DeeeeeeeE    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_tanh_bf16_e32 v22.l, v22.l
+# CHECK-NEXT: [0,24]    .    .    .    .    .    .  DeeeeeeeE   .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_tanh_f16_e32 v23.l, v23.l
 # CHECK-NEXT: [0,25]    .    .    .    .    .    .   DeeeeeeeE  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_tanh_f32_e32 v24, v24
 # CHECK-NEXT: [0,26]    .    .    .    .    .    .    .DeeeeeE  .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_lshlrev_b64_e32 v[26:27], v0, v[26:27]
 # CHECK-NEXT: [0,27]    .    .    .    .    .    .    . DeeeeeE .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    .    ..   v_lshrrev_b64 v[28:29], v0, v[28:29]
@@ -664,22 +664,22 @@ v_maximum_f64 v[114:115], v[114:115], v[116:117]
 # CHECK-NEXT: 6.     1     0.0    0.0    0.0       v_sqrt_f32_e32 v5, v5
 # CHECK-NEXT: 7.     1     0.0    0.0    0.0       v_sin_f32_e32 v6, v6
 # CHECK-NEXT: 8.     1     0.0    0.0    0.0       v_cos_f32_e32 v7, v7
-# CHECK-NEXT: 9.     1     0.0    0.0    0.0       v_exp_bf16_e32 v8, v8
-# CHECK-NEXT: 10.    1     0.0    0.0    0.0       v_log_bf16_e32 v9, v9
-# CHECK-NEXT: 11.    1     0.0    0.0    0.0       v_rcp_bf16_e32 v10, v10
-# CHECK-NEXT: 12.    1     0.0    0.0    0.0       v_rsq_bf16_e32 v11, v11
-# CHECK-NEXT: 13.    1     0.0    0.0    0.0       v_sqrt_bf16_e32 v12, v12
-# CHECK-NEXT: 14.    1     0.0    0.0    0.0       v_sin_bf16_e32 v13, v13
-# CHECK-NEXT: 15.    1     0.0    0.0    0.0       v_cos_bf16_e32 v14, v14
-# CHECK-NEXT: 16.    1     0.0    0.0    0.0       v_exp_f16_e32 v15, v15
-# CHECK-NEXT: 17.    1     0.0    0.0    0.0       v_log_f16_e32 v16, v16
-# CHECK-NEXT: 18.    1     0.0    0.0    0.0       v_rcp_f16_e32 v17, v17
-# CHECK-NEXT: 19.    1     0.0    0.0    0.0       v_rsq_f16_e32 v18, v18
-# CHECK-NEXT: 20.    1     0.0    0.0    0.0       v_sqrt_f16_e32 v19, v19
-# CHECK-NEXT: 21.    1     0.0    0.0    0.0       v_sin_f16_e32 v20, v20
-# CHECK-NEXT: 22.    1     0.0    0.0    0.0       v_cos_f16_e32 v21, v21
-# CHECK-NEXT: 23.    1     0.0    0.0    0.0       v_tanh_bf16_e32 v22, v22
-# CHECK-NEXT: 24.    1     0.0    0.0    0.0       v_tanh_f16_e32 v23, v23
+# CHECK-NEXT: 9.     1     0.0    0.0    0.0       v_exp_bf16_e32 v8.l, v8.l
+# CHECK-NEXT: 10.    1     0.0    0.0    0.0       v_log_bf16_e32 v9.l, v9.l
+# CHECK-NEXT: 11.    1     0.0    0.0    0.0       v_rcp_bf16_e32 v10.l, v10.l
+# CHECK-NEXT: 12.    1     0.0    0.0    0.0       v_rsq_bf16_e32 v11.l, v11.l
+# CHECK-NEXT: 13.    1     0.0    0.0    0.0       v_sqrt_bf16_e32 v12.l, v12.l
+# CHECK-NEXT: 14.    1     0.0    0.0    0.0       v_sin_bf16_e32 v13.l, v13.l
+# CHECK-NEXT: 15.    1     0.0    0.0    0.0       v_cos_bf16_e32 v14.l, v14.l
+# CHECK-NEXT: 16.    1     0.0    0.0    0.0       v_exp_f16_e32 v15.l, v15.l
+# CHECK-NEXT: 17.    1     0.0    0.0    0.0       v_log_f16_e32 v16.l, v16.l
+# CHECK-NEXT: 18.    1     0.0    0.0    0.0       v_rcp_f16_e32 v17.l, v17.l
+# CHECK-NEXT: 19.    1     0.0    0.0    0.0       v_rsq_f16_e32 v18.l, v18.l
+# CHECK-NEXT: 20.    1     0.0    0.0    0.0       v_sqrt_f16_e32 v19.l, v19.l
+# CHECK-NEXT: 21.    1     0.0    0.0    0.0       v_sin_f16_e32 v20.l, v20.l
+# CHECK-NEXT: 22.    1     0.0    0.0    0.0       v_cos_f16_e32 v21.l, v21.l
+# CHECK-NEXT: 23.    1     0.0    0.0    0.0       v_tanh_bf16_e32 v22.l, v22.l
+# CHECK-NEXT: 24.    1     0.0    0.0    0.0       v_tanh_f16_e32 v23.l, v23.l
 # CHECK-NEXT: 25.    1     0.0    0.0    0.0       v_tanh_f32_e32 v24, v24
 # CHECK-NEXT: 26.    1     0.0    0.0    0.0       v_lshlrev_b64_e32 v[26:27], v0, v[26:27]
 # CHECK-NEXT: 27.    1     0.0    0.0    0.0       v_lshrrev_b64 v[28:29], v0, v[28:29]
@@ -784,4 +784,4 @@ v_maximum_f64 v[114:115], v[114:115], v[116:117]
 # CHECK-NEXT: 126.   1     0.0    0.0    0.0       v_ldexp_f64 v[108:109], v[108:109], v0
 # CHECK-NEXT: 127.   1     0.0    0.0    0.0       v_minimum_f64 v[110:111], v[110:111], v[112:113]
 # CHECK-NEXT: 128.   1     0.0    0.0    0.0       v_maximum_f64 v[114:115], v[114:115], v[116:117]
-# CHECK-NEXT:        1     0.0    0.0    0.0       <total>
+# CHECK-NEXT:        129   0.0    0.0    0.0       <total>

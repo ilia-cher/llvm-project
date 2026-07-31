@@ -35,7 +35,7 @@
 # DBG: CoExec window complete:
 # DBG-NEXT:   Stages:    0 1 2 3 4 5 6 7 8 9
 # DBG-NEXT:   Slots:     0 E E I E E I S V V
-# DBG-NEXT:   Scheduled: 0 E E I E E I S V -
+# DBG-NEXT:   Scheduled: 0 E E I E E - S V V
 ---
 name: wmma_ds_salu_only
 tracksRegLiveness: true
@@ -93,10 +93,10 @@ body: |
 ...
 
 # DBG-LABEL: PreRA hazard recognizer: wmma_valu_trans_only
-# DBG: CoExec window ended at stage 4:
+# DBG: CoExec window ended at stage 7:
 # DBG-NEXT:   Stages:    0 1 2 3 4 5 6 7 8 9
 # DBG-NEXT:   Slots:     0 E E I E E I S V V
-# DBG-NEXT:   Scheduled: 0 - - I E . . . . .
+# DBG-NEXT:   Scheduled: 0 - - I - - I S . .
 ---
 name: wmma_valu_trans_only
 tracksRegLiveness: true
@@ -199,10 +199,10 @@ body: |
 ...
 
 # DBG-LABEL: PreRA hazard recognizer: wmma_trans_in_I_slots
-# DBG: CoExec window ended at stage 4:
+# DBG: CoExec window ended at stage 7:
 # DBG-NEXT:   Stages:    0 1 2 3 4 5 6 7 8 9
 # DBG-NEXT:   Slots:     0 E E I E E I S V V
-# DBG-NEXT:   Scheduled: 0 - - I E . . . . .
+# DBG-NEXT:   Scheduled: 0 - - I - - I S . .
 ---
 name: wmma_trans_in_I_slots
 tracksRegLiveness: true
@@ -246,14 +246,16 @@ body: |
 ...
 
 # DBG-LABEL: PreRA hazard recognizer: wmma_chain_back_to_back
-# DBG: CoExec window interrupted at stage 7:
-# DBG-NEXT:   Stages:    0 1 2 3 4 5 6 7 8 9
+# DBG:        Stages:    0 1 2 3 4 5 6 7 8 9
 # DBG-NEXT:   Slots:     0 E E I E E I S V V
 # DBG-NEXT:   Scheduled: 0 - - - - - - S . .
-# DBG: CoExec window interrupted at stage 7:
-# DBG-NEXT:   Stages:    0 1 2 3 4 5 6 7 8 9
+# DBG:        Stages:    0 1 2 3 4 5 6 7 8 9
 # DBG-NEXT:   Slots:     0 E E I E E I S V V
 # DBG-NEXT:   Scheduled: 0 - - - - - - S . .
+# DBG: CoExec window ended at stage 1:
+# DBG-NEXT:   Stages:    0 1 2 3 4 5 6 7 8 9
+# DBG-NEXT:   Slots:     0 E E I E E I S V V
+# DBG-NEXT:   Scheduled: 0 E . . . . . . . .
 ---
 name: wmma_chain_back_to_back
 tracksRegLiveness: true
@@ -311,10 +313,10 @@ body: |
 ...
 
 # DBG-LABEL: PreRA hazard recognizer: wmma_mixed_ds_valu_trans
-# DBG: CoExec window ended at stage 7:
+# DBG: CoExec window complete:
 # DBG-NEXT:   Stages:    0 1 2 3 4 5 6 7 8 9
 # DBG-NEXT:   Slots:     0 E E I E E I S V V
-# DBG-NEXT:   Scheduled: 0 E - I E - I S . .
+# DBG-NEXT:   Scheduled: 0 E E I E E I S - -
 ---
 name: wmma_mixed_ds_valu_trans
 tracksRegLiveness: true

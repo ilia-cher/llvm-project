@@ -5,8 +5,8 @@
 
 # Test that the live interval pressure reschedule stage runs and computes pressure for regions.
 
-# CHECK: LIRP: Starting live interval RP reschedule stage
 # CHECK: LIRP: Region 0: InstantRP=2, LIRP=3
+# CHECK: LIRP: Live interval RP reschedule stage on Region: 0
 
 # DISABLED-NOT: LIRP:
 
