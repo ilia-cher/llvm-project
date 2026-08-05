@@ -1,11 +1,21 @@
-; RUN: llc -mtriple=amdgcn -mcpu=bonaire < %s | FileCheck -check-prefix=GCN %s
-; RUN: llc -mtriple=amdgcn -mcpu=fiji < %s | FileCheck -check-prefix=GCN %s
+; RUN: llc -mtriple=amdgpu6.00 < %s | FileCheck -check-prefixes=GCN,GFX600 %s
+; RUN: llc -mtriple=amdgpu8.03 < %s | FileCheck -check-prefixes=GCN,GFX803 %s
+; RUN: llc -mtriple=amdgpu13.10 < %s | FileCheck -check-prefixes=GCN,GFX13 %s
+
+; Downstream divergence: the GFX13 checks name the src0 copies rather than
+; forbidding v_mov_b32_e32 outright. Upstream also copies src1 into v6, but
+; VOPD-packs it into a v_dual_mov_b32; downstream leaves it unpaired in two of
+; the four kernels, and costs one extra VGPR.
 
 declare <4 x i32> @llvm.amdgcn.mqsad.u32.u8(i64, i32, <4 x i32>) #0
 
 ; GCN-LABEL: {{^}}v_mqsad_u32_u8_inline_integer_immediate:
-; GCN-DAG: v_mov_b32_e32 v0, v2
-; GCN-DAG: v_mov_b32_e32 v1, v3
+; GFX600-DAG: v_mov_b32_e32 v0, v2
+; GFX600-DAG: v_mov_b32_e32 v1, v3
+; GFX803-DAG: v_mov_b32_e32 v0, v2
+; GFX803-DAG: v_mov_b32_e32 v1, v3
+; GFX13-NOT: v_mov_b32_e32 v0, v2
+; GFX13-NOT: v_mov_b32_e32 v1, v3
 ; GCN: v_mqsad_u32_u8 v[2:5], v[0:1], v6, v[{{[0-9]+:[0-9]+}}]
 define amdgpu_kernel void @v_mqsad_u32_u8_inline_integer_immediate(ptr addrspace(1) %out, i64 %src, i32 %a) {
   %tmp = call i64 asm "v_lsrlrev_b64 $0, $1, 1", "={v[2:3]},v"(i64 %src) #0
@@ -17,8 +27,12 @@ define amdgpu_kernel void @v_mqsad_u32_u8_inline_integer_immediate(ptr addrspace
 }
 
 ; GCN-LABEL: {{^}}v_mqsad_u32_u8_non_immediate:
-; GCN-DAG: v_mov_b32_e32 v0, v2
-; GCN-DAG: v_mov_b32_e32 v1, v3
+; GFX600-DAG: v_mov_b32_e32 v0, v2
+; GFX600-DAG: v_mov_b32_e32 v1, v3
+; GFX803-DAG: v_mov_b32_e32 v0, v2
+; GFX803-DAG: v_mov_b32_e32 v1, v3
+; GFX13-NOT: v_mov_b32_e32 v0, v2
+; GFX13-NOT: v_mov_b32_e32 v1, v3
 ; GCN: v_mqsad_u32_u8 v[2:5], v[0:1], v6, v[{{[0-9]+:[0-9]+}}]
 define amdgpu_kernel void @v_mqsad_u32_u8_non_immediate(ptr addrspace(1) %out, i64 %src, i32 %a, <4 x i32> %b) {
   %tmp = call i64 asm "v_lsrlrev_b64 $0, $1, 1", "={v[2:3]},v"(i64 %src) #0
@@ -30,8 +44,12 @@ define amdgpu_kernel void @v_mqsad_u32_u8_non_immediate(ptr addrspace(1) %out, i
 }
 
 ; GCN-LABEL: {{^}}v_mqsad_u32_u8_inline_fp_immediate:
-; GCN-DAG: v_mov_b32_e32 v0, v2
-; GCN-DAG: v_mov_b32_e32 v1, v3
+; GFX600-DAG: v_mov_b32_e32 v0, v2
+; GFX600-DAG: v_mov_b32_e32 v1, v3
+; GFX803-DAG: v_mov_b32_e32 v0, v2
+; GFX803-DAG: v_mov_b32_e32 v1, v3
+; GFX13-NOT: v_mov_b32_e32 v0, v2
+; GFX13-NOT: v_mov_b32_e32 v1, v3
 ; GCN: v_mqsad_u32_u8 v[2:5], v[0:1], v6, v[{{[0-9]+:[0-9]+}}]
 define amdgpu_kernel void @v_mqsad_u32_u8_inline_fp_immediate(ptr addrspace(1) %out, i64 %src, i32 %a) {
   %tmp = call i64 asm "v_lsrlrev_b64 $0, $1, 1", "={v[2:3]},v"(i64 %src) #0
@@ -43,8 +61,12 @@ define amdgpu_kernel void @v_mqsad_u32_u8_inline_fp_immediate(ptr addrspace(1) %
 }
 
 ; GCN-LABEL: {{^}}v_mqsad_u32_u8_use_sgpr_vgpr:
-; GCN-DAG: v_mov_b32_e32 v0, v2
-; GCN-DAG: v_mov_b32_e32 v1, v3
+; GFX600-DAG: v_mov_b32_e32 v0, v2
+; GFX600-DAG: v_mov_b32_e32 v1, v3
+; GFX803-DAG: v_mov_b32_e32 v0, v2
+; GFX803-DAG: v_mov_b32_e32 v1, v3
+; GFX13-NOT: v_mov_b32_e32 v0, v2
+; GFX13-NOT: v_mov_b32_e32 v1, v3
 ; GCN: v_mqsad_u32_u8 v[2:5], v[0:1], v6, v[{{[0-9]+:[0-9]+}}]
 define amdgpu_kernel void @v_mqsad_u32_u8_use_sgpr_vgpr(ptr addrspace(1) %out, i64 %src, i32 %a, ptr addrspace(1) %input) {
   %in = load <4 x i32>, ptr addrspace(1) %input

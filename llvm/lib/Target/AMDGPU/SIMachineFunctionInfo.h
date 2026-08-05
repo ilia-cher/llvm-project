@@ -34,7 +34,8 @@ class MachineFrameInfo;
 class MachineFunction;
 class SIMachineFunctionInfo;
 class SIRegisterInfo;
-class TargetRegisterClass;
+class MCRegisterClass;
+using TargetRegisterClass = MCRegisterClass;
 
 namespace AMDGPU {
 struct KernelPerfReport;

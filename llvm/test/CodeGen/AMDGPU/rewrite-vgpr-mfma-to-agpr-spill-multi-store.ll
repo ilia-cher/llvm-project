@@ -6,7 +6,7 @@
 ; unspilled interval here, so the split this guards against is never
 ; reached. -verify-machineinstrs still passes, so the invariant holds.
 ; REQUIRES: asserts
-; RUN: llc -mtriple=amdgcn-amd-amdhsa -mcpu=gfx90a -O3 \
+; RUN: llc -mtriple=amdgpu9.0a-amd-amdhsa -O3 \
 ; RUN:   -amdgpu-use-amdgpu-trackers=1 -verify-machineinstrs \
 ; RUN:   -stop-after=amdgpu-rewrite-agpr-copy-mfma \
 ; RUN:   -debug-only=amdgpu-rewrite-agpr-copy-mfma -filetype=null %s 2>&1 | FileCheck %s

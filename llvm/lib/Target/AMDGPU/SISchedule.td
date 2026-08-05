@@ -503,8 +503,10 @@ def : HWWriteRes<WriteSALUDummy, [HWSALU],  2>;
 
 }  // End SchedModel = GFX12SpeedModel
 
-// Check if either matrix input is not FP4 in an f8f6f4 wmma instruction.
-// Any F8 or F6 input doubles the cycle count vs both-F4.
+// Check whether the two matrix inputs of an f8f6f4 wmma instruction are not
+// both interpreted as f4. On gfx1250 an f8f6f4 wmma runs in 4 cycles when both
+// inputs are f4, and in 8 cycles when any input is f6 or f8.
+// TODO: This isn't reflected in MCA.
 def PredIsNotBothF4_WMMA_SCALE : SchedPredicate<[{
   TII->getNamedOperand(*MI, AMDGPU::OpName::matrix_a_fmt)->getImm() != AMDGPU::WMMA::MATRIX_FMT_FP4 ||
   TII->getNamedOperand(*MI, AMDGPU::OpName::matrix_b_fmt)->getImm() != AMDGPU::WMMA::MATRIX_FMT_FP4

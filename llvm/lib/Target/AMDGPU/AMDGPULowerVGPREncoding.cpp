@@ -445,56 +445,29 @@ static bool isSetregMode(const MachineInstr &MI, const SIInstrInfo &TII) {
   return HwRegId == AMDGPU::Hwreg::ID_MODE;
 }
 
-/// Backtracks \p I in \p MBB until we hit a non-meta instruction and returns
-/// whether that instruction is a S_SETREG_IMM32_B32(MODE). Returns false when
-/// there are no non-meta instruction in [MBB.instr_begin(), It).
-static bool previousInstrIsSetRegMode(MachineBasicBlock::instr_iterator &It,
-                                      const MachineBasicBlock &MBB,
-                                      const SIInstrInfo &TII) {
-  while (It != MBB.begin()) {
-    It = std::prev(It);
-    if (isSetregMode(*It, TII))
-      return true;
-    if (!It->isMetaInstruction())
-      return false;
-  }
-  return false;
-}
-
 bool AMDGPULowerVGPREncoding::needNopBeforeSetVGPRMSB(
     MachineBasicBlock::instr_iterator I) {
-  if (previousInstrIsSetRegMode(I, *MBB, *TII))
-    return true;
-  if (I != MBB->begin())
-    return false;
-
-  // Look for a potential fallthrough predecessor block. When it ends with a
-  // S_SETREG_IMM32_B32(MODE) we need to insert a S_NOP too.
   MachineBasicBlock *CurrentMBB = MBB;
-  bool HasEmptyFallThroughPred;
-  do {
-    HasEmptyFallThroughPred = false;
-    for (MachineBasicBlock *PredMBB : CurrentMBB->predecessors()) {
-      // We assume that an explicit jump to the current block from the block
-      // that would otherwise have naturally fell through to it will remain in
-      // the final assembly.
-      if (PredMBB->getFallThrough(/*JumpToFallThrough=*/false) != CurrentMBB)
-        continue;
-
-      MachineBasicBlock::instr_iterator LastMI = PredMBB->instr_end();
-      if (previousInstrIsSetRegMode(LastMI, *PredMBB, *TII))
+  while (true) {
+    // Walk the block backward until we hit a non-meta instruction or the
+    // beginning of the block.
+    while (I != CurrentMBB->instr_begin()) {
+      I = std::prev(I);
+      if (isSetregMode(*I, *TII))
         return true;
-      if (LastMI != PredMBB->begin())
+      if (!I->isMetaInstruction())
         return false;
-
-      // The predecessor is empty, recursively look for its own potential
-      // fallthrough predecessor.
-      CurrentMBB = PredMBB;
-      HasEmptyFallThroughPred = true;
-      break;
     }
-  } while (HasEmptyFallThroughPred);
 
+    // Look for a potential fallthrough predecessor block. When it ends with a
+    // S_SETREG_IMM32_B32(MODE) we need to insert a S_NOP too. We assume that an
+    // explicit jump to the current block from the block that would otherwise
+    // have naturally fallen through to it will remain in the final assembly.
+    CurrentMBB = CurrentMBB->getPrevNode();
+    if (!CurrentMBB || !CurrentMBB->canFallThrough())
+      return false;
+    I = CurrentMBB->instr_end();
+  }
   return false;
 }
 
@@ -517,8 +490,8 @@ bool AMDGPULowerVGPREncoding::updateSetregModeImm(MachineInstr &MI,
   MachineOperand *ImmOp = TII->getNamedOperand(MI, AMDGPU::OpName::imm);
   int64_t OldImm = ImmOp->getImm();
   // Note that Offset is ignored for mode bits here.
-  int64_t NewImm =
-      (OldImm & ~AMDGPU::Hwreg::VGPR_MSB_MASK) | (SetregMode << VGPRMSBShift);
+  int64_t NewImm = (OldImm & ~int64_t(AMDGPU::Hwreg::VGPR_MSB_MASK)) |
+                   (SetregMode << VGPRMSBShift);
   ImmOp->setImm(NewImm);
   return NewImm != OldImm;
 }

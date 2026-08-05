@@ -6,3 +6,25 @@ Sched Perf
 
 Flags
     --amdgpu-vgpr-excess-threshold-percent=85
+
+KNOWN REGRESSION -- llvm-hash b010a18d bump, 2026-08-05
+2135 warm cycles, was 1355 (+780, +57.6%). The baseline was updated to 2135 to
+keep the corpus green. This is a recorded regression, not an accepted target.
+
+Not the scheduler: sched-only mode moved only +0.21% (64460 vs 64322) across the
+same bump. The regression is in the rest of codegen.
+
+The hot loop shows 1632 s_set_vgpr_msb against 448 v_wmma_f32_16x16x32_bf16,
+137 spill/reload markers and 38 scratch_store_b128. The simulator reports
+Ctrl:727 Reload:2, 1217 cycles of stall (57%), and WMMA efficiency of
+1024 / 2135 cycles (48%). Register pressure is pushing allocation into high
+VGPRs.
+
+Same class as the loop regression in
+test/CodeGen/AMDGPU/static-simulator/wmma-window-ldscale.ll (+31%), which picks
+up 12 v_mov_b64_e32 SGPR-to-VGPR copies and reproduces with the default
+scheduler as well.
+
+Category 6 is not the cause. Rebuilding with Category = 0 forced leaves both
+this kernel and wmma-window-ldscale.ll byte-identical, and reverting category 6
+adds a further regression in Gluon/fo4_GEMM (715 vs 714).

@@ -103,8 +103,7 @@ public:
   Waitcnt(unsigned LoadCnt, unsigned ExpCnt, unsigned DsCnt, unsigned StoreCnt,
           unsigned SampleCnt, unsigned BvhCnt, unsigned KmCnt, unsigned XCnt,
           unsigned AsyncCnt, unsigned TensorCnt, unsigned VaVdstRd,
-          unsigned VaVdstWr,
-          unsigned VmVsrc)
+          unsigned VaVdstWr, unsigned VmVsrc)
       : Waitcnt() {
     Cnt[LOAD_CNT] = LoadCnt;
     Cnt[DS_CNT] = DsCnt;
