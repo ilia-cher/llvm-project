@@ -1,0 +1,55 @@
+--- |
+  target datalayout = "e-m:e-p:64:64-p1:64:64-p2:32:32-p3:32:32-p4:64:64-p5:32:32-p6:32:32-p7:160:256:256:32-p8:128:128:128:48-p9:192:256:256:32-i64:64-v16:16-v24:32-v32:32-v48:64-v96:128-v192:256-v256:256-v512:512-v1024:1024-v2048:2048-n32:64-S32-A5-G1-ni:7:8:9"
+  target triple = "amdgcn-amd-amdhsa"
+
+  define amdgpu_kernel void @synth_chains(ptr addrspace(1) %0) #0 {
+    ret void
+  }
+
+  attributes #0 = { nounwind "amdgpu-flat-work-group-size"="1,128" "target-cpu"="gfx1250" "target-features"="+wavefrontsize32" "uniform-work-group-size" }
+...
+---
+name:            synth_chains
+alignment:       1
+tracksRegLiveness: true
+noPhis:          true
+isSSA:           false
+noVRegs:         false
+body:             |
+  bb.0:
+    successors: %bb.1(0x80000000)
+    liveins: $sgpr0_sgpr1
+
+    %kptr:sgpr_64 = COPY $sgpr0_sgpr1
+    %aptr:sgpr_64 = S_LOAD_DWORDX2_IMM %kptr, 0, 0 :: (dereferenceable invariant load (s64), addrspace 4)
+    %voff:vgpr_32 = V_MOV_B32_e32 0, implicit $exec
+    %tileA:vreg_128_align2 = GLOBAL_LOAD_DWORDX4_SADDR %aptr, %voff, 0, 0, implicit $exec :: (load (s128), addrspace 1)
+    %tileB:vreg_128_align2 = GLOBAL_LOAD_DWORDX4_SADDR %aptr, %voff, 16, 0, implicit $exec :: (load (s128), addrspace 1)
+    %tileA2:vreg_128_align2 = GLOBAL_LOAD_DWORDX4_SADDR %aptr, %voff, 32, 0, implicit $exec :: (load (s128), addrspace 1)
+    %tileB2:vreg_128_align2 = GLOBAL_LOAD_DWORDX4_SADDR %aptr, %voff, 48, 0, implicit $exec :: (load (s128), addrspace 1)
+    S_WAIT_LOADCNT 0
+
+  bb.1:
+
+    %two:vgpr_32 = V_MOV_B32_e32 1073741824, implicit $exec
+
+    undef %ApA.sub0:vreg_128_align2 = V_MUL_F32_e32 %tileA.sub0, %two, implicit $mode, implicit $exec
+    %ApA.sub1:vreg_128_align2 = V_MUL_F32_e32 %tileA.sub1, %two, implicit $mode, implicit $exec
+    %ApA.sub2:vreg_128_align2 = V_MUL_F32_e32 %tileA.sub2, %two, implicit $mode, implicit $exec
+    %ApA.sub3:vreg_128_align2 = V_MUL_F32_e32 %tileA.sub3, %two, implicit $mode, implicit $exec
+    early-clobber %accA0:vreg_256_align2 = V_WMMA_F32_16X16X16_F16_w32_threeaddr 8, %ApA, 8, %tileB, 8, 0, 0, 0, implicit $exec
+    early-clobber %accA1:vreg_256_align2 = V_WMMA_F32_16X16X16_F16_w32_threeaddr 8, %ApA, 8, %tileB, 8, %accA0, 0, 0, implicit $exec
+    %oA0:vgpr_32 = V_MUL_F32_e32 %accA1.sub0, %two, implicit $mode, implicit $exec
+    %oA1:vgpr_32 = V_ADD_F32_e32 %accA1.sub1, %oA0, implicit $mode, implicit $exec
+
+    undef %ApB.sub0:vreg_128_align2 = V_MUL_F32_e32 %tileA2.sub0, %two, implicit $mode, implicit $exec
+    %ApB.sub1:vreg_128_align2 = V_MUL_F32_e32 %tileA2.sub1, %two, implicit $mode, implicit $exec
+    %ApB.sub2:vreg_128_align2 = V_MUL_F32_e32 %tileA2.sub2, %two, implicit $mode, implicit $exec
+    %ApB.sub3:vreg_128_align2 = V_MUL_F32_e32 %tileA2.sub3, %two, implicit $mode, implicit $exec
+    early-clobber %accB0:vreg_256_align2 = V_WMMA_F32_16X16X16_F16_w32_threeaddr 8, %ApB, 8, %tileB2, 8, 0, 0, 0, implicit $exec
+    early-clobber %accB1:vreg_256_align2 = V_WMMA_F32_16X16X16_F16_w32_threeaddr 8, %ApB, 8, %tileB2, 8, %accB0, 0, 0, implicit $exec
+    %oB0:vgpr_32 = V_MUL_F32_e32 %accB1.sub0, %two, implicit $mode, implicit $exec
+    %oB1:vgpr_32 = V_ADD_F32_e32 %accB1.sub1, %oB0, implicit $mode, implicit $exec
+
+    S_ENDPGM 0
+...
